@@ -1,10 +1,10 @@
 === Email Encoder - Protect Email Address ===
-Contributors: WebFactory, UnderConstructionPage, googlemapswidget, securityninja, wpreset
+Contributors: ironikus
 Tags: email address, protect, antispam, mailto, spambot, secure, e-mail, email, mail, obfuscate, encode, encoder, encrypt, hide, bot, crawl, spider, robots, spam, protection, harvest, harvesting, security
 Requires at least: 4.0
 Requires PHP: 5.1
 Tested up to: 5.2
-Stable tag: 1.51
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,11 @@ It's possible to filter all widgets by using the [Widget Logic Plugin](https://w
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 1.5.2 =
+* Tweak: Add popup window for admin success message of hidden email
+* Fix: Fix bug for non-available antispambot() function
+* Ironikus takes over development (https://ironikus.com)
 
 = 1.51 =
 * 2019-03-25

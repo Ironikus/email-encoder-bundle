@@ -441,9 +441,11 @@ final class Eeb_Site extends Eeb_Admin {
             return $content;
         }
 
+        $text = htmlspecialchars( __( 'Successfully Encoded! This is a check and it\\\'s only visible when logged in as admin.', 'email-encoder-bundle') );
+
         return $content
-                . '<a href="javascript:;" class="encoded-check"'
-                . ' title="' . __('Successfully Encoded (this is a check and it\'s only visible when logged in as admin)', 'email-encoder-bundle') . '">'
+                . '<a href="javascript:;" onclick="alert(\'' . $text . '\');" class="encoded-check"'
+                . ' title="' . $text . '">'
                 . '<img class="encoded-check-icon" src="' . plugins_url('images/icon-email-encoder.png', EMAIL_ENCODER_BUNDLE_FILE)
                 . '" alt="' . __('Encoded', 'email-encoder-bundle') . '" />' . '</a>';
     }
@@ -556,27 +558,25 @@ final class Eeb_Site extends Eeb_Admin {
      * @param string $value
      * @return string
      */
-    private function enc_html($value) {
+    private function enc_html( $value ) {
         // check for built-in WP function
-        if (function_exists('antispambot')) {
-            $emailNOSPAMaddy = antispambot($value);
+        if ( ! function_exists('antispambot' ) ) {
+            $emailNOSPAMaddy = antispambot( $value );
         } else {
-            $emailNOSPAMaddy = '';
-            srand ((float) microtime() * 1000000);
-            for ($i = 0; $i < strlen($emailaddy); $i = $i + 1) {
-                $j = floor(rand(0, 1+$mailto));
-                if ($j==0) {
-                    $emailNOSPAMaddy .= '&#'.ord(substr($emailaddy,$i,1)).';';
-                } elseif ($j==1) {
-                    $emailNOSPAMaddy .= substr($emailaddy,$i,1);
-                } elseif ($j==2) {
-                    $emailNOSPAMaddy .= '%'.zeroise(dechex(ord(substr($emailaddy, $i, 1))), 2);
-                }
-            }
-            $emailNOSPAMaddy = str_replace('@','&#64;',$emailNOSPAMaddy);
+	        $emailNOSPAMaddy = '';
+	        for ( $i = 0, $len = strlen( $value ); $i < $len; $i++ ) {
+		        $j = rand( 0, 1 + 0 );
+		        if ( $j == 0 ) {
+			        $emailNOSPAMaddy .= '&#' . ord( $value[ $i ] ) . ';';
+		        } elseif ( $j == 1 ) {
+			        $emailNOSPAMaddy .= $value[ $i ];
+		        } elseif ( $j == 2 ) {
+			        $emailNOSPAMaddy .= '%' . zeroise( dechex( ord( $value[ $i ] ) ), 2 );
+		        }
+	        }
         }
 
-        $emailNOSPAMaddy = str_replace('@', '&#64;', $emailNOSPAMaddy);
+        $emailNOSPAMaddy = str_replace( '@', '&#64;', $emailNOSPAMaddy );
 
         return $emailNOSPAMaddy;
     }

@@ -239,7 +239,7 @@ abstract class Eeb_Admin {
         return $text_org;
       }
 
-      $text = '<i><a target="_blank" href="https://wordpress.org/plugins/email-encoder-bundle/">Email Encoder</a> v' . EMAIL_ENCODER_BUNDLE_VERSION . ' by <a href="https://www.webfactoryltd.com/" title="Visit our site to get more great plugins" target="_blank">WebFactory Ltd</a>.';
+      $text = '<i><a target="_blank" href="https://wordpress.org/plugins/email-encoder-bundle/">Email Encoder</a> v' . EMAIL_ENCODER_BUNDLE_VERSION . ' by <a href="https://ironikus.com/" title="Visit our site to get more great plugins" target="_blank">Ironikus</a>.';
       $text .= ' Please <a target="_blank" href="https://wordpress.org/support/plugin/email-encoder-bundle/reviews/#new-post" title="Rate the plugin">Rate the plugin ★★★★★</a>.</i> ';
 
       return $text;
@@ -568,20 +568,17 @@ abstract class Eeb_Admin {
 
 <?php
         } else if ($key === 'other_plugins') {
+
+            $mulsitie_slug = ( is_multisite() ) ? 'network/' : '';
 ?>
-            <h4><img src="<?php echo plugins_url('images/icon-301-redirects.png', EMAIL_ENCODER_BUNDLE_FILE) ?>"> 301 Redirects</h4>
-            <p>Easily manage and create 301 &amp; 302 redirects to improve SEO and visitor experience. User-friendly interface, easy to install and configure.
-                <br /><a href="<?php echo admin_url('plugin-install.php?s=301+Redirects+WebFactory+Ltd&tab=search&type=term'); ?>" target="_blank">Install now for free</a> | <a href="https://wordpress.org/plugins/eps-301-redirects/" target="_blank">More info</a>
+            <h4><img src="<?php echo plugins_url('images/icon-wp-webhooks.png', EMAIL_ENCODER_BUNDLE_FILE) ?>"> WP Webhooks</h4>
+            <p>If you love to automate things, this is for you! WP Webhooks allows you to recieve and send data on your WordPress website from any third party service out there.
+                <br /><a href="<?php echo admin_url( $mulsitie_slug . 'plugin-install.php?s=WP+Webhooks&tab=search&type=term'); ?>" target="_blank">Install now for free</a> | <a href="https://wordpress.org/plugins/wp-webhooks/" title="Go to WordPress.org" target="_blank">More info</a>
             </p>
 
-            <h4><img src="<?php echo plugins_url('images/icon-google-maps-widget.png', EMAIL_ENCODER_BUNDLE_FILE) ?>"> Google Maps Widget</h4>
-            <p>Tired of buggy &amp; slow Google Maps plugins that take hours to setup? With Google Maps Widget you’ll have a perfect map with a thumbnail &amp; lightbox in minutes!
-                <br /><a href="<?php echo admin_url('plugin-install.php?s=Google+Maps+Widget+WebFactoryLtd&tab=search&type=term'); ?>" target="_blank">Install now for free</a> | <a href="https://gmapswidget.com/" target="_blank">More info</a>
-            </p>
-            
-            <h4><img src="<?php echo plugins_url('images/icon-security-ninja.png', EMAIL_ENCODER_BUNDLE_FILE) ?>"> Security Ninja</h4>
-            <p>Perform 50+ security tests with one click. Get a color-coded report on your site's security &amp; how to secure it. Easy to use! Protecting sites like yours for over 7 years.
-                <br /><a href="<?php echo admin_url('plugin-install.php?s=Web+Factory+Ltd+Security+Ninja+WordPress+Security+50&tab=search&type=term'); ?>" target="_blank">Install now for free</a> | <a href="https://wpsecurityninja.com/" target="_blank">More info</a>
+            <h4><img src="<?php echo plugins_url('images/icon-wp-snow.png', EMAIL_ENCODER_BUNDLE_FILE) ?>"> WP Snow</h4>
+            <p>Make your website something special with this awesome flakes animation plugin. Make snowflakes, falling snowmans, custom text or any other of the 1300+ icons glide over your website.
+                <br /><a href="<?php echo admin_url( $mulsitie_slug . 'plugin-install.php?s=WP+Snow+–+Best+Snow+Effect+Plugin+&tab=search&type=term'); ?>" target="_blank">Install now for free</a> | <a href="https://wordpress.org/plugins/wp-snow/" title="Go to WordPress.org" target="_blank">More info</a>
             </p>
 <?php
         }
@@ -752,9 +749,9 @@ abstract class Eeb_Admin {
         } else if ($key === 'sidebar') {
             $content = __('<h4>More Info</h4>'
                      . '<ul>'
-                     . '<li><a href="https://profiles.wordpress.org/webfactory/#content-plugins" target="_blank">Quality free plugins</a></li>'
+                     . '<li><a href="https://profiles.wordpress.org/ironikus/#content-plugins" target="_blank">Quality free plugins</a></li>'
                      . '<li><a href="http://wordpress.org/support/plugin/email-encoder-bundle#postform" target="_blank">Get Support</a></li>'
-                     . '<li><a href="https://webfactoryltd.com/" target="_blank">WebFactory Ltd</a></li>'
+                     . '<li><a href="https://ironikus.com/" target="_blank">Visit Ironikus</a></li>'
                      . '</ul>'
                      , 'email-encoder-bundle');
         } else {
