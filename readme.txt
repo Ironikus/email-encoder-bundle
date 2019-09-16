@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: email address, protect, antispam, mailto, spambot, secure, e-mail, email, mail, obfuscate, encode, encoder, encrypt, hide, bot, crawl, spider, robots, spam, protection, harvest, harvesting, security
 Requires at least: 4.0
 Requires PHP: 5.1
-Tested up to: 5.2
-Stable tag: 1.5.2
+Tested up to: 5.2.3
+Stable tag: 1.53
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,27 @@ It's possible to filter all widgets by using the [Widget Logic Plugin](https://w
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 1.53 =
+* PLEASE READ BEFORE UPDATE
+* THIS PLUGIN WILL BE REFACTORED WITH THE NEXT UPDATE
+* TO PREPARE YOURSELF, YOU WILL FIND A LIST DOWN BELOW WITH THE CHANGES THAT AWAIT YOU
+* - The plugin will be simplified using automatically the best protection for your site
+* - The plugin will protect yout site out-of-the-box 
+* - We introduce a site-wide protection, not only based on WordPress shortcodes (This includes protection for your FULL site)
+* - You will be able to choose the protection type. Available will be: Automatically (using Javascript), Automatically (Without Javascript), Protection Text, Entity encode
+* - The plugin structure will be optimized using the current WordPress standards
+* - Switch between full site protection and only WordPress filters
+* - (Optional) Protect emails by converting them to PNG images (where applicable)
+* - Round-robin method for javascript based protection (Choose the best method automatically from similar protection methods)
+* - Tons of bugfixes
+* - All settings will be fully compatible in any combination
+* - The encoding form will continue to exists
+* - All settings that have been available in the old version and will be available in the new version are backwards compatible
+* - Display admin notice to all encoded emails (where applicable)
+* ###################
+* THE UPDATE WILL BE LAUNCHED WITHIN OCTOBER
+* Tweak: Introduce our new partner MailOptin
 
 = 1.5.2 =
 * Tweak: Add popup window for admin success message of hidden email

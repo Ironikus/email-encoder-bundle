@@ -4,7 +4,7 @@ Plugin Name:    Email Encoder - Protect Email Address
 Plugin URI:     https://wordpress.org/plugins/email-encoder-bundle/
 Description:    Protect email addresses on your site and hide them from spambots by encoding them. Easy to use & flexible.
 Author:         Ironikus
-Version:        1.5.2
+Version:        1.53
 Author URI:     https://ironikus.com/
 License:        Dual licensed under the MIT and GPL licenses
 Text Domain:    email-encoder-bundle
@@ -34,6 +34,7 @@ if (version_compare($wp_version, '3.6', '>=') && version_compare(phpversion(), '
     require_once('includes/class-eeb-admin.php');
     require_once('includes/class-eeb-site.php');
     require_once('includes/template-functions.php');
+    require_once('includes/integrations.php');
 
     // create instance
     $Eeb_Site = Eeb_Site::getInstance();
