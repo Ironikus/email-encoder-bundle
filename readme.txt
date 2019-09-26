@@ -1,33 +1,46 @@
-=== Email Encoder - Protect Email Address ===
+=== Email Encoder - Protect Email Addresses ===
 Contributors: ironikus
 Tags: email address, protect, antispam, mailto, spambot, secure, e-mail, email, mail, obfuscate, encode, encoder, encrypt, hide, bot, crawl, spider, robots, spam, protection, harvest, harvesting, security
 Requires at least: 4.0
 Requires PHP: 5.1
 Tested up to: 5.2.3
-Stable tag: 1.53
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Encode mailto links, email addresses, phone numbers or any text to hide it from spam-bots. Mailto links are protected automatically.
+Protect email addresses on your site and hide them from spambots. Easy to use & flexible.
 
 == Description ==
 
-Encode mailto links, email addresses, phone numbers or any text to hide it from spam-bots and data harvesters.
+Full site protection for your email addresses from spam-bots, email harvesters and other robots. No configuration needed.
+Also protext phone numbers or any other text using our integrated `[eeb_protect_content]` shortcode.
 
 = Features =
-* Protect mailto links and plain email addresses
+* Full page protection for all of your emails
+* Instant results (No confiruation needed)
+* Protects mailto links, plain emails, email input fields, RSS feeds and much more
+* Autmoatic protection technique detection (Our plugin chooses automatically the best protection technique for each email)
+* Exclude posts and pages from protection
+* Automatically convert plain emails to mailto-links
+* Automatically convert plain emails to png images
+* Supports rot13 encoing, escape encoding, CSS directions, entity encoding and much more
+* Deactivate CSS directions manually for browser backwards compatibility
+* Shortcode support: `[eeb_protect_emails]`, `[eeb_protect_content]`, `[eeb_mailto]`, `[eeb_form]`
+* Template tag support: `eeb_protect_emails()`, `eeb_protect_content()`, `eeb_mailto()`, `eeb_form()`
 * Protect phone numbers (or any text or html)
 * Also supports special chars, like é, â, ö, Chinese characters etcetera
-* Also protect your RSS feeds
-* Use shortcodes, template functions, action and filter hooks
 * Use the Encoder Form to manually create encoded scripts
 
+= Free Website Check  =
+We offer you a free tool to test if your website contains unprotected emails. You can use our website checker by [clicking here](https://ironikus.com/email-checker/)
+
 = Easy to use  =
-After activating the plugin all mailto links will be protected automatically.
-You could use shortcodes or template functions to protect plain email addresses, phone numbers or other text.
+After activating the plugin all email addresses on your website will be protected out-of-the-box.
+We also offer custom shortcodes and template functions to protect phone numbers or other text.
 
 = Support =
-* Documentation - When activated check the Help tab on the plugin options page
+* Documentation - After plugin activation, check the help tab on the plugin options page
+* [Documentation on ironikus.com](https://ironikus.com/docs/article-categories/email-encoder/)
 * [FAQ](http://wordpress.org/extend/plugins/email-encoder-bundle/faq/)
 
 = Like this plugin? =
@@ -39,87 +52,54 @@ You could use shortcodes or template functions to protect plain email addresses,
 2. Click on the button `Add new`
 3. Search for `Email Encoder` and click 'Install Now' or click on the `upload` link to upload `email-encode-bundle.zip`
 4. Click on `Activate plugin`
+5. You will find the settings page unter "Settings -> Email Encoder" within your admin dashboard
 
 == Frequently Asked Questions ==
 
 = How can I test if an email address (or other content) is encoded? =
 
-First you can enable the plugin option (in the admin panel) called *"Show 'successfully encoded' text for all encoded content, only when logged in as admin user."*.
-When you are logged in and look on the page there will be a sign on the right side of the email address confirming it was successfully encoded.
+You can test this in three different ways. 
 
-The other way is to check the source code yourself by right-clicking on the page and select *Page Source Code* (the exact text depends on the browser).
+The easiest (and most efficient) way is to use our website checker, which looks over your website and detects unprotected emails. It is completely free and you can [find it here](https://ironikus.com/email-checker/) on our website.
+
+The second possibility is to enable the plugin option (in the admin panel) called *"Security Check"*.
+When you are logged in and look on the page there will be a icon on the right side of each email address confirming it was successfully encoded. (This counts only for emails that are displayed within the body tag as HTML. Emails within data attributes or the header won't show this icon since otherwise the site breaks.)
+
+The third possibility is to check the source code yourself by right-clicking on the page and select *View Source Code* (the exact text depends on the browser).
 Now your (real) source code will be shown. Your email address should not be shown in a readable way in the source.
 
-**Important:** in the element inspector of the browser the email address is *always* shown, so don't worry about that. That is because the inspector shows a real time representation of the page. This means an encoded email address is already decoded and made usable for the visitor of the page.
+**Important:** in the element inspector of the browser the email address is *nearly always* shown, so don't worry about that. That is because the inspector shows a real time representation of the page. This means an encoded email address is already decoded and made usable for the visitor of the page.
 
 = How do I encode my email address(es)? =
 
-In the posts you can use this shortcode:
-`[eeb_email email="myname@test.nl" display="My Email"]`
+All email addresses are protected automatically by default, so it is not necessary to configure anything else. 
 
-But mailto links will be encoded automatically (option is on by default):
-`<a href="mailto:myname@test.nl">My Email</a>`
+In case you wish to customize it, we also offer some neatsettings,  shortcodes and template functions. Please check the settings page within your WordPress website or [our documentation](https://ironikus.com/docs/article-categories/email-encoder/)
 
-The visitors will see everything as normal, but the source behind it will now be encoded (for spambots), and looks like:
+The visitors will see everything as normal, but the source behind it will now be encoded (for spambots), and looks, for example, like the code down below (Depending on your settings):
 `<script type="text/javascript">/*<![CDATA[*/ML="mo@k<insc:r.y=-Ehe a\">f/lMt";MI="4CB8HC77=D0C5HJ1>H563DB@:AF=D0C5HJ190<6C0A2JA7J;6HDBBJ5JHA=DI<B?0C5HDEI<B?0C5H4GCE";OT="";for(j=0;j<MI.length;j++){OT+=ML.charAt(MI.charCodeAt(j)-48);}document.write(OT);/*]]>*/</script><noscript>*protected email*</noscript>`
 
-This code is not readable by spambots and protects your email address.
+For more information, please check out the [following page](https://ironikus.com/docs/knowledge-base/what-will-be-protected-2/)
 
 = How do I encode phone numbers or other text? =
 
 Just use the following shortcode within your posts:
-`[eeb_content]35-01235-468113[/eeb_content]`
+`[eeb_protect_content]35-01235-468113[/eeb_protect_content]`
 
-For other parts of your site you can use the template function `eeb_content()`.
+For other parts of your site you can use the template function `eeb_protect_content()`.
 
-= Email address in a form field is being encoded in a strange way. What to do? =
+= My website looks broken after activating the plugin. What to do? =
 
-An email address in a form field will not be encoded correctly.
-There are 2 ways to solve this problem:
+First: Don't panic! 
+Simply create a support request within the [support forum](http://wordpress.org/support/plugin/email-encoder-bundle#postform) and we will come back to you as soon as possible with help.
 
-1. Turn off the option "Replace plain email addresses to protected mailto links". Keep in mind that this will be the case for the whole site.
-1. Add the page ID of the form to the option "Do not apply Auto-Protect on posts with ID". The page content will be skipped by the plugin.
+= How can I encode content of BBPress, WP e-commerce or other plugins? =
 
-= How to use email encoding in Custom Fields? =
-
-You will have to use the template function `eeb_email()` or `eeb_content()`.
-For example, if your template contains:
-`echo get_post_meta($post->ID, 'email address', true);`
-
-Then change it to:
-`$emailaddress = get_post_meta($post->ID, 'email address', true);
-echo eeb_email($emailaddress, 'Mail Me');`
-
-= How to create mailto links that opens in a new window? =
-
-You could add extra params to the mailto link and add `target='_blank'` for opening them in a new window, like:
-`[eeb_email email="yourmail@test.nl" display="My Mail" extra_attrs="target='_blank'"]`
-
-In HTML this will look like:
-`<a href="mailto:yourmail@test.nl" target="_blank">My Mail</a>`
-
-= How can I encode content of BBPress, WP e-Commerce or other plugins? =
-
-If you use other plugins that needs to be encoded you can add a callback to the action "init_email_encoder_bundle".
-For Example:
-
-`add_action('eeb_ready', 'extra_encode_filters');
-
-function extra_encode_filters($filter_callback) {
-	// add filters for BBPress
-	add_filter('bbp_get_reply_content', $filter_callback);
-	add_filter('bbp_get_topic_content', $filter_callback);
-}`
+Every content will be automatically protected. In case you find something, that doesn't work from your end, we are very happy to help! 
 
 = Can I use special characters (like Chinese)? =
 
 Yes, since version 1.3.0 also special characters are supported.
-
-= How to encode emails in all widgets (and not only text widgets)? =
-
-If the option 'All text widgets' is activated, only text widgets will be filtered for encoding.
-It's possible to filter all widgets by using the [Widget Logic Plugin](https://wordpress.org/plugins/widget-logic/) and activate the 'widget_content' filter.
-
 
 == Screenshots ==
 
@@ -134,6 +114,33 @@ It's possible to filter all widgets by using the [Widget Logic Plugin](https://w
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.0 =
+* PLEASE READ BEFORE UPDATING
+* THIS IS A COMPLETELY REFACTORED VERSION OF THE PLUGIN. EVEN WITH INVESTING TONS OF TIME INTO MAKING THIS PLUGIN AS MUCH BACKWARDS COMPATIBLE AS POSSIBLE, WE WOULD STILL APPRECIATE IF YOU TEST THIS VERSION BEFORE YPU UPDATE.
+* THE PLUGIN GOT A COMPLETE OVERHAUL AND OFFERS NOW MORE OPTIMIZED FEATURES AND A SUPER SIMPLE USER INTERFACE. PLEASE FIND ALL CHANGES DOWN BELOW.
+* Feature: Completely rewritten version of your beloved plugin
+* Feature: Introduce FULL SITE PROTECTION (Automatically protect ALL emails within your page)
+* Feature: Simplified settings (We cleaned the settings a lot, but you can still get some your old settings page back by activating the advanced checkbox :) )
+* Feature: Feature to automatically detect the best protection method
+* Feature: Choose from four new settings the strength of your protections
+* Feature: Added admin security check icon to encoded input fields and encoded plain emails/texts, as well as to all shortcodes
+* Feature: Also protect every single shortcode content
+* Feature: Create images out of email addresses
+* Feature: Protect header section automatically
+* Feature: Added and refactored shortcodes. For a full list of shortcodes, please check this article: https://ironikus.com/docs/knowledge-base/available-shortcodes/
+* Feature: Setting to deactivate the Encoder Form completely
+* Feature: Choose converting plain emails to mailto links as an additional feature
+* Feature: Change filter apply from "wp" to "init" (This allows you to also grab some ajax values to parse them directy encoded)
+* Feature: Website checker to search your site for unprotected emails. Follow this URL for more information: https://ironikus.com/email-checker/
+* Tweak: Backward compatibility to the new plugin settings
+* Tweak: Completely performance optimized (We removed everything that is not necessary, included a better object caching and much more)
+* Tweak: Optimized filter combinations
+* Fix: The old logic broke some email encodings, especially with custom tags. We fixed all of them
+* Fix: We fixed tons of bugs from the previous version
+* Dev: Code rewritten on the newest WordPress standards
+* Dev: Tons of new WordPress filters and actions. For a full list, please check https://ironikus.com/docs/article-categories/email-encoder/
+* Deprecated: We removed the deprecated functions. Please make sure to update your custom logic to the newest standards.
 
 = 1.53 =
 * PLEASE READ BEFORE UPDATE

@@ -1,6 +1,5 @@
-/* Email Encoder Bundle - Encoder Form */
-/*global jQuery*/
-jQuery(function ($) {
+jQuery( document ).ready( function( $ ) {
+
     'use strict';
 
     var $wrap = $('.eeb-form');
@@ -19,15 +18,17 @@ jQuery(function ($) {
         $wrap.find('#eeb-encoded-output').val('');
 
         // get the encoded email link
-        $.post('', {
-            eebActionEncodeEmail: true,
+        $.post( eeb_ef.ajaxurl, {
+            action: 'eeb_get_email_form_output',
+            eebsec : eeb_ef.security,
             eebEmail: $email.val(),
             eebDisplay: $display.val() || $email.val(),
             eebMethod: $wrap.find('#eeb-encode-method').val()
-        }, function (data) {
-            $wrap.find('#eeb-encoded-output').val(data);
+        }, function ( response ) {
+            $wrap.find('#eeb-encoded-output').val( response );
             $wrap.find('.eeb-output').fadeIn();
         });
+        
     };
 
     // hide output
@@ -71,4 +72,4 @@ jQuery(function ($) {
         getEncoded();
     });
 
-});
+  });

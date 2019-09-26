@@ -1,10 +1,5 @@
 <?php
-// this is an include only WP file
-if (!defined('ABSPATH')) {
-    die;
-  }
-
-if ( ! class_exists( 'MO_Admin_Notice' ) && is_admin() ) {
+if ( ! class_exists( 'MO_Admin_Notice' ) ) {
     class MO_Admin_Notice {
         public function __construct() {
             add_action( 'admin_notices', array( $this, 'admin_notice' ) );
@@ -22,7 +17,7 @@ if ( ! class_exists( 'MO_Admin_Notice' ) && is_admin() ) {
         }
         public function admin_notice() {
             global $pagenow;
-            if($pagenow == 'index.php' || (isset($_GET['page']) && strpos($_GET['page'], EMAIL_ENCODER_BUNDLE_ADMIN_PAGE) !== false)) {
+            if($pagenow == 'index.php' || (isset($_GET['page']) && strpos($_GET['page'], 'email-encoder-bundle-option-page') !== false)) {
                 if (get_option('mo_dismiss_adnotice', 'false') == 'true') {
                     return;
                 }
@@ -148,6 +143,5 @@ if ( ! class_exists( 'MO_Admin_Notice' ) && is_admin() ) {
             return $instance;
         }
     }
-
     MO_Admin_Notice::instance();
 }

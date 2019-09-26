@@ -1,0 +1,865 @@
+<?php
+
+/**
+ * Class Email_Encoder_Validate
+ *
+ * The main validation functionality for the plugin.
+ * Here is where the logic happens.
+ *
+ * @since 2.0.0
+ * @package EEB
+ * @author Ironikus <info@ironikus.com>
+ */
+
+class Email_Encoder_Validate{
+
+	/**
+	 * The main page name for our admin page
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $page_name;
+
+	/**
+	 * The main page title for our admin page
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $page_title;
+
+	/**
+	 * Our Email_Encoder_Run constructor.
+	 */
+	function __construct(){
+		$this->page_name    			= EEB()->settings->get_page_name();
+		$this->page_title   			= EEB()->settings->get_page_title();
+        $this->final_outout_buffer_hook = EEB()->settings->get_final_outout_buffer_hook();
+	}
+
+	/**
+	 * ######################
+	 * ###
+	 * #### FILTERS
+	 * ###
+	 * ######################
+	 */
+
+     /**
+      * The main page filter function
+      *
+      * @param string $content - the content that needs to be filtered
+      * @param bool $convertPlainEmails - wether plain emails should be preserved or not
+      * @return string - The filtered content
+      */
+    public function filter_page( $content, $protect_using ){
+
+        $content = $this->filter_soft_dom_attributes( $content, 'char_encode' );
+
+        $htmlSplit = preg_split( '/(<body(([^>]*)>))/is', $content, null, PREG_SPLIT_DELIM_CAPTURE );
+        
+        if ( count( $htmlSplit ) < 4 ) {
+            return $content;
+        }
+
+        switch( $protect_using ){
+            case 'with_javascript':
+            case 'without_javascript':
+            case 'char_encode':
+                $head_encoding_method = 'char_encode';
+                break;
+            default:
+                $head_encoding_method = 'default';
+                break;
+        }
+
+        //Filter head area
+        $filtered_head = $this->filter_plain_emails( $htmlSplit[0], null, $head_encoding_method );
+        
+        //Filter body
+        //Soft attributes always need to be protected using only the char encode method since otherwise the logic breaks
+        $filtered_body = $this->filter_soft_attributes( $htmlSplit[4], 'char_encode' );
+        $filtered_body = $this->filter_content( $filtered_body, $protect_using );
+
+        $filtered_content = $filtered_head . $htmlSplit[1] . $filtered_body;
+        return $filtered_content;
+    }
+
+    /**
+     * Filter content
+     * 
+     * @param string  $content
+     * @param integer $protect_using
+     * @return string
+     */
+    public function filter_content( $content, $protect_using ){
+        $filtered = $content;
+        $self = $this;
+        $encode_mailtos = (bool) EEB()->settings->get_setting( 'encode_mailtos', true, 'filter_body' );
+        $convert_plain_to_image = (bool) EEB()->settings->get_setting( 'convert_plain_to_image', true, 'filter_body' );
+
+        //Soft attributes always need to be protected using only the char encode method since otherwise the logic breaks
+        $filtered = $this->filter_soft_attributes( $filtered, 'char_encode' );
+
+        switch( $protect_using ){
+            case 'char_encode':
+                $filtered = $this->filter_plain_emails( $filtered, null, 'char_encode' );
+                break;
+            case 'strong_method':
+                $filtered = $this->filter_plain_emails( $filtered );
+                break;
+            case 'without_javascript':
+                $filtered = $this->filter_input_fields( $filtered, $protect_using );
+                $filtered = $this->filter_mailto_links( $filtered, 'without_javascript' );
+
+                if( $convert_plain_to_image ){
+                    $replace_by = 'convert_image';
+                } else {
+                    $replace_by = 'use_css';
+                }
+
+                if( $encode_mailtos ){
+                    if( ! ( function_exists( 'et_fb_enabled' ) && et_fb_enabled() ) ){
+                        $filtered = $this->filter_plain_emails( $filtered, function ( $match ) use ( $self ) {
+                            return $self->create_protected_mailto( $match[0], array( 'href' => 'mailto:' . $match[0] ), 'without_javascript' );
+                        }, $replace_by);
+                    } else {
+                        $filtered = $this->filter_plain_emails( $filtered, null, $replace_by );
+                    }
+                } else {
+                    $filtered = $this->filter_plain_emails( $filtered, null, $replace_by );
+                }
+                
+                break;
+            case 'with_javascript':
+                $filtered = $this->filter_input_fields( $filtered, $protect_using );
+                $filtered = $this->filter_mailto_links( $filtered );
+
+                if( $convert_plain_to_image ){
+                    $replace_by = 'convert_image';
+                } else {
+                    $replace_by = 'use_javascript';
+                }
+
+                if( $encode_mailtos ){
+                    if( ! ( function_exists( 'et_fb_enabled' ) && et_fb_enabled() ) ){
+                        $filtered = $this->filter_plain_emails( $filtered, function ( $match ) use ( $self ) {
+                            return $self->create_protected_mailto( $match[0], array( 'href' => 'mailto:' . $match[0] ), 'with_javascript' );
+                        }, $replace_by);
+                    } else {
+                        $filtered = $this->filter_plain_emails( $filtered, null, $replace_by );
+                    }
+                } else {
+                    $filtered = $this->filter_plain_emails( $filtered, null, $replace_by );
+                }
+
+                break;
+        }
+
+        return $filtered;
+    }
+
+    /**
+     * Emails will be replaced by '*protected email*'
+     * @param string           $content
+     * @param string|callable  $replace_by  Optional
+     * @param string           $protection_method  Optional
+     * @param mixed            $show_encoded_check  Optional
+     * @return string
+     */
+    public function filter_plain_emails($content, $replace_by = null, $protection_method = 'default', $show_encoded_check = 'default' ){
+
+        if( $show_encoded_check === 'default' ){
+            $show_encoded_check = (bool) EEB()->settings->get_setting( 'show_encoded_check', true );
+        }
+
+        if ( $replace_by === null ) {
+            $replace_by = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+        }
+
+        $self = $this;
+
+        return preg_replace_callback( EEB()->settings->get_email_regex(), function ( $matches ) use ( $replace_by, $protection_method, $show_encoded_check, $self ) {
+            // workaround to skip responsive image names containing @
+            $extention = strtolower( $matches[4] );
+            $excludedList = array('.jpg', '.jpeg', '.png', '.gif');
+
+            if ( in_array( $extention, $excludedList ) ) {
+                return $matches[0];
+            }
+
+            if ( is_callable( $replace_by ) ) {
+                return call_user_func( $replace_by, $matches, $protection_method );
+            }
+
+            if( $protection_method === 'char_encode' ){
+                $protected_return = antispambot( $matches[0] );
+            } elseif( $protection_method === 'convert_image' ){
+
+                $image_link = $self->generate_email_image_url( $matches[0] );
+                if( ! empty( $image_link ) ){
+                    $protected_return = '<img src="' . $image_link . '" />';
+                } else {
+                    $protected_return = antispambot( $matches[0] );
+                }
+                
+            } elseif( $protection_method === 'use_javascript' ){
+                $protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+                $protected_return = $this->dynamic_js_email_encoding( $matches[0], $protection_text );
+            } elseif( $protection_method === 'use_css' ){
+                $protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+                $protected_return = $this->encode_email_css( $matches[0], $protection_text );
+            } else {
+                $protected_return = $replace_by;
+            }
+
+            // mark link as successfullly encoded (for admin users)
+            if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
+                $protected_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+            }
+
+            return $protected_return;
+            
+        }, $content );
+    }
+
+    /**
+     * Filter passed input fields 
+     * 
+     * @param string $content
+     * @return string
+     */
+    public function filter_input_fields( $content, $encoding_method = 'default' ){
+        $self = $this;
+        $strong_encoding = (bool) EEB()->settings->get_setting( 'input_strong_protection', true, 'filter_body' );
+
+        $callback_encode_input_fields = function ( $match ) use ( $self, $encoding_method, $strong_encoding ) {
+            $input = $match[0];
+            $email = $match[2];
+
+            //Only allow strong encoding if javascript is supported
+            if( $encoding_method === 'without_javascript' ){
+                $strong_encoding = false;
+            }
+
+            return $self->encode_input_field( $input, $email, $strong_encoding );
+        };
+
+        $regexpInputField = '/<input([^>]*)value=["\'][\s+]*' . EEB()->settings->get_email_regex( true ) . '[\s+]*["\']([^>]*)>/is';
+
+        return preg_replace_callback( $regexpInputField, $callback_encode_input_fields, $content );
+    }
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    public function filter_mailto_links( $content, $protection_method = null ){
+        $self = $this;
+
+        $callbackEncodeMailtoLinks = function ( $match ) use ( $self, $protection_method ) {
+            $attrs = shortcode_parse_atts( $match[1] );
+            return $self->create_protected_mailto( $match[4], $attrs, $protection_method );
+        };
+
+        $regexpMailtoLink = '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\'])>(.*?)<\/a[\s+]*>/is';
+
+        return preg_replace_callback( $regexpMailtoLink, $callbackEncodeMailtoLinks, $content );
+    }
+
+    /**
+     * Emails will be replaced by '*protected email*'
+     * 
+     * @param string $content
+     * @return string
+     */
+    public function filter_rss( $content, $protection_type ){
+        
+        if( $protection_type === 'strong_method' ) {
+            $filtered = $this->filter_plain_emails( $content );
+        } else {
+            $filtered = $this->filter_plain_emails( $content, null, 'char_encode' );
+        }
+        
+        return $filtered;
+    }
+
+    /**
+     * Filter plain emails using soft attributes
+     * 
+     * @param string $content - the content that should be soft filtered
+     * @param string $protection_method - The method (E.g. char_encode)
+     * @return string
+     */
+    public function filter_soft_attributes( $content, $protection_method ){
+        $soft_attributes = EEB()->settings->get_soft_attribute_regex();
+
+        foreach( $soft_attributes as $ident => $regex ){
+
+            $array = array();
+            preg_match( $regex, $content, $array ) ;
+
+            foreach( $array as $single ){
+                $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
+            }
+
+        }
+
+        return $content;
+    }
+
+    /**
+     * Filter plain emails using soft dom attributes
+     * 
+     * @param string $content - the content that should be soft filtered
+     * @param string $protection_method - The method (E.g. char_encode)
+     * @return string
+     */
+    public function filter_soft_dom_attributes( $content, $protection_method ){
+
+        if( class_exists( 'DOMDocument' ) ){
+            $dom = new DOMDocument();
+            @$dom->loadHTML($content);
+    
+            //Soft-encode scripts
+            $script = $dom->getElementsByTagName('script');
+            foreach($script as $item){
+                $content = str_replace( $item->nodeValue, $this->filter_plain_emails( $item->nodeValue, null, $protection_method, false ), $content );
+            }
+        }
+        
+        return $content;
+    }
+
+    /**
+	 * ######################
+	 * ###
+	 * #### ENCODINGS
+	 * ###
+	 * ######################
+	 */
+
+      /**
+     * ASCII method
+     *
+     * @param string $value
+     * @param string $protection_text
+     * @return string
+     */
+    public function encode_ascii($value, $protection_text) {
+        $mail_link = $value;
+
+        // first encode, so special chars can be supported
+        $mail_link = EEB()->helpers->encode_uri_components( $mail_link );
+        
+        $mail_letters = '';
+
+        for ($i = 0; $i < strlen($mail_link); $i ++) {
+            $l = substr($mail_link, $i, 1);
+
+            if (strpos($mail_letters, $l) === false) {
+                $p = rand(0, strlen($mail_letters));
+                $mail_letters = substr($mail_letters, 0, $p) .
+                $l . substr($mail_letters, $p, strlen($mail_letters));
+            }
+        }
+
+        $mail_letters_enc = str_replace("\\", "\\\\", $mail_letters);
+        $mail_letters_enc = str_replace("\"", "\\\"", $mail_letters_enc);
+
+        $mail_indices = '';
+        for ($i = 0; $i < strlen($mail_link); $i ++) {
+            $index = strpos($mail_letters, substr($mail_link, $i, 1));
+            $index += 48;
+            $mail_indices .= chr($index);
+        }
+
+        $mail_indices = str_replace("\\", "\\\\", $mail_indices);
+        $mail_indices = str_replace("\"", "\\\"", $mail_indices);
+
+        $element_id = 'eeb-' . mt_rand( 0, 1000000 ) . '-' . mt_rand(0, 1000000);
+
+        return '<span id="'. $element_id . '"></span>'
+                . '<script type="text/javascript">'
+                . '(function(){'
+                . 'var ml="'. $mail_letters_enc .'",mi="'. $mail_indices .'",o="";'
+                . 'for(var j=0,l=mi.length;j<l;j++){'
+                . 'o+=ml.charAt(mi.charCodeAt(j)-48);'
+                . '}document.getElementById("' . $element_id . '").innerHTML = decodeURIComponent(o);' // decode at the end, this way special chars can be supported
+                . '}());'
+                . '</script><noscript>'
+                . $protection_text
+                . '</noscript>';
+    }
+
+    /**
+     * Escape encoding method
+     *
+     * @param string $value
+     * @param string $protection_text
+     * @return string
+     */
+    public function encode_escape( $value, $protection_text ) {
+        $element_id = 'eeb-' . mt_rand( 0, 1000000 ) . '-' . mt_rand( 0, 1000000 );
+        $string = '\'' . $value . '\'';
+
+        // break string into array of characters, we can't use string_split because its php5 only
+        $split = preg_split( '||', $string );
+        $out = '<span id="'. $element_id . '"></span>'
+             . '<script type="text/javascript">' . 'document.getElementById("' . $element_id . '").innerHTML = ev' . 'al(decodeURIComponent("';
+
+              foreach( $split as $c ) {
+                // preg split will return empty first and last characters, check for them and ignore
+                if( ! empty( $c ) ) {
+                  $out .= '%' . dechex( ord( $c ) );
+                }
+              }
+
+              $out .= '"))' . '</script><noscript>'
+                   . $protection_text
+                   . '</noscript>';
+
+        return $out;
+    }
+
+    /**
+     * Encode email in input field
+     * @param string $input
+     * @param string $email
+     * @return string
+     */
+    public function encode_input_field( $input, $email, $strongEncoding = false ){  
+        
+        $show_encoded_check = (bool) EEB()->settings->get_setting( 'show_encoded_check', true );
+
+        if ( $strongEncoding === false ) {
+            // encode email with entities (default wp method)
+            $sub_return = str_replace( $email, antispambot( $email ), $input );
+
+            if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
+                $sub_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+            }
+
+            return $sub_return;
+        }
+
+        // add data-enc-email after "<input"
+        $inputWithDataAttr = substr( $input, 0, 6 );
+        $inputWithDataAttr .= ' data-enc-email="' . $this->get_encoded_email( $email ) . '"';
+        $inputWithDataAttr .= substr( $input, 6 );
+
+        // mark link as successfullly encoded (for admin users)
+        if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
+            $inputWithDataAttr .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+        }
+
+        // remove email from value attribute
+        $encInput = str_replace( $email, '', $inputWithDataAttr );
+
+        return $encInput;
+    }
+
+    /**
+     * Get encoded email, used for data-attribute (translate by javascript)
+     * 
+     * @param string $email
+     * @return string
+     */
+    public function get_encoded_email( $email ){
+        $encEmail = $email;
+
+        // decode entities
+        $encEmail = html_entity_decode( $encEmail );
+
+        // rot13 encoding
+        $encEmail = str_rot13( $encEmail );
+
+        // replace @
+        $encEmail = str_replace( '@', '[at]', $encEmail );
+
+        return $encEmail;
+    }
+
+    /**
+     * Create a protected email
+     * 
+     * @param string $display
+     * @param array $attrs Optional
+     * @return string
+     */
+    public function create_protected_mailto( $display, $attrs = array(), $protection_method = null ){
+        $email     = '';
+        $class_ori = ( empty( $attrs['class'] ) ) ? '' : $attrs['class'];
+        $custom_class = (string) EEB()->settings->get_setting( 'class_name', true );
+        $activated_protection = ( in_array( (int) EEB()->settings->get_setting( 'protect', true ), array( 1, 2 ) ) ) ? true : false;
+        $show_encoded_check = (string) EEB()->settings->get_setting( 'show_encoded_check', true );
+
+        // set user-defined class
+        if ( $custom_class && strpos( $class_ori, $custom_class ) === FALSE ) {
+            $attrs['class'] = ( empty( $attrs['class'] ) ) ? $custom_class : $attrs['class'] . ' ' . $custom_class;
+        }
+
+        // check title for email address
+        if ( ! empty( $attrs['title'] ) ) {
+            $attrs['title'] = $this->filter_plain_emails( $attrs['title'], '{{email}}' ); // {{email}} will be replaced in javascript
+        }
+
+        // set ignore to data-attribute to prevent being processed by WPEL plugin
+        $attrs['data-wpel-link'] = 'ignore';
+
+        // create element code
+        $link = '<a ';
+
+        foreach ( $attrs AS $key => $value ) {
+            if ( strtolower( $key ) == 'href' && $activated_protection ) {
+                if( $protection_method === 'without_javascript' ){
+                    $link .= $key . '="' . antispambot( $value ) . '" ';
+                } else {
+                    // get email from href
+                    $email = substr($value, 7);
+
+                    $encoded_email = $this->get_encoded_email( $email );
+
+                    // set attrs
+                    $link .= 'href="javascript:;" ';
+                    $link .= 'data-enc-email="' . $encoded_email . '" ';
+                }
+                
+            } else {
+                $link .= $key . '="' . $value . '" ';
+            }
+        }
+
+        // remove last space
+        $link = substr( $link, 0, -1 );
+
+        $link .= '>';
+
+        $link .= ( $activated_protection && preg_match( EEB()->settings->get_email_regex(), $display) > 0 ) ? $this->get_protected_display( $display, $protection_method ) : $display;
+
+        $link .= '</a>';
+
+        // filter
+        $link = apply_filters( 'eeb_mailto', $link, $display, $email, $attrs );
+
+        // just in case there are still email addresses f.e. within title-tag
+        $link = $this->filter_plain_emails( $link, null, 'char_encode' );
+
+        // mark link as successfullly encoded (for admin users)
+        if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
+            $link .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+        }
+
+
+        return $link;
+    }
+
+    /**
+     * Create protected display combining these 3 methods:
+     * - reversing string
+     * - adding no-display spans with dummy values
+     * - using the wp antispambot function
+     *
+     * @param string|array $display
+     * @return string Protected display
+     */
+    public function get_protected_display( $display, $protection_method = null ){
+
+        $convert_plain_to_image = (bool) EEB()->settings->get_setting( 'convert_plain_to_image', true, 'filter_body' );
+        $protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+
+        // get display out of array (result of preg callback)
+        if ( is_array( $display ) ) {
+            $display = $display[0];
+        }
+
+        if( $convert_plain_to_image ){
+            return '<img src="' . $this->generate_email_image_url( $display ) . '" />';
+        }
+
+        if( $protection_method !== 'without_javascript' ){
+            return $this->dynamic_js_email_encoding( $display, $protection_text );
+        }
+
+        return $this->encode_email_css( $display );
+        
+    }
+
+    /**
+     * Dynamic email encoding with certain javascript methods
+     *
+     * @param string $email
+     * @param string $protection_text
+     * @return the encoded email
+     */
+    public function dynamic_js_email_encoding( $email, $protection_text = null ){
+        $return = $email;
+        $rand = rand(0,2);
+        switch( $rand ){
+            case 2:
+                $return = $this->encode_escape( $return, $protection_text );
+                break;
+            case 1:
+                $return = $this->encode_ascii( $return, $protection_text );
+                break;
+            default:
+                $return = $this->encode_ascii( $return, $protection_text );
+                break;
+        }
+
+        return $return;
+    }
+
+    public function encode_email_css( $display ){
+        $deactivate_rtl = (bool) EEB()->settings->get_setting( 'deactivate_rtl', true, 'filter_body' );
+
+        $stripped_display = strip_tags( $display );
+        $stripped_display = html_entity_decode( $stripped_display );
+
+        $length = strlen( $stripped_display );
+        $interval = ceil( min( 5, $length / 2 ) );
+        $offset = 0;
+        $dummy_data = time();
+        $protected = '';
+        $protection_classes = 'eeb';
+
+        if( $deactivate_rtl ){
+            $rev = $stripped_display;
+            $protection_classes .= ' eeb-nrtl';
+        } else {
+            // reverse string ( will be corrected with CSS )
+            $rev = strrev( $stripped_display );
+            $protection_classes .= ' eeb-rtl';
+        }
+       
+
+        while ( $offset < $length ) {
+            $protected .= '<span class="eeb-sd">' . antispambot( substr( $rev, $offset, $interval ) ) . '</span>';
+
+            // setup dummy content
+            $protected .= '<span class="eeb-nodis">' . $dummy_data . '</span>';
+            $offset += $interval;
+        }
+
+        $protected = '<span class="' . $protection_classes . '">' . $protected . '</span>';
+
+        return $protected;
+    }
+
+    public function email_to_image( $email, $image_string_color = 'default', $image_background_color = 'default', $alpha_string = 0, $alpha_fill = 127, $font_size = 4 ){
+        
+        $setting_image_string_color = (string) EEB()->settings->get_setting( 'image_color', true, 'image_settings' );
+        $setting_image_background_color = (string) EEB()->settings->get_setting( 'image_background_color', true, 'image_settings' );
+        $image_text_opacity = (int) EEB()->settings->get_setting( 'image_text_opacity', true, 'image_settings' );
+        $image_background_opacity = (int) EEB()->settings->get_setting( 'image_background_opacity', true, 'image_settings' );
+        $image_font_size = (int) EEB()->settings->get_setting( 'image_font_size', true, 'image_settings' );
+
+        if( $image_background_color === 'default' ){
+            $image_background_color = $setting_image_background_color;
+        } else {
+            $image_background_color = '0,0,0';
+        }
+
+        $colors = explode( ',', $image_background_color );
+        $bg_red = $colors[0];
+        $bg_green = $colors[1];
+        $bg_blue = $colors[2];
+
+        if( $image_string_color === 'default' ){
+            $image_string_color = $setting_image_string_color;
+        } else {
+            $image_string_color = '0,0,0';
+        }
+
+        $colors = explode( ',', $image_string_color );
+        $string_red = $colors[0];
+        $string_green = $colors[1];
+        $string_blue = $colors[2];
+
+        if( ! empty( $image_text_opacity ) && $image_text_opacity >= 0 && $image_text_opacity <= 127 ){
+            $alpha_string = intval( $image_text_opacity );
+        }
+
+        if( ! empty( $image_background_opacity ) && $image_background_opacity >= 0 && $image_background_opacity <= 127 ){
+            $alpha_fill = intval( $image_background_opacity );
+        }
+
+        if( ! empty( $image_font_size ) && $image_font_size >= 1 && $image_font_size <= 5 ){
+            $font_size = intval( $image_font_size );
+        }
+
+        $img = imagecreatetruecolor( imagefontwidth( $font_size ) * strlen( $email ), imagefontheight( $font_size ) );
+        imagesavealpha( $img, true );
+        imagefill( $img, 0, 0, imagecolorallocatealpha ($img, $bg_red, $bg_green, $bg_blue, $alpha_fill ) );
+        imagestring( $img, $font_size, 0, 0, $email, imagecolorallocatealpha( $img, $string_red, $string_green, $string_blue, $alpha_string ) );
+        ob_start();
+        imagepng( $img );
+        imagedestroy( $img );
+
+        return ob_get_clean ();
+    }
+
+    public function generate_email_signature( $email, $secret ) {
+        
+        if( ! $secret ){
+            return false;
+        }
+
+		$hash_signature = apply_filters( 'eeb/validate/email_signature', 'sha256', $email );
+
+		return base64_encode( hash_hmac( $hash_signature, $email, $secret, true ) );
+	}
+
+    public function generate_email_image_url( $email ) {
+        
+        if( empty( $email ) || ! is_email( $email ) ){
+            return false;
+        }
+
+        $secret = EEB()->settings->get_email_image_secret();
+        $signature = $this->generate_email_signature( $email, $secret );
+        $url = home_url() . '?eeb_mail=' . urlencode( base64_encode( $email ) ) . '&eeb_hash=' . urlencode( $signature );
+
+		$url = apply_filters( 'eeb/validate/generate_email_image_url', $url, $email );
+
+		return $url;
+    }
+    
+    /**
+	 * ######################
+	 * ###
+	 * #### ENCODER FORM
+	 * ###
+	 * ######################
+	 */
+    
+    /**
+     * Get the encoder form (to use as a demo, like on the options page)
+     * @return string
+     */
+    public function get_encoder_form() {
+        $powered_by_setting = (bool) EEB()->settings->get_setting( 'powered_by', true, 'encoder_form' );
+        $display_encoder_form = (bool) EEB()->settings->get_setting( 'display_encoder_form', true, 'encoder_form' );
+
+        //shorten circle
+        if( ! $display_encoder_form ){
+            return apply_filters('eeb_form_content_inactive', '' );
+        }
+
+        $powered_by = '';
+        if ($powered_by_setting) {
+            $powered_by .= '<p class="powered-by">' . __('Powered by free', 'email-encoder-bundle') . ' <a rel="external" href="https://wordpress.org/plugins/email-encoder-bundle/">Email Encoder</a></p>';
+        }
+
+        $smethods = array(
+            'rot13' => EEB()->helpers->translate( 'Rot13 (Javascript)', 'eeb-encoder-form-methods' ),
+            'escape' => EEB()->helpers->translate( 'Escape (Javascript)', 'eeb-encoder-form-methods' ),
+            'encode' => EEB()->helpers->translate( 'Encode (HTML)', 'eeb-encoder-form-methods' ),
+        );
+        $method_options = '';
+        $selected = false;
+        foreach( $smethods as $method_name => $name ) {
+            $method_options .= '<option value="' . $method_name . '"' . ( ($selected === false ) ? ' selected="selected"' : '') . '>' . $name . '</option>';
+            $selected = true;
+        }
+
+        $labels = array(
+            'email' => EEB()->helpers->translate( 'Email Address:', 'eeb-encoder-form-labels' ),
+            'display' => EEB()->helpers->translate( 'Display Text:', 'eeb-encoder-form-labels' ),
+            'mailto' => EEB()->helpers->translate( 'Mailto Link:', 'eeb-encoder-form-labels' ),
+            'method' => EEB()->helpers->translate( 'Encoding Method:', 'eeb-encoder-form-labels' ),
+            'create_link' => EEB()->helpers->translate( 'Create Protected Mail Link &gt;&gt;', 'eeb-encoder-form-labels' ),
+            'output' => EEB()->helpers->translate( 'Protected Mail Link (code):', 'eeb-encoder-form-labels' ),
+            'powered_by' => $powered_by,
+        );
+
+        extract($labels);
+
+        $form = <<<FORM
+<div class="eeb-form">
+    <form>
+        <fieldset>
+            <div class="input">
+                <table>
+                <tbody>
+                    <tr>
+                        <th><label for="eeb-email">{$email}</label></th>
+                        <td><input type="text" class="regular-text" id="eeb-email" name="eeb-email" /></td>
+                    </tr>
+                    <tr>
+                        <th><label for="eeb-display">{$display}</label></th>
+                        <td><input type="text" class="regular-text" id="eeb-display" name="eeb-display" /></td>
+                    </tr>
+                    <tr>
+                        <th>{$mailto}</th>
+                        <td><span class="eeb-example"></span></td>
+                    </tr>
+                    <tr>
+                        <th><label for="eeb-encode-method">{$method}</label></th>
+                        <td><select id="eeb-encode-method" name="eeb-encode-method" class="postform">
+                                {$method_options}
+                            </select>
+                            <input type="button" id="eeb-ajax-encode" name="eeb-ajax-encode" value="{$create_link}" />
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+            <div class="eeb-output">
+                <table>
+                <tbody>
+                    <tr>
+                        <th><label for="eeb-encoded-output">{$output}</label></th>
+                        <td><textarea class="large-text node" id="eeb-encoded-output" name="eeb-encoded-output" cols="50" rows="4"></textarea></td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+            {$powered_by}
+        </fieldset>
+    </form>
+</div>
+FORM;
+
+         // apply filters
+        $form = apply_filters('eeb_form_content', $form, $labels, $powered_by_setting );
+
+        return $form;
+    }
+
+
+    public function is_post_excluded( $post_id = null ){
+
+        $skip_posts = (string) EEB()->settings->get_setting( 'skip_posts', true );
+		if( ! empty( $skip_posts ) ){
+
+            if( empty( $post_id ) ){
+                global $post;
+                $post_id = $post->ID;
+            } else {
+                $post_id = intval( $post_id );
+            }
+			
+			$exclude_pages = explode( ',', $skip_posts );
+
+			if( is_array( $exclude_pages ) ){
+				$exclude_pages_validated = array();
+
+				foreach( $exclude_pages as $spost_id ){
+                    $spost_id = trim($spost_id);
+					if( is_numeric( $spost_id ) ){
+						$exclude_pages_validated[] = intval( $spost_id );
+					}
+				}
+
+				if ( in_array( $post_id, $exclude_pages_validated ) ) {
+					return true;
+				}
+			}
+
+        }
+        
+        return false;
+    }
+}
