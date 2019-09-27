@@ -4,7 +4,7 @@ Tags: email address, protect, antispam, mailto, spambot, secure, e-mail, email, 
 Requires at least: 4.0
 Requires PHP: 5.1
 Tested up to: 5.2.3
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,10 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.1 =
+* Fix: Include missing template functions requirement
+* Tweak: Clear languages
 
 = 2.0.0 =
 * PLEASE READ BEFORE UPDATING

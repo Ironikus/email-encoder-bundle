@@ -111,6 +111,7 @@ if ( ! class_exists( 'Email_Encoder' ) ) :
 			require_once EEB_PLUGIN_DIR . 'core/includes/classes/class-email-encoder-bundle-validate.php';
 
 			require_once EEB_PLUGIN_DIR . 'core/includes/classes/class-email-encoder-bundle-ajax.php';
+			require_once EEB_PLUGIN_DIR . 'core/includes/functions/template-tags.php';
 
 			require_once EEB_PLUGIN_DIR . 'core/includes/integrations/loader.php';
 
