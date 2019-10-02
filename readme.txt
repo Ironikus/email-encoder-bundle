@@ -1,10 +1,10 @@
 === Email Encoder - Protect Email Addresses ===
 Contributors: ironikus
 Tags: email address, protect, antispam, mailto, spambot, secure, e-mail, email, mail, obfuscate, encode, encoder, encrypt, hide, bot, crawl, spider, robots, spam, protection, harvest, harvesting, security
-Requires at least: 4.0
+Requires at least: 4.7
 Requires PHP: 5.1
 Tested up to: 5.2.3
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,16 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.2 =
+* Feature: New settings item to include custom scripts within the footer and not in the header
+* Feature: Support for the "Maintenance" plugin from WP Maintenance
+* TweaK: Remove our main translation handler to make plugin translations on WordPress.org available again.
+* Tweak: Optimize PHP code to WordPress standards
+* Tweak: Enqueue dashicons as well if only "show_encoded_check" is checked and protection is set to "Do nothing"
+* Tweak: Make eeb_mailto link available with protection set to "Do nothing" as well
+* Fix: WP CLI did not work with this plugin in an active state (Due to the active buffer filter)
+* Fix: Emails have been not encoded properly if "Do nothing" was chosen as a setting and the eeb_mailto shortcode was used
 
 = 2.0.1 =
 * Fix: Include missing template functions requirement
