@@ -18,50 +18,6 @@
 class Email_Encoder_Helpers {
 
 	/**
-	 * Translate custom Strings
-	 *
-	 * @param $string - The language string
-	 * @param null $cname - If no custom name is set, return the default one
-	 * @return string - The translated language string
-	 */
-	public function translate( $string, $cname = null, $prefix = null ){
-
-		/**
-		 * Filter to control the translation and optimize
-		 * them to a specific output
-		 */
-		$trigger = apply_filters( 'eeb/helpers/control_translations', true, $string, $cname );
-		if( empty( $trigger ) ){
-			return $string;
-		}
-
-		if( empty( $string ) ){
-			return $string;
-		}
-
-		if( ! empty( $cname ) ){
-			$context = $cname;
-		} else {
-			$context = 'default';
-		}
-
-		if( $prefix == 'default' ){
-			$front = 'EEB: ';
-		} elseif ( ! empty( $prefix ) ){
-			$front = $prefix;
-		} else {
-			$front = '';
-		}
-
-		// WPML String Translation Logic (WPML itself has problems with _x in some versions)
-		if( function_exists( 'icl_t' ) ){
-			return icl_t( (string) 'email-encoder-bundle', $context, $string );
-		} else {
-			return $front . _x( $string, $context, (string) 'email-encoder-bundle' );
-		}
-	}
-
-	/**
 	 * Checks if the parsed param is available on the current site
 	 *
 	 * @param $param
@@ -126,9 +82,9 @@ class Email_Encoder_Helpers {
 		}
 
 		if( is_array( $content ) ){
-			$validated_content = sprintf( $this->translate($content[0], 'create-admin-notice'), $content[1] );
+			$validated_content = sprintf( __( $content[0], 'email-encoder-bundle' ), $content[1] );
         } else {
-			$validated_content = $this->translate($content, 'create-admin-notice');
+			$validated_content = __( $content, 'email-encoder-bundle' );
         }
 
 		ob_start();

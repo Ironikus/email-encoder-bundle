@@ -98,7 +98,7 @@ $advanced_settings = (bool) EEB()->settings->get_setting( 'advanced_settings', t
             </fieldset>
 
             <p>
-                <?php submit_button( EEB()->helpers->translate( 'Save all', 'admin-settings' ) ); ?>
+                <?php submit_button( __( 'Save all', 'email-encoder-bundle' ) ); ?>
             </p>
         </div>
     </div>

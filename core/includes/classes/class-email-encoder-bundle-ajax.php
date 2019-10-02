@@ -90,7 +90,7 @@ class Email_Encoder_Ajax{
         $method = sanitize_text_field( $_POST['eebMethod'] );
         $display = wp_kses_post( $_POST['eebDisplay'] );
 		$custom_class = (string) EEB()->settings->get_setting( 'class_name', true );
-		$protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+		$protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
 
 		if( empty( $display ) ) {
 			$display = $email;

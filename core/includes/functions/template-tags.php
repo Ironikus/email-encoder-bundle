@@ -76,7 +76,7 @@ if (!function_exists('eeb_protect_content')):
     function eeb_protect_content( $content, $method = null, $protection_text = null ) {
 
         if( empty( $protection_text ) ){
-			$protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text-eeb-content-template-func' );
+			$protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
 		} else {
 			$protection_text = wp_kses_post( $protection_text  );
 		}

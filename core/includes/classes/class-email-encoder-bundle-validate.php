@@ -175,7 +175,7 @@ class Email_Encoder_Validate{
         }
 
         if ( $replace_by === null ) {
-            $replace_by = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+            $replace_by = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
         }
 
         $self = $this;
@@ -205,10 +205,10 @@ class Email_Encoder_Validate{
                 }
                 
             } elseif( $protection_method === 'use_javascript' ){
-                $protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+                $protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
                 $protected_return = $this->dynamic_js_email_encoding( $matches[0], $protection_text );
             } elseif( $protection_method === 'use_css' ){
-                $protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+                $protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
                 $protected_return = $this->encode_email_css( $matches[0], $protection_text );
             } else {
                 $protected_return = $replace_by;
@@ -216,7 +216,7 @@ class Email_Encoder_Validate{
 
             // mark link as successfullly encoded (for admin users)
             if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-                $protected_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+                $protected_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
             }
 
             return $protected_return;
@@ -438,7 +438,7 @@ class Email_Encoder_Validate{
             $sub_return = str_replace( $email, antispambot( $email ), $input );
 
             if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-                $sub_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+                $sub_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
             }
 
             return $sub_return;
@@ -451,7 +451,7 @@ class Email_Encoder_Validate{
 
         // mark link as successfullly encoded (for admin users)
         if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $inputWithDataAttr .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+            $inputWithDataAttr .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
         }
 
         // remove email from value attribute
@@ -535,7 +535,7 @@ class Email_Encoder_Validate{
 
         $link .= '>';
 
-        $link .= ( $activated_protection && preg_match( EEB()->settings->get_email_regex(), $display) > 0 ) ? $this->get_protected_display( $display, $protection_method ) : $display;
+        $link .= ( preg_match( EEB()->settings->get_email_regex(), $display) > 0 ) ? $this->get_protected_display( $display, $protection_method ) : $display;
 
         $link .= '</a>';
 
@@ -547,7 +547,7 @@ class Email_Encoder_Validate{
 
         // mark link as successfullly encoded (for admin users)
         if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $link .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+            $link .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
         }
 
 
@@ -566,7 +566,7 @@ class Email_Encoder_Validate{
     public function get_protected_display( $display, $protection_method = null ){
 
         $convert_plain_to_image = (bool) EEB()->settings->get_setting( 'convert_plain_to_image', true, 'filter_body' );
-        $protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text' );
+        $protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
 
         // get display out of array (result of preg callback)
         if ( is_array( $display ) ) {
@@ -752,9 +752,9 @@ class Email_Encoder_Validate{
         }
 
         $smethods = array(
-            'rot13' => EEB()->helpers->translate( 'Rot13 (Javascript)', 'eeb-encoder-form-methods' ),
-            'escape' => EEB()->helpers->translate( 'Escape (Javascript)', 'eeb-encoder-form-methods' ),
-            'encode' => EEB()->helpers->translate( 'Encode (HTML)', 'eeb-encoder-form-methods' ),
+            'rot13' => __( 'Rot13 (Javascript)', 'email-encoder-bundle' ),
+            'escape' => __( 'Escape (Javascript)', 'email-encoder-bundle' ),
+            'encode' => __( 'Encode (HTML)', 'email-encoder-bundle' ),
         );
         $method_options = '';
         $selected = false;
@@ -764,12 +764,12 @@ class Email_Encoder_Validate{
         }
 
         $labels = array(
-            'email' => EEB()->helpers->translate( 'Email Address:', 'eeb-encoder-form-labels' ),
-            'display' => EEB()->helpers->translate( 'Display Text:', 'eeb-encoder-form-labels' ),
-            'mailto' => EEB()->helpers->translate( 'Mailto Link:', 'eeb-encoder-form-labels' ),
-            'method' => EEB()->helpers->translate( 'Encoding Method:', 'eeb-encoder-form-labels' ),
-            'create_link' => EEB()->helpers->translate( 'Create Protected Mail Link &gt;&gt;', 'eeb-encoder-form-labels' ),
-            'output' => EEB()->helpers->translate( 'Protected Mail Link (code):', 'eeb-encoder-form-labels' ),
+            'email' => __( 'Email Address:', 'email-encoder-bundle' ),
+            'display' => __( 'Display Text:', 'email-encoder-bundle' ),
+            'mailto' => __( 'Mailto Link:', 'email-encoder-bundle' ),
+            'method' => __( 'Encoding Method:', 'email-encoder-bundle' ),
+            'create_link' => __( 'Create Protected Mail Link &gt;&gt;', 'email-encoder-bundle' ),
+            'output' => __( 'Protected Mail Link (code):', 'email-encoder-bundle' ),
             'powered_by' => $powered_by,
         );
 

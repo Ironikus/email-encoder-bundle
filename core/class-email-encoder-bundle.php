@@ -51,7 +51,7 @@ if ( ! class_exists( 'Email_Encoder' ) ) :
 		 * @return void
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'ironikus' ), '2.0.0' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'email-encoder-bundle' ), '2.0.0' );
 		}
 
 		/**
@@ -61,7 +61,7 @@ if ( ! class_exists( 'Email_Encoder' ) ) :
 		 * @return void
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'ironikus' ), '2.0.0' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'email-encoder-bundle' ), '2.0.0' );
 		}
 
 		/**

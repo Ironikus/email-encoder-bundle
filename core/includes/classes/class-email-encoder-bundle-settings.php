@@ -96,20 +96,20 @@ class Email_Encoder_Settings{
 				'id'          => 'protect',
 				'type'        => 'multi-input',
 				'input-type'  => 'radio',
-				'title'       => EEB()->helpers->translate( 'Protect emails', 'eeb-settings-protect' ),
+				'title'       => __( 'Protect emails', 'email-encoder-bundle' ),
 				'inputs' 	  => array( 
 					1 => array(
-						'label' => EEB()->helpers->translate( 'Full-page scan', 'eeb-settings-protect-label' ),
-						'description' => EEB()->helpers->translate('This will check the whole page against any mails and secures them.', 'eeb-settings-protect-tip')
+						'label' => __( 'Full-page scan', 'email-encoder-bundle' ),
+						'description' => __('This will check the whole page against any mails and secures them.', 'email-encoder-bundle' )
 					),
 					2 => array(
-						'label' => EEB()->helpers->translate( 'Wordpress filters', 'eeb-settings-protect-label' ),
-						'description' => EEB()->helpers->translate('Secure only mails that occur within WordPress filters. (Not recommended)', 'eeb-settings-protect-tip'),
+						'label' => __( 'Wordpress filters', 'email-encoder-bundle' ),
+						'description' => __('Secure only mails that occur within WordPress filters. (Not recommended)', 'email-encoder-bundle' ),
 						'advanced' 	  => true,
 					),
 					3 => array(
-						'label' => EEB()->helpers->translate( 'Don\'t do anything.', 'eeb-settings-protect-label' ),
-						'description' => EEB()->helpers->translate('This turns off the protection for emails. (Not recommended)', 'eeb-settings-protect-tip')
+						'label' => __( 'Don\'t do anything.', 'email-encoder-bundle' ),
+						'description' => __('This turns off the protection for emails. (Not recommended)', 'email-encoder-bundle')
 					),
 				 ),
 				'required'    => false
@@ -120,21 +120,21 @@ class Email_Encoder_Settings{
 				'id'          => 'protect_using',
 				'type'        => 'multi-input',
 				'input-type'  => 'radio',
-				'title'       => EEB()->helpers->translate( 'Protect emails using', 'eeb-settings-protect_using' ),
+				'title'       => __( 'Protect emails using', 'email-encoder-bundle' ),
 				'inputs' 	  => array( 
 					'with_javascript' => array(
-						'label' => EEB()->helpers->translate( 'automatically the best method (including javascript)', 'eeb-settings-protect_using-label' )
+						'label' => __( 'automatically the best method (including javascript)', 'email-encoder-bundle' )
 					),
 					'without_javascript' => array(
-						'label' => EEB()->helpers->translate( 'automatically the best method (excluding javascript)', 'eeb-settings-protect_using-label' ),
+						'label' => __( 'automatically the best method (excluding javascript)', 'email-encoder-bundle' ),
 					),
 					'strong_method' => array(
-						'label' => EEB()->helpers->translate( 'a strong method that replaces all emails with a "*protection text*".', 'eeb-settings-protect_using-label' ),
-						'description' => EEB()->helpers->translate('You can configure the protection text within the advanced settings.', 'eeb-settings-protect_using-tip')
+						'label' => __( 'a strong method that replaces all emails with a "*protection text*".', 'email-encoder-bundle' ),
+						'description' => __('You can configure the protection text within the advanced settings.', 'email-encoder-bundle')
 					),
 					'char_encode' => array(
-						'label' => EEB()->helpers->translate( 'simple HTML character encoding.', 'eeb-settings-protect_using-label' ),
-						'description' => EEB()->helpers->translate('Offers good (but not the best) protection, which saves you in most scenarios.', 'eeb-settings-protect_using-tip')
+						'label' => __( 'simple HTML character encoding.', 'email-encoder-bundle' ),
+						'description' => __('Offers good (but not the best) protection, which saves you in most scenarios.', 'email-encoder-bundle')
 					),
 				 ),
 				'required'    => false
@@ -146,48 +146,48 @@ class Email_Encoder_Settings{
 				'type'        => 'multi-input',
 				'input-type'  => 'checkbox',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate( 'Protect...', 'eeb-settings-filter_body' ),
-				'label'       => EEB()->helpers->translate( 'Customize what this plugin protects.', 'eeb-settings-filter_body-label' ),
+				'title'       => __( 'Protect...', 'email-encoder-bundle' ),
+				'label'       => __( 'Customize what this plugin protects.', 'email-encoder-bundle' ),
 				'inputs' 	  => array(
 					'filter_rss' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'RSS feed', 'eeb-settings-filter_rss-label' ),
-						'description' => EEB()->helpers->translate( 'Activating this option results in protecting the rss feed based on the given protection method.', 'eeb-settings-filter_rss-tip' )
+						'label' => __( 'RSS feed', 'email-encoder-bundle' ),
+						'description' => __( 'Activating this option results in protecting the rss feed based on the given protection method.', 'email-encoder-bundle' )
 					),
 					'remove_shortcodes_rss' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'Remove all shortcodes from the RSS feeds', 'eeb-settings-remove_shortcodes_rss-label' ),
-						'description' => EEB()->helpers->translate( 'Activating this option results in protecting the rss feed based on the given protection method.', 'eeb-settings-remove_shortcodes_rss-tip' )
+						'label' => __( 'Remove all shortcodes from the RSS feeds', 'email-encoder-bundle' ),
+						'description' => __( 'Activating this option results in protecting the rss feed based on the given protection method.', 'email-encoder-bundle' )
 					),
 					'input_strong_protection' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'input form email fields using strong protection.', 'eeb-settings-input_strong_protection-label' ),
-						'description' => EEB()->helpers->translate( 'Warning: this option could conflict with certain form plugins. Test it first. (Requires javascript)', 'eeb-settings-input_strong_protection-tip' )
+						'label' => __( 'input form email fields using strong protection.', 'email-encoder-bundle' ),
+						'description' => __( 'Warning: this option could conflict with certain form plugins. Test it first. (Requires javascript)', 'email-encoder-bundle' )
 					),
 					'encode_mailtos' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'plain emails by converting them to mailto links', 'eeb-settings-encode_mailtos-label' ),
-						'description' => EEB()->helpers->translate( 'Plain emails will be automatically converted to mailto links where possible.', 'eeb-settings-encode_mailtos-tip' )
+						'label' => __( 'plain emails by converting them to mailto links', 'email-encoder-bundle' ),
+						'description' => __( 'Plain emails will be automatically converted to mailto links where possible.', 'email-encoder-bundle' )
 					),
 					'convert_plain_to_image' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'plain emails by converting them to png images', 'eeb-settings-convert_plain_to_image-label' ),
-						'description' => EEB()->helpers->translate( 'Plain emails will be automatically converted to png images where possible.', 'eeb-settings-convert_plain_to_image-tip' )
+						'label' => __( 'plain emails by converting them to png images', 'email-encoder-bundle' ),
+						'description' => __( 'Plain emails will be automatically converted to png images where possible.', 'email-encoder-bundle' )
 					),
 					'protect_shortcode_tags' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'shortcode content', 'eeb-settings-protect_shortcode_tags-label' ),
-						'description' => EEB()->helpers->translate( 'Protect every shortcode content separately. (This may slows down your site)', 'eeb-settings-protect_shortcode_tags-tip' )
+						'label' => __( 'shortcode content', 'email-encoder-bundle' ),
+						'description' => __( 'Protect every shortcode content separately. (This may slows down your site)', 'email-encoder-bundle' )
 					),
 					'filter_hook' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'emails from "init" hook', 'eeb-settings-filter_hook-label' ),
-						'description' => EEB()->helpers->translate( 'Check this option if you want to register the email filters on the "init" hook instead of the "wp" hook.', 'eeb-settings-filter_hook-tip' )
+						'label' => __( 'emails from "init" hook', 'email-encoder-bundle' ),
+						'description' => __( 'Check this option if you want to register the email filters on the "init" hook instead of the "wp" hook.', 'email-encoder-bundle' )
 					),
 					'deactivate_rtl' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'mailto links without CSS direction', 'eeb-settings-filter_hook-label' ),
-						'description' => EEB()->helpers->translate( 'Check this option if your site does not support CSS directions.', 'eeb-settings-filter_hook-tip' )
+						'label' => __( 'mailto links without CSS direction', 'email-encoder-bundle' ),
+						'description' => __( 'Check this option if your site does not support CSS directions.', 'email-encoder-bundle' )
 					),
 				 ),
 				'required'    => false,
@@ -199,33 +199,33 @@ class Email_Encoder_Settings{
 				'type'        => 'multi-input',
 				'input-type'  => 'text',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate( 'Image settings', 'eeb-settings-filter_body' ),
-				'label'       => EEB()->helpers->translate( 'Customize the settings for dynamically created images.', 'eeb-settings-filter_body-label' ),
+				'title'       => __( 'Image settings', 'email-encoder-bundle' ),
+				'label'       => __( 'Customize the settings for dynamically created images.', 'email-encoder-bundle' ),
 				'inputs' 	  => array(
 					'image_color' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'Image Colors', 'eeb-settings-image_color-label' ),
-						'description' => EEB()->helpers->translate( 'Please include RGB colors, comme saparated. E.g.: 0,0,255', 'eeb-settings-image_color-tip' )
+						'label' => __( 'Image Colors', 'email-encoder-bundle' ),
+						'description' => __( 'Please include RGB colors, comme saparated. E.g.: 0,0,255', 'email-encoder-bundle' )
 					),
 					'image_background_color' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'Image Background Colors', 'eeb-settings-image_background_color-label' ),
-						'description' => EEB()->helpers->translate( 'Please include RGB colors, comme saparated. E.g.: 0,0,255', 'eeb-settings-image_background_color-tip' )
+						'label' => __( 'Image Background Colors', 'email-encoder-bundle' ),
+						'description' => __( 'Please include RGB colors, comme saparated. E.g.: 0,0,255', 'email-encoder-bundle' )
 					),
 					'image_text_opacity' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'Text Opacity', 'eeb-settings-image_text_opacity-label' ),
-						'description' => EEB()->helpers->translate( 'Change the text opacity for the created images. 0 = not transparent - 127 = completely transprent', 'eeb-settings-image_text_opacity-tip' )
+						'label' => __( 'Text Opacity', 'email-encoder-bundle' ),
+						'description' => __( 'Change the text opacity for the created images. 0 = not transparent - 127 = completely transprent', 'email-encoder-bundle' )
 					),
 					'image_background_opacity' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'Background Opacity', 'eeb-settings-image_background_opacity-label' ),
-						'description' => EEB()->helpers->translate( 'Change the background opacity for the created images. 0 = not transparent - 127 = completely transprent', 'eeb-settings-image_background_opacity-tip' )
+						'label' => __( 'Background Opacity', 'email-encoder-bundle' ),
+						'description' => __( 'Change the background opacity for the created images. 0 = not transparent - 127 = completely transprent', 'email-encoder-bundle' )
 					),
 					'image_font_size' => array(
 						'advanced' 	  => true,
-						'label' => EEB()->helpers->translate( 'Font Size', 'eeb-settings-image_font_size-label' ),
-						'description' => EEB()->helpers->translate( 'Change the font size of the image text. Default: 4 - You can choose from 1 - 5', 'eeb-settings-image_font_size-tip' )
+						'label' => __( 'Font Size', 'email-encoder-bundle' ),
+						'description' => __( 'Change the font size of the image text. Default: 4 - You can choose from 1 - 5', 'email-encoder-bundle' )
 					),
 				 ),
 				'required'    => false,
@@ -236,10 +236,10 @@ class Email_Encoder_Settings{
 				'id'          => 'skip_posts',
 				'type'        => 'text',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate('Exclude post id\'s from protection', 'eeb-settings-skip_posts'),
+				'title'       => __('Exclude post id\'s from protection', 'email-encoder-bundle'),
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('By comma separating post id\'s ( e.g. 123,4535,643), you are able to exclude these posts from the logic protection.', 'eeb-settings-skip_posts-tip')
+				'description' => __('By comma separating post id\'s ( e.g. 123,4535,643), you are able to exclude these posts from the logic protection.', 'email-encoder-bundle')
 			),
 
 			'protection_text' => array(
@@ -247,10 +247,10 @@ class Email_Encoder_Settings{
 				'id'          => 'protection_text',
 				'type'        => 'text',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate('Set protection text *', 'eeb-settings-class_name'),
+				'title'       => __('Set protection text *', 'email-encoder-bundle'),
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('This text will be shown for protected email addresses and within noscript tags.', 'eeb-settings-class_name-tip')
+				'description' => __('This text will be shown for protected email addresses and within noscript tags.', 'email-encoder-bundle')
 			),
 
 			'class_name' => array(
@@ -258,11 +258,11 @@ class Email_Encoder_Settings{
 				'id'          => 'class_name',
 				'type'        => 'text',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate('Additional classes', 'eeb-settings-class_name'),
-				'label'       => EEB()->helpers->translate('Add extra classes to mailto links.', 'eeb-settings-class_name-label'),
+				'title'       => __('Additional classes', 'email-encoder-bundle'),
+				'label'       => __('Add extra classes to mailto links.', 'email-encoder-bundle'),
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('Leave blank for none', 'eeb-settings-class_name-tip')
+				'description' => __('Leave blank for none', 'email-encoder-bundle')
 			),
 
 			'footer_scripts' => array(
@@ -270,11 +270,11 @@ class Email_Encoder_Settings{
 				'id'          => 'footer_scripts',
 				'type'        => 'checkbox',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate('Load scripts in footer', 'eeb-settings-footer_scripts'),
-				'label'       => EEB()->helpers->translate('Check this button if you want to load all frontend scripts within the footer.', 'eeb-settings-footer_scripts-label'),
+				'title'       => __('Load scripts in footer', 'email-encoder-bundle'),
+				'label'       => __('Check this button if you want to load all frontend scripts within the footer.', 'email-encoder-bundle'),
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('This forces every script to be enqueued within the footer.', 'eeb-settings-footer_scripts-tip')
+				'description' => __('This forces every script to be enqueued within the footer.', 'email-encoder-bundle')
 			),
 
 			'disable_marketing' => array(
@@ -282,22 +282,22 @@ class Email_Encoder_Settings{
 				'id'          => 'disable_marketing',
 				'type'        => 'checkbox',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate('Disable Marketing', 'eeb-settings-disable_marketing'),
-				'label'       => EEB()->helpers->translate('Disable all marketing notifications', 'eeb-settings-disable_marketing-label'),
+				'title'       => __('Disable Marketing', 'email-encoder-bundle'),
+				'label'       => __('Disable all marketing notifications', 'email-encoder-bundle'),
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('If you are not satisfied with our marketing recommendations, check this box.', 'eeb-settings-disable_marketing-tip')
+				'description' => __('If you are not satisfied with our marketing recommendations, check this box.', 'email-encoder-bundle')
 			),
 
 			'show_encoded_check' => array(
 				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
 				'id'          => 'show_encoded_check',
 				'type'        => 'checkbox',
-				'title'       => EEB()->helpers->translate('Security Check', 'eeb-settings-show_encoded_check'),
-				'label'       => EEB()->helpers->translate('Mark emails on the site as successfully encoded', 'eeb-settings-show_encoded_check-label') . '<i class="dashicons-before dashicons-lock" style="color:green;"></i>',
+				'title'       => __('Security Check', 'email-encoder-bundle'),
+				'label'       => __('Mark emails on the site as successfully encoded', 'email-encoder-bundle') . '<i class="dashicons-before dashicons-lock" style="color:green;"></i>',
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('Only visible for admin users. If your emails look broken, simply deactivate this feature.', 'eeb-settings-show_encoded_check-tip')
+				'description' => __('Only visible for admin users. If your emails look broken, simply deactivate this feature.', 'email-encoder-bundle')
 			),
 
 			'own_admin_menu' => array(
@@ -305,11 +305,11 @@ class Email_Encoder_Settings{
 				'id'          => 'own_admin_menu',
 				'type'        => 'checkbox',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate('Admin Menu', 'eeb-settings-own_admin_menu'),
-				'label'       => EEB()->helpers->translate('Show this page in the main menu item', 'eeb-settings-own_admin_menu-label'),
+				'title'       => __('Admin Menu', 'email-encoder-bundle'),
+				'label'       => __('Show this page in the main menu item', 'email-encoder-bundle'),
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('Otherwise it will be shown in "Settings"-menu.', 'eeb-settings-own_admin_menu-tip')
+				'description' => __('Otherwise it will be shown in "Settings"-menu.', 'email-encoder-bundle')
 			),
 
 			'encoder_form' => array(
@@ -318,14 +318,14 @@ class Email_Encoder_Settings{
 				'type'        => 'multi-input',
 				'input-type'  => 'checkbox',
 				'advanced' 	  => true,
-				'title'       => EEB()->helpers->translate( 'Encoder form settings', 'eeb-settings-encoder_form' ),
+				'title'       => __( 'Encoder form settings', 'email-encoder-bundle' ),
 				'inputs' 	  => array( 
 					'display_encoder_form' => array(
-						'label' => EEB()->helpers->translate( 'Activate the encoder form.', 'eeb-settings-display_encoder_form-label' ),
-						'description' => EEB()->helpers->translate( 'This allows you to use the email encoder form, as well as the shortcode and template tag.', 'eeb-settings-display_encoder_form-tip' )
+						'label' => __( 'Activate the encoder form.', 'email-encoder-bundle' ),
+						'description' => __( 'This allows you to use the email encoder form, as well as the shortcode and template tag.', 'email-encoder-bundle' )
 					),
 					'powered_by' => array(
-						'label' => EEB()->helpers->translate( 'Show a "powered by" link on bottom of the encoder form', 'eeb-settings-powered_by-label' ),
+						'label' => __( 'Show a "powered by" link on bottom of the encoder form', 'email-encoder-bundle' ),
 					),
 				 ),
 				'required'    => false
@@ -335,11 +335,11 @@ class Email_Encoder_Settings{
 				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
 				'id'          => 'advanced_settings',
 				'type'        => 'checkbox',
-				'title'       => EEB()->helpers->translate('Advanced Settings', 'eeb-settings-advanced_settings'),
-				'label'       => EEB()->helpers->translate('Show advanced settings for more configuration possibilities.', 'eeb-settings-advanced_settings-label'),
+				'title'       => __('Advanced Settings', 'email-encoder-bundle'),
+				'label'       => __('Show advanced settings for more configuration possibilities.', 'email-encoder-bundle'),
 				'placeholder' => '',
 				'required'    => false,
-				'description' => EEB()->helpers->translate('Activate the advanced settings in case you want to customize the default logic or you want to troubleshoot the plugin.', 'eeb-settings-advanced_settings-tip')
+				'description' => __('Activate the advanced settings in case you want to customize the default logic or you want to troubleshoot the plugin.', 'email-encoder-bundle')
 			),
 
 		);

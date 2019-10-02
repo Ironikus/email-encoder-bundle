@@ -73,11 +73,11 @@ class Email_Encoder_Run{
 	 * @return array An array of plugin action links.
 	 */
 	public function plugin_action_links( $links ) {
-		$settings_link = sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=' . $this->page_name ), EEB()->helpers->translate('Settings', 'plugin-page') );
+		$settings_link = sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=' . $this->page_name ), __( 'Settings', 'email-encoder-bundle' ) );
 
 		array_unshift( $links, $settings_link );
 
-		$links['visit_us'] = sprintf( '<a href="%s" target="_blank" style="font-weight:700;color:#f1592a;">%s</a>', 'https://ironikus.com/?utm_source=email-encoder-bundle&utm_medium=plugin-overview-website-button&utm_campaign=WP%20Mailto%20Links', EEB()->helpers->translate('Visit us', 'plugin-page') );
+		$links['visit_us'] = sprintf( '<a href="%s" target="_blank" style="font-weight:700;color:#f1592a;">%s</a>', 'https://ironikus.com/?utm_source=email-encoder-bundle&utm_medium=plugin-overview-website-button&utm_campaign=WP%20Mailto%20Links', __('Visit us', 'email-encoder-bundle') );
 
 		return $links;
 	}
@@ -120,9 +120,9 @@ class Email_Encoder_Run{
 	public function add_user_submenu(){
 
 		if( (string) EEB()->settings->get_setting( 'own_admin_menu', true ) !== '1' ){
-			$this->pagehook = add_submenu_page( 'options-general.php', EEB()->helpers->translate( $this->page_title, 'admin-add-submenu-page-title' ), EEB()->helpers->translate( $this->page_title, 'admin-add-submenu-page-site-title' ), EEB()->settings->get_admin_cap( 'admin-add-submenu-page-item' ), $this->page_name, array( $this, 'render_admin_menu_page' ) );
+			$this->pagehook = add_submenu_page( 'options-general.php', __( $this->page_title, 'email-encoder-bundle' ), __( $this->page_title, 'email-encoder-bundle' ), EEB()->settings->get_admin_cap( 'admin-add-submenu-page-item' ), $this->page_name, array( $this, 'render_admin_menu_page' ) );
 		} else {
-			$this->pagehook = add_menu_page( EEB()->helpers->translate( $this->page_title, 'admin-add-menu-page-title' ), EEB()->helpers->translate( $this->page_title, 'admin-add-menu-page-site-title' ), EEB()->settings->get_admin_cap( 'admin-add-menu-page-item' ), $this->page_name, array( $this, 'render_admin_menu_page' ), plugins_url( 'core/includes/assets/img/icon-email-encoder-bundle.png', EEB_PLUGIN_FILE ) );
+			$this->pagehook = add_menu_page( __( $this->page_title, 'email-encoder-bundle' ), __( $this->page_title, 'email-encoder-bundle' ), EEB()->settings->get_admin_cap( 'admin-add-menu-page-item' ), $this->page_name, array( $this, 'render_admin_menu_page' ), plugins_url( 'core/includes/assets/img/icon-email-encoder-bundle.png', EEB_PLUGIN_FILE ) );
 		}
 		
 		add_action( 'load-' . $this->pagehook, array( $this, 'add_help_tabs' ) );
@@ -135,7 +135,7 @@ class Email_Encoder_Run{
 	 */
 	public function render_admin_menu_page(){
 		if( ! current_user_can( EEB()->settings->get_admin_cap('admin-menu-page') ) ){
-			wp_die( EEB()->helpers->translate( EEB()->settings->get_default_string( 'insufficient-permissions' ), 'admin-submenu-page-insufficient-permissions' ) );
+			wp_die( __( EEB()->settings->get_default_string( 'insufficient-permissions' ), 'email-encoder-bundle' ) );
 		}
 
 		include( EEB_PLUGIN_DIR . 'core/includes/partials/eeb-page-display.php' );
@@ -154,11 +154,11 @@ class Email_Encoder_Run{
 		
 		if( isset( $_POST[ $this->page_name . '_nonce' ] ) ){
 			if( ! wp_verify_nonce( $_POST[ $this->page_name . '_nonce' ], $this->page_name ) ){
-				wp_die( EEB()->helpers->translate( 'You don\'t have permission to update these settings.', 'admin-settings' ) );
+				wp_die( __( 'You don\'t have permission to update these settings.', 'email-encoder-bundle' ) );
 			}
 
 			if( ! current_user_can( EEB()->settings->get_admin_cap( 'admin-update-settings' ) ) ){
-				wp_die( EEB()->helpers->translate( 'You don\'t have permission to update these settings.', 'admin-settings' ) );
+				wp_die( __( 'You don\'t have permission to update these settings.', 'email-encoder-bundle' ) );
 			}
 
 			if( isset( $_POST[ $this->settings_key ] ) && is_array( $_POST[ $this->settings_key ] ) ){
@@ -210,7 +210,7 @@ class Email_Encoder_Run{
 		
 		//Add widgets
 		if( $display_encoder_form ){
-			add_meta_box( 'encode_form', EEB()->helpers->translate( $this->page_title, 'admin-add-encoder-widget' ), array( $this, 'show_meta_box_content' ), null, 'normal', 'core', array( 'encode_form' ) );
+			add_meta_box( 'encode_form', __( $this->page_title, 'email-encoder-bundle' ), array( $this, 'show_meta_box_content' ), null, 'normal', 'core', array( 'encode_form' ) );
 		}
 		
 	}

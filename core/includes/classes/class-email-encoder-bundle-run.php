@@ -399,7 +399,7 @@ class Email_Encoder_Run{
 		$show_encoded_check = (string) EEB()->settings->get_setting( 'show_encoded_check', true );
 
 		if( ! isset( $atts['protection_text'] ) ){
-			$protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text-eeb-content' );
+			$protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text-eeb-content' );
 		} else {
 			$protection_text = wp_kses_post( $atts['protection_text'] );
 		}
@@ -428,7 +428,7 @@ class Email_Encoder_Run{
 
 		 // mark link as successfullly encoded (for admin users)
 		 if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $content .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+            $content .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
         }
 
 		return apply_filters( 'eeb/frontend/shortcode/eeb_protect_content', $content, $atts );
@@ -442,7 +442,7 @@ class Email_Encoder_Run{
     public function shortcode_eeb_email( $atts = array(), $content = null ){
 
 		$show_encoded_check = (bool) EEB()->settings->get_setting( 'show_encoded_check', true );
-		$protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text-eeb-content' );
+		$protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
 
 		if( empty( $atts['email'] ) ){
 			return '';
@@ -498,7 +498,7 @@ class Email_Encoder_Run{
 
 		// mark link as successfullly encoded (for admin users)
 		if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $mailto .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . EEB()->helpers->translate( 'Email encoded successfully!', 'frontend-security-check-title' ) . '"></i>';
+            $mailto .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
         }
 
 		return apply_filters( 'eeb/frontend/shortcode/eeb_mailto', $mailto );
@@ -528,13 +528,13 @@ class Email_Encoder_Run{
 		$secret = EEB()->settings->get_email_image_secret();
 
 		if( EEB()->validate->generate_email_signature( $email, $secret ) !== $hash ){
-			wp_die( EEB()->helpers->translate('Your signture is invalid.', 'plugin-frontend') );
+			wp_die( __('Your signture is invalid.', 'email-encoder-bundle') );
 		}
 
 		$image = EEB()->validate->email_to_image( $email );
 
 		if( empty( $image ) ){
-			wp_die( EEB()->helpers->translate('Your email could not be converted.', 'plugin-frontend') );
+			wp_die( __('Your email could not be converted.', 'email-encoder-bundle') );
 		}
 
 		header('Content-type: image/png');
