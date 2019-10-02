@@ -492,7 +492,6 @@ class Email_Encoder_Validate{
         $email     = '';
         $class_ori = ( empty( $attrs['class'] ) ) ? '' : $attrs['class'];
         $custom_class = (string) EEB()->settings->get_setting( 'class_name', true );
-        $activated_protection = ( in_array( (int) EEB()->settings->get_setting( 'protect', true ), array( 1, 2 ) ) ) ? true : false;
         $show_encoded_check = (string) EEB()->settings->get_setting( 'show_encoded_check', true );
 
         // set user-defined class
@@ -512,7 +511,7 @@ class Email_Encoder_Validate{
         $link = '<a ';
 
         foreach ( $attrs AS $key => $value ) {
-            if ( strtolower( $key ) == 'href' && $activated_protection ) {
+            if ( strtolower( $key ) == 'href' ) {
                 if( $protection_method === 'without_javascript' ){
                     $link .= $key . '="' . antispambot( $value ) . '" ';
                 } else {

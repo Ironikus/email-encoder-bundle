@@ -109,7 +109,9 @@ class Email_Encoder_Run{
 	  * @return void
 	  */
 	public function buffer_final_output(){
-        ob_start( array( $this, 'apply_content_filter' ) );
+        if ( ! defined( 'WP_CLI' ) ) {
+			ob_start( array( $this, 'apply_content_filter' ) );
+		}
     }
 
 	 /**
@@ -193,25 +195,25 @@ class Email_Encoder_Run{
 
 	public function load_frontend_header_styling(){
 
-		$js_version_form  = date( "ymd-Gis", filemtime( EEB_PLUGIN_DIR . 'core/includes/assets/js/encoder-form.js' ));
 		$js_version  = date( "ymd-Gis", filemtime( EEB_PLUGIN_DIR . 'core/includes/assets/js/custom.js' ));
 		$css_version = date( "ymd-Gis", filemtime( EEB_PLUGIN_DIR . 'core/includes/assets/css/style.css' ));
 		$protection_activated = (int) EEB()->settings->get_setting( 'protect', true );
 		$without_javascript = (string) EEB()->settings->get_setting( 'protect_using', true );
+		$footer_scripts = (bool) EEB()->settings->get_setting( 'footer_scripts', true );
 		 
 		if( $protection_activated === 2 || $protection_activated === 1 ){
 
-			if( (string) EEB()->settings->get_setting( 'show_encoded_check', true ) === '1' ){
-				wp_enqueue_style('dashicons');
-			}
-
 			if( $without_javascript !== 'without_javascript' ){
-				wp_enqueue_script( 'eeb-js-frontend', EEB_PLUGIN_URL . 'core/includes/assets/js/custom.js', array( 'jquery' ), $js_version );
+				wp_enqueue_script( 'eeb-js-frontend', EEB_PLUGIN_URL . 'core/includes/assets/js/custom.js', array( 'jquery' ), $js_version, $footer_scripts );
 			}
 			
 			wp_register_style( 'eeb-css-frontend',    EEB_PLUGIN_URL . 'core/includes/assets/css/style.css', false,   $css_version );
 			wp_enqueue_style ( 'eeb-css-frontend' );
 		
+		}
+
+		if( (string) EEB()->settings->get_setting( 'show_encoded_check', true ) === '1' ){
+			wp_enqueue_style('dashicons');
 		}
 
 	}
@@ -439,7 +441,8 @@ class Email_Encoder_Run{
      */
     public function shortcode_eeb_email( $atts = array(), $content = null ){
 
-		$show_encoded_check = (string) EEB()->settings->get_setting( 'show_encoded_check', true );
+		$show_encoded_check = (bool) EEB()->settings->get_setting( 'show_encoded_check', true );
+		$protection_text = EEB()->helpers->translate( EEB()->settings->get_setting( 'protection_text', true ), 'email-protection-text-eeb-content' );
 
 		if( empty( $atts['email'] ) ){
 			return '';
@@ -467,6 +470,12 @@ class Email_Encoder_Run{
 			$display = html_entity_decode( $atts['display'] );
 		}
 		
+		if( empty( $atts['noscript'] ) ) {
+			$noscript = $protection_text;
+		} else {
+			$noscript = html_entity_decode( $atts['noscript'] );
+		}
+		
 		$class_name = ' ' . trim( $extra_attrs );
 		$class_name .= ' class="' . esc_attr( $custom_class ) . '"';
 		$mailto = '<a href="mailto:' . $email . '"'. $class_name . '>' . $display . '</a>';
@@ -474,11 +483,11 @@ class Email_Encoder_Run{
 		switch( $method ){
 			case 'enc_ascii':
 			case 'rot13':
-				$mailto = EEB()->validate->encode_ascii( $mailto, $display );
+				$mailto = EEB()->validate->encode_ascii( $mailto, $noscript );
 				break;
 			case 'enc_escape':
 			case 'escape':
-				$mailto = EEB()->validate->encode_escape( $mailto, $display );
+				$mailto = EEB()->validate->encode_escape( $mailto, $noscript );
 				break;
 			case 'enc_html':
 			case 'encode':

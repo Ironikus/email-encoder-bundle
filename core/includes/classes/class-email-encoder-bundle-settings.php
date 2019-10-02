@@ -265,6 +265,18 @@ class Email_Encoder_Settings{
 				'description' => EEB()->helpers->translate('Leave blank for none', 'eeb-settings-class_name-tip')
 			),
 
+			'footer_scripts' => array(
+				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
+				'id'          => 'footer_scripts',
+				'type'        => 'checkbox',
+				'advanced' 	  => true,
+				'title'       => EEB()->helpers->translate('Load scripts in footer', 'eeb-settings-footer_scripts'),
+				'label'       => EEB()->helpers->translate('Check this button if you want to load all frontend scripts within the footer.', 'eeb-settings-footer_scripts-label'),
+				'placeholder' => '',
+				'required'    => false,
+				'description' => EEB()->helpers->translate('This forces every script to be enqueued within the footer.', 'eeb-settings-footer_scripts-tip')
+			),
+
 			'disable_marketing' => array(
 				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
 				'id'          => 'disable_marketing',
