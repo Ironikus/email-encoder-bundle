@@ -23,8 +23,9 @@ class EEB_Integrations_Loader{
 
         $plugins = array(
             'maintenance' => 'maintenance.php',
+            'divi_theme' => 'divi_theme.php',
         );
-
+        
         if( $disable_marketing ){
             $marketing = array();
         }
