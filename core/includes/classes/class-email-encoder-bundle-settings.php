@@ -67,6 +67,8 @@ class Email_Encoder_Settings{
 		$this->email_regex 			= '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
 		$this->soft_attribute_regex = array(
 			'woocommerce_variation_attribute_tag' => '/data-product_variations="([^"]*)"/i',
+			'jetpack_carousel_image_attribute_tag' => '/data-image-meta="([^"]*)"/i',
+			'html_placeholder_tag' => '/placeholder="([^"]*)"/i',
 		);
 
 		//Load data
