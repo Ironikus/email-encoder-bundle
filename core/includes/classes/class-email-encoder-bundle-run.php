@@ -201,16 +201,12 @@ class Email_Encoder_Run{
 		$without_javascript = (string) EEB()->settings->get_setting( 'protect_using', true );
 		$footer_scripts = (bool) EEB()->settings->get_setting( 'footer_scripts', true );
 		 
-		if( $protection_activated === 2 || $protection_activated === 1 ){
-
-			if( $without_javascript !== 'without_javascript' ){
-				wp_enqueue_script( 'eeb-js-frontend', EEB_PLUGIN_URL . 'core/includes/assets/js/custom.js', array( 'jquery' ), $js_version, $footer_scripts );
-			}
-			
-			wp_register_style( 'eeb-css-frontend',    EEB_PLUGIN_URL . 'core/includes/assets/css/style.css', false,   $css_version );
-			wp_enqueue_style ( 'eeb-css-frontend' );
-		
+		if( $without_javascript !== 'without_javascript' ){
+			wp_enqueue_script( 'eeb-js-frontend', EEB_PLUGIN_URL . 'core/includes/assets/js/custom.js', array( 'jquery' ), $js_version, $footer_scripts );
 		}
+		
+		wp_register_style( 'eeb-css-frontend',    EEB_PLUGIN_URL . 'core/includes/assets/css/style.css', false,   $css_version );
+		wp_enqueue_style ( 'eeb-css-frontend' );
 
 		if( (string) EEB()->settings->get_setting( 'show_encoded_check', true ) === '1' ){
 			wp_enqueue_style('dashicons');
