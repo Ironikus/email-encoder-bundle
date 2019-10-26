@@ -1,10 +1,10 @@
 === Email Encoder - Protect Email Addresses ===
 Contributors: ironikus
-Tags: email address, protect, antispam, mailto, spambot, secure, e-mail, email, mail, obfuscate, encode, encoder, encrypt, hide, bot, crawl, spider, robots, spam, protection, harvest, harvesting, security
+Tags: anti spam, protect, encode, encrypt, hide, antispam, mailto, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
 Tested up to: 5.2.3
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,12 @@ Also protext phone numbers or any other text using our integrated `[eeb_protect_
 * Protect phone numbers (or any text or html)
 * Also supports special chars, like é, â, ö, Chinese characters etcetera
 * Use the Encoder Form to manually create encoded scripts
+
+= Compatibilities =
+* The plugin works with mostly any theme and plugin. Some special ones needed special treatment. Doen below you can learn more about that.
+* Compatible with the Maintenance plugin from WP Maintenance
+* Divi Theme is fully integrated as well
+* Jetpack Image carousel is compatible as well
 
 = Free Website Check  =
 We offer you a free tool to test if your website contains unprotected emails. You can use our website checker by [clicking here](https://ironikus.com/email-checker/)
@@ -114,6 +120,14 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.3 =
+* Feature: Integration for Divi Theme included
+* Tweak: Optimize Jetpack integration to also filter against image attribute description tags
+* Tweak: Soft-filter html placeholder tags
+* Tweak: Allow template tags to work as well with the plugin settings set to "Do nothing"
+* Fix: Only one match of the soft attributes was soft encoded properly
+* Fix: The escape js function stripped away all zeros from emails
 
 = 2.0.2 =
 * Feature: New settings item to include custom scripts within the footer and not in the header
