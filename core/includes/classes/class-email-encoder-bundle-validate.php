@@ -36,6 +36,7 @@ class Email_Encoder_Validate{
 		$this->page_name    			= EEB()->settings->get_page_name();
 		$this->page_title   			= EEB()->settings->get_page_title();
         $this->final_outout_buffer_hook = EEB()->settings->get_final_outout_buffer_hook();
+        $this->at_identifier            = EEB()->settings->get_at_identifier();
 	}
 
 	/**
@@ -83,6 +84,10 @@ class Email_Encoder_Validate{
         $filtered_body = $this->filter_content( $filtered_body, $protect_using );
 
         $filtered_content = $filtered_head . $htmlSplit[1] . $filtered_body;
+
+        //Revalidate filtered emails that should not bbe encoded
+        $filtered_content = $this->temp_encode_at_symbol( $filtered_content, true );
+
         return $filtered_content;
     }
 
@@ -156,6 +161,9 @@ class Email_Encoder_Validate{
 
                 break;
         }
+
+        //Revalidate filtered emails that should not bbe encoded
+        $filtered = $this->temp_encode_at_symbol( $filtered, true );
 
         return $filtered;
     }
@@ -318,14 +326,22 @@ class Email_Encoder_Validate{
      */
     public function filter_soft_dom_attributes( $content, $protection_method ){
 
+        $no_script_tags = (bool) EEB()->settings->get_setting( 'no_script_tags', true, 'filter_body' );
+
         if( class_exists( 'DOMDocument' ) ){
             $dom = new DOMDocument();
             @$dom->loadHTML($content);
     
             //Soft-encode scripts
             $script = $dom->getElementsByTagName('script');
-            foreach($script as $item){
-                $content = str_replace( $item->nodeValue, $this->filter_plain_emails( $item->nodeValue, null, $protection_method, false ), $content );
+            if( ! $no_script_tags ){
+                foreach($script as $item){
+                    $content = str_replace( $item->nodeValue, $this->filter_plain_emails( $item->nodeValue, null, $protection_method, false ), $content );
+                }
+            } else {
+                foreach($script as $item){
+                    $content = str_replace( $item->nodeValue, $this->temp_encode_at_symbol( $item->nodeValue ), $content );
+                }
             }
         }
         
@@ -339,6 +355,14 @@ class Email_Encoder_Validate{
 	 * ###
 	 * ######################
 	 */
+
+    public function temp_encode_at_symbol( $content, $decode = false ){
+        if( $decode ){
+           return str_replace( $this->at_identifier, '@', $content );
+        }
+
+       return str_replace( '@', $this->at_identifier, $content );
+    }
 
       /**
      * ASCII method

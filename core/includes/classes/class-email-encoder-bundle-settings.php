@@ -45,6 +45,7 @@ class Email_Encoder_Settings{
 		$this->settings_key        		= 'WP_Email_Encoder_Bundle_options';
 		$this->version_key        		= 'email-encoder-bundle-version';
 		$this->image_secret_key     	= 'email-encoder-bundle-img-key';
+		$this->at_identifier     		= '##eebAddIdent##';
 		$this->previous_version        	= null;
 		$this->hook_priorities        	= array(
 			'buffer_final_output' => 1000,
@@ -190,6 +191,11 @@ class Email_Encoder_Settings{
 						'advanced' 	  => true,
 						'label' => __( 'mailto links without CSS direction', 'email-encoder-bundle' ),
 						'description' => __( 'Check this option if your site does not support CSS directions.', 'email-encoder-bundle' )
+					),
+					'no_script_tags' => array(
+						'advanced' 	  => true,
+						'label' => __( 'no script tags', 'email-encoder-bundle' ),
+						'description' => __( 'Check this option if you face issues with encoded script tags. This will deactivate protection for script tags.', 'email-encoder-bundle' )
 					),
 				 ),
 				'required'    => false,
@@ -639,6 +645,15 @@ class Email_Encoder_Settings{
 	 */
 	public function get_final_outout_buffer_hook(){
 		return apply_filters( 'eeb/settings/final_outout_buffer_hook', $this->final_outout_buffer_hook );
+	}
+
+	/**
+	 * Return the @ symbol identifier
+	 *
+	 * @return string - the @ symbol identifier
+	 */
+	public function get_at_identifier(){
+		return apply_filters( 'eeb/settings/at_identifier', $this->at_identifier );
 	}
 
 	/**
