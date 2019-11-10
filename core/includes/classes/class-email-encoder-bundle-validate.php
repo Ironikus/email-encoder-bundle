@@ -404,6 +404,9 @@ class Email_Encoder_Validate{
         $element_id = 'eeb-' . mt_rand( 0, 1000000 ) . '-' . mt_rand( 0, 1000000 );
         $string = '\'' . $value . '\'';
 
+        //Validate escape sequences
+        $string = preg_replace('/\s+/S', " ", $string);
+
         // break string into array of characters, we can't use string_split because its php5 only
         $split = preg_split( '||', $string );
         $out = '<span id="'. $element_id . '"></span>'
