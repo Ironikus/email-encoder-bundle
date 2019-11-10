@@ -54,7 +54,7 @@ if (!function_exists('eeb_mailto')):
 				break;
 		}
 
-		echo apply_filters( 'eeb/frontend/template_func/eeb_mailto', $mailto );
+		return apply_filters( 'eeb/frontend/template_func/eeb_mailto', $mailto );
 
     }
 endif;
