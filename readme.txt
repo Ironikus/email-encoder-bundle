@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, mailto, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.2.3
-Stable tag: 2.0.3
+Tested up to: 5.3
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,11 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.4 =
+* Feature: Exclude script tags from being encoded
+* Fix: Revalidate and strip escape sequences for encode_escape function
+* Fix: Return shortcode content of eeb_mailto instead of outputting it
 
 = 2.0.3 =
 * Feature: Integration for Divi Theme included
