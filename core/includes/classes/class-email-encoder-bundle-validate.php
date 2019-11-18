@@ -327,10 +327,34 @@ class Email_Encoder_Validate{
     public function filter_soft_dom_attributes( $content, $protection_method ){
 
         $no_script_tags = (bool) EEB()->settings->get_setting( 'no_script_tags', true, 'filter_body' );
+        $no_attribute_validation = (bool) EEB()->settings->get_setting( 'no_attribute_validation', true, 'filter_body' );
 
         if( class_exists( 'DOMDocument' ) ){
             $dom = new DOMDocument();
             @$dom->loadHTML($content);
+
+            //Filter html attributes
+            if( ! $no_attribute_validation ){
+                $allNodes = $dom->getElementsByTagName('*');
+                foreach( $allNodes as $snote ){
+                    if( $snote->hasAttributes() ) {
+                        foreach( $snote->attributes as $attr ) {
+                            if( $attr->nodeName == 'href' || $attr->nodeName == 'src' ){
+                                continue;
+                            }
+    
+                            if( strpos( $attr->nodeValue, '@' ) !== FALSE ){
+                                $single_tags = array();
+                                preg_match_all( '/' . $attr->nodeName . '="([^"]*)"/i', $content, $single_tags );
+    
+                                foreach( $single_tags as $single ){
+                                    $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
     
             //Soft-encode scripts
             $script = $dom->getElementsByTagName('script');

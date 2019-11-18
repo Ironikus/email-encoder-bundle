@@ -197,6 +197,11 @@ class Email_Encoder_Settings{
 						'label' => __( 'no script tags', 'email-encoder-bundle' ),
 						'description' => __( 'Check this option if you face issues with encoded script tags. This will deactivate protection for script tags.', 'email-encoder-bundle' )
 					),
+					'no_attribute_validation' => array(
+						'advanced' 	  => true,
+						'label' => __( 'html attributes without soft encoding.', 'email-encoder-bundle' ),
+						'description' => __( 'Do not soft-filter all html attributes. This might optimizes the performance, but can break the site if otherplugins use your email in attribute tags.', 'email-encoder-bundle' )
+					),
 				 ),
 				'required'    => false,
 			),
