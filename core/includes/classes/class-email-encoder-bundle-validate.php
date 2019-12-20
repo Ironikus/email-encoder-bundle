@@ -645,7 +645,8 @@ class Email_Encoder_Validate{
      */
     public function dynamic_js_email_encoding( $email, $protection_text = null ){
         $return = $email;
-        $rand = rand(0,2);
+        $rand = apply_filters( 'eeb/validate/random_encoding', rand(0,2), $email, $protection_text );
+
         switch( $rand ){
             case 2:
                 $return = $this->encode_escape( $return, $protection_text );
