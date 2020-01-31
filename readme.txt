@@ -129,6 +129,7 @@ Yes, since version 1.3.0 also special characters are supported.
 = 2.0.6 =
 * Feature: Fully integrated with Foggy Email to protect your real email address: https://foggy.email/
 * Feature: We fully removed all external marketing advertisements! Enjoy our plugin without distrations! :)
+* Feature: Full support for Oxygen builder
 * Tweak: Optimize PHPDocs and comments
 * Tweak: Optimize is_post_excluded functionality
 * Dev: New filter: eeb/validate/filter_page_content - https://ironikus.com/docs/knowledge-base/filter-to-manipulate-raw-page-content/
