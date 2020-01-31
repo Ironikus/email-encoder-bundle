@@ -290,18 +290,6 @@ class Email_Encoder_Settings{
 				'description' => __('This forces every script to be enqueued within the footer.', 'email-encoder-bundle')
 			),
 
-			'disable_marketing' => array(
-				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
-				'id'          => 'disable_marketing',
-				'type'        => 'checkbox',
-				'advanced' 	  => true,
-				'title'       => __('Disable Marketing', 'email-encoder-bundle'),
-				'label'       => __('Disable all marketing notifications', 'email-encoder-bundle'),
-				'placeholder' => '',
-				'required'    => false,
-				'description' => __('If you are not satisfied with our marketing recommendations, check this box.', 'email-encoder-bundle')
-			),
-
 			'show_encoded_check' => array(
 				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
 				'id'          => 'show_encoded_check',
@@ -357,7 +345,7 @@ class Email_Encoder_Settings{
 
 		);
 
-		//End Migrate Old Plugin
+		$fields = apply_filters( 'eeb/settings/pre_filter_fields', $fields );
 
 		$default_values = array(
 			'protect' 				=> 1,

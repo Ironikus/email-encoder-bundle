@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, mailto, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.3
-Stable tag: 2.0.5
+Tested up to: 5.3.2
+Stable tag: 2.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,11 @@ Also protext phone numbers or any other text using our integrated `[eeb_protect_
 * Protect phone numbers (or any text or html)
 * Also supports special chars, like é, â, ö, Chinese characters etcetera
 * Use the Encoder Form to manually create encoded scripts
+
+= Foggy Email Integration =
+This plugin is fully integrated with [foggy.email](https://foggy.email/) to protect your emails on the next level. 
+Foggy Email allows you to create protected emails to hide your real email address. In combination with Email Encoder, it will create for each email on your website a protected email address to hide your real one. 
+Example: me@myemail.com will be converted to hgulo@foggy.email - Your website visitor will see hgulo@foggy.email on your website instead your real email. Once they send an email to this address, it gets automatically forwarded to your inbox. 
 
 = Compatibilities =
 * The plugin works with mostly any theme and plugin. Some special ones needed special treatment. Doen below you can learn more about that.
@@ -120,6 +125,16 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.6 =
+* Feature: Fully integrated with Foggy Email to protect your real email address: https://foggy.email/
+* Feature: We fully removed all external marketing advertisements! Enjoy our plugin without distrations! :)
+* Tweak: Optimize PHPDocs and comments
+* Tweak: Optimize is_post_excluded functionality
+* Dev: New filter: eeb/validate/filter_page_content - https://ironikus.com/docs/knowledge-base/filter-to-manipulate-raw-page-content/
+* Dev: New filter: eeb/validate/filter_content_content - https://ironikus.com/docs/knowledge-base/filter-to-manipulate-raw-hook-content/
+* Dev: New filter: eeb/validate/is_post_excluded - https://ironikus.com/docs/knowledge-base/filter-excluded-posts-list/
+* Dev: New filter: eeb/settings/pre_filter_fields - https://ironikus.com/docs/knowledge-base/pre-filter-email-encoder-settings/
 
 = 2.0.5 =
 * Feature: Soft-Encode all HTML tags + new settings item (This will prevent complex plugins from breaking)

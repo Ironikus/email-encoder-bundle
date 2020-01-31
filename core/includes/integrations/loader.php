@@ -15,22 +15,18 @@ class EEB_Integrations_Loader{
     }
 
     public function load_integrations(){
-        $disable_marketing = (bool) EEB()->settings->get_setting( 'disable_marketing', true );
-
-        $marketing = array(
-            'mailoptin' => 'mailoptin.php',
-        );
 
         $plugins = array(
             'maintenance' => 'maintenance.php',
             'divi_theme' => 'divi_theme.php',
+            'oxygen_builder' => 'oxygen_builder.php',
         );
-        
-        if( $disable_marketing ){
-            $marketing = array();
-        }
 
-        $integrations = array_merge( $marketing, $plugins );
+        $services = array(
+            'foggy_email' => 'foggy_email.php'
+        );
+
+        $integrations = array_merge( $plugins, $services );
         
         foreach ( $integrations as $plugin_id => $plugin_file ) :
         

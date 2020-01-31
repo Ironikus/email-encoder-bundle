@@ -55,6 +55,9 @@ class Email_Encoder_Validate{
       * @return string - The filtered content
       */
     public function filter_page( $content, $protect_using ){
+        
+        //Added in 2.0.6
+        $content = apply_filters( 'eeb/validate/filter_page_content', $content, $protect_using );
 
         $content = $this->filter_soft_dom_attributes( $content, 'char_encode' );
 
@@ -103,6 +106,9 @@ class Email_Encoder_Validate{
         $self = $this;
         $encode_mailtos = (bool) EEB()->settings->get_setting( 'encode_mailtos', true, 'filter_body' );
         $convert_plain_to_image = (bool) EEB()->settings->get_setting( 'convert_plain_to_image', true, 'filter_body' );
+
+        //Added in 2.0.6
+        $filtered = apply_filters( 'eeb/validate/filter_content_content', $filtered, $protect_using );
 
         //Soft attributes always need to be protected using only the char encode method since otherwise the logic breaks
         $filtered = $this->filter_soft_attributes( $filtered, 'char_encode' );
@@ -162,7 +168,7 @@ class Email_Encoder_Validate{
                 break;
         }
 
-        //Revalidate filtered emails that should not bbe encoded
+        //Revalidate filtered emails that should not be encoded
         $filtered = $this->temp_encode_at_symbol( $filtered, true );
 
         return $filtered;
@@ -218,11 +224,13 @@ class Email_Encoder_Validate{
             } elseif( $protection_method === 'use_css' ){
                 $protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
                 $protected_return = $this->encode_email_css( $matches[0], $protection_text );
+            } elseif( $protection_method === 'no_encoding' ){
+                $protected_return = $matches[0];
             } else {
                 $protected_return = $replace_by;
             }
 
-            // mark link as successfullly encoded (for admin users)
+            // mark link as successfully encoded (for admin users)
             if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
                 $protected_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
             }
@@ -882,6 +890,7 @@ FORM;
 
     public function is_post_excluded( $post_id = null ){
 
+        $return = false;
         $skip_posts = (string) EEB()->settings->get_setting( 'skip_posts', true );
 		if( ! empty( $skip_posts ) ){
 
@@ -905,12 +914,12 @@ FORM;
 				}
 
 				if ( in_array( $post_id, $exclude_pages_validated ) ) {
-					return true;
+					$return = true;
 				}
 			}
 
         }
-        
-        return false;
+
+        return apply_filters( 'eeb/validate/is_post_excluded', $return, $post_id, $skip_posts );
     }
 }
