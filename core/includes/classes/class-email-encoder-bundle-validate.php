@@ -279,7 +279,7 @@ class Email_Encoder_Validate{
             return $self->create_protected_mailto( $match[4], $attrs, $protection_method );
         };
 
-        $regexpMailtoLink = '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\'])>(.*?)<\/a[\s+]*>/is';
+        $regexpMailtoLink = '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\' ])>(.*?)<\/a[\s+]*>/is';
 
         return preg_replace_callback( $regexpMailtoLink, $callbackEncodeMailtoLinks, $content );
     }
