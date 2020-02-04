@@ -19,7 +19,9 @@ class EEB_Integrations_Loader{
         $plugins = array(
             'maintenance' => 'maintenance.php',
             'divi_theme' => 'divi_theme.php',
+            'google_site_kit' => 'google_site_kit.php',
             'oxygen_builder' => 'oxygen_builder.php',
+            'the_events_calendar' => 'the_events_calendar.php',
         );
 
         $services = array(
