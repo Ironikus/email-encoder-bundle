@@ -240,6 +240,11 @@ class Email_Encoder_Settings{
 						'label' => __( 'Font Size', 'email-encoder-bundle' ),
 						'description' => __( 'Change the font size of the image text. Default: 4 - You can choose from 1 - 5', 'email-encoder-bundle' )
 					),
+					'image_underline' => array(
+						'advanced' 	  => true,
+						'label' => __( 'Text Underline', 'email-encoder-bundle' ),
+						'description' => __( 'Adds a line beneath the text to highlight it as a link. empty or 0 deactivates the border. 1 = 1px', 'email-encoder-bundle' )
+					),
 				 ),
 				'required'    => false,
 			),
@@ -358,6 +363,7 @@ class Email_Encoder_Settings{
 			'image_color' 			=> '0,0,0',
 			'image_background_color'=> '0,0,0',
 			'image_text_opacity'	=> '0',
+			'image_underline'	=> '0',
 			'image_background_opacity'	=> '127',
 			'image_font_size'	=> '4',
 		);

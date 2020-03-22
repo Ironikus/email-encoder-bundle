@@ -353,7 +353,7 @@ class Email_Encoder_Validate{
     
                             if( strpos( $attr->nodeValue, '@' ) !== FALSE ){
                                 $single_tags = array();
-                                preg_match_all( '/' . $attr->nodeName . '="([^"]*)"/i', $content, $single_tags );
+                                preg_match_all( '/' . $attr->nodeName . '=["\']([^"]*)["\']/i', $content, $single_tags );
     
                                 foreach( $single_tags as $single ){
                                     $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
@@ -713,6 +713,10 @@ class Email_Encoder_Validate{
         $image_text_opacity = (int) EEB()->settings->get_setting( 'image_text_opacity', true, 'image_settings' );
         $image_background_opacity = (int) EEB()->settings->get_setting( 'image_background_opacity', true, 'image_settings' );
         $image_font_size = (int) EEB()->settings->get_setting( 'image_font_size', true, 'image_settings' );
+        $image_underline = (int) EEB()->settings->get_setting( 'image_underline', true, 'image_settings' );
+        $border_padding = 0;
+        $border_offset = 2;
+        $border_height = ( is_numeric( $image_underline ) && ! empty( $image_underline ) ) ? intval( $image_underline ) : 0;
 
         if( $image_background_color === 'default' ){
             $image_background_color = $setting_image_background_color;
@@ -748,10 +752,26 @@ class Email_Encoder_Validate{
             $font_size = intval( $image_font_size );
         }
 
-        $img = imagecreatetruecolor( imagefontwidth( $font_size ) * strlen( $email ), imagefontheight( $font_size ) );
+        $img_width = imagefontwidth( $font_size ) * strlen( $email );
+        $img_height = imagefontheight( $font_size );
+
+        if( ! empty( $border_height ) ){
+            $img_real_height = $img_height + $border_offset + $border_height;
+        } else {
+            $img_real_height = $img_height;
+        }
+
+        $img = imagecreatetruecolor( $img_width, $img_real_height );
         imagesavealpha( $img, true );
         imagefill( $img, 0, 0, imagecolorallocatealpha ($img, $bg_red, $bg_green, $bg_blue, $alpha_fill ) );
         imagestring( $img, $font_size, 0, 0, $email, imagecolorallocatealpha( $img, $string_red, $string_green, $string_blue, $alpha_string ) );
+
+
+        if( ! empty( $border_height ) ){
+            $border_fill = imagecolorallocatealpha ($img, $string_red, $string_green, $string_blue, $alpha_string );
+            imagefilledrectangle( $img, 0, $border_offset + $img_height + $border_height - 1, $border_padding + $img_width, $border_offset + $img_height, $border_fill );
+        }
+
         ob_start();
         imagepng( $img );
         imagedestroy( $img );
