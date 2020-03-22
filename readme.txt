@@ -4,7 +4,7 @@ Tags: anti spam, protect, encode, encrypt, hide, antispam, mailto, spambot, secu
 Requires at least: 4.7
 Requires PHP: 5.1
 Tested up to: 5.3.2
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,12 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.7 =
+* Feature: Underline emails that are converted to an image (Cutsomizable)
+* Feature: Integration for the Google Site Kit plugin - https://wordpress.org/plugins/google-site-kit/
+* Feature: Integration for the events calendar plugin - https://de.wordpress.org/plugins/the-events-calendar/
+* Tweak: Softening the regex to recognize spaces before the closing tags
 
 = 2.0.6 =
 * Feature: Fully integrated with Foggy Email to protect your real email address: https://foggy.email/
