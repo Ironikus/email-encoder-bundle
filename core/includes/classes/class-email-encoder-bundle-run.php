@@ -392,6 +392,7 @@ class Email_Encoder_Run{
      */
     public function shortcode_eeb_content( $atts = array(), $content = null ){
 
+		$original_content = $content;
 		$show_encoded_check = (string) EEB()->settings->get_setting( 'show_encoded_check', true );
 
 		if( ! isset( $atts['protection_text'] ) ){
@@ -404,6 +405,10 @@ class Email_Encoder_Run{
 			$method = sanitize_title( $atts['method'] );
 		} else {
 			$method = 'rot13';
+		}
+
+		if( isset( $atts['do_shortcode'] ) && $atts['do_shortcode'] === 'yes' ){
+			$content = do_shortcode( $content );
 		}
 
         switch( $method ){
@@ -427,7 +432,7 @@ class Email_Encoder_Run{
             $content .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
         }
 
-		return apply_filters( 'eeb/frontend/shortcode/eeb_protect_content', $content, $atts );
+		return apply_filters( 'eeb/frontend/shortcode/eeb_protect_content', $content, $atts, $original_content );
 	}
 
 	 /**
