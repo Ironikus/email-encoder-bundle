@@ -6,7 +6,7 @@
 <p><code>[eeb_mailto email="info@myemail.com" extra_attrs="target='_blank'" method="rot13" display="Custom Text"]</code>
 </p>
 <p><?php echo __( 'You can also protect phone numbers and any kind of text by using the following shortcode:', 'email-encoder-bundle' ); ?></p>
-<h4><code>[eeb_protect_content protection_text="I am a noscript text" method="rot13"]My Email[/eeb_protect_content]</code></h4>
+<p><code>[eeb_protect_content protection_text="I am a noscript text" method="rot13" do_shortcode="yes"]My Email[/eeb_protect_content]</code></p>
 <p><?php echo __( 'Display the encoder form', 'email-encoder-bundle' ); ?></p>
 <p><code>[eeb_form]</code>
 </p>
