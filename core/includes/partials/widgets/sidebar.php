@@ -2,7 +2,7 @@
     <div class="inside">
     <ul>
         <li>
-            <a href="https://ironikus.com/docs/article-categories/email-encoder-bundle/" target="_blank">
+            <a href="https://ironikus.com/docs/article-categories/email-encoder/" target="_blank">
                 <i class="dashicons-before dashicons-media-text"></i>
                 Documentation        </a>
         </li>
