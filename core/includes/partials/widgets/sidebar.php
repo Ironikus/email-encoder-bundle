@@ -27,8 +27,19 @@
     </p>
 
     <hr>
-    <h4>Other plugins by Ironikus</h4>
+    <h4>Other plugins and services by Ironikus</h4>
     <ul id="other_plugins">
+        <li>
+            <a title="Visit foggy.email" href="https://foggy.email" target="_blank" style="text-decoration: none;">
+                <div style="background:linear-gradient(0deg, rgba(0,189,255,1) 0%, rgba(9,101,253,1) 100%);padding: 20px;text-align: center;color: #fff;border-radius: 5px;">
+                    <div style="margin: 0;color: #fff;font-size: 22px;font-weight: 700;">Foggy Email</div>
+                    <div style="font-size: 14px;margin-top: 15px;margin-bottom: 20px;">Next-level <strong>email</strong> protection for your WordPress website.</div>
+                    <div style="font-size: 16px;background: #fff;color: #000;border-radius: 50px;padding: 4px 10px;margin-top: 10px;">hidden@foggy.email</div>
+                    <div style="font-size: 18px;margin: 10px;">forwards to</div>
+                    <div style="font-size: 16px;background: #fff;color: #000;border-radius: 50px;padding: 4px 10px;">my@email.com</div>
+                </div>
+            </a>
+        </li>
         <li>
             <h4><img src="<?php echo plugins_url('core/includes/assets/img/icon-wp-webhooks.png', EEB_PLUGIN_FILE) ?>"> WP Webhooks</h4>
             <p>If you love to automate things, this is for you! WP Webhooks allows you to recieve and send data on your WordPress website from any third party service out there.
