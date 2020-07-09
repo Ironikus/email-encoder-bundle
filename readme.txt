@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, mailto, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.3.2
-Stable tag: 2.0.7
+Tested up to: 5.4.2
+Stable tag: 2.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Protect email addresses on your site and hide them from spambots. Easy to use & 
 == Description ==
 
 Full site protection for your email addresses from spam-bots, email harvesters and other robots. No configuration needed.
-Also protext phone numbers or any other text using our integrated `[eeb_protect_content]` shortcode.
+Also supports [foggy.email](https://foggy.email/) and protects phone numbers or any other text using our integrated `[eeb_protect_content]` shortcode.
 
 = Features =
 * Full page protection for all of your emails
@@ -37,7 +37,7 @@ Foggy Email allows you to create protected emails to hide your real email addres
 Example: me@myemail.com will be converted to hgulo@foggy.email - Your website visitor will see hgulo@foggy.email on your website instead your real email. Once they send an email to this address, it gets automatically forwarded to your inbox. 
 
 = Compatibilities =
-* The plugin works with mostly any theme and plugin. Some special ones needed special treatment. Doen below you can learn more about that.
+* The plugin works with mostly any theme and plugin. Some special ones need special treatment. Down below you can learn more about that.
 * Compatible with the Maintenance plugin from WP Maintenance
 * Divi Theme is fully integrated as well
 * Jetpack Image carousel is compatible as well
@@ -125,6 +125,14 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.8 =
+* Feature: The shortcode [eeb_protect_content] now supports a new attribute called do_shortcode="yes" which allows you to execute all shortcodes within the given content area
+* Tweak: Add new link for the Email Checker (Allows you to check if all of your emails are being encoded)
+* Tweak: Add new Foggy Email note
+* Tweak: Optimize layout and texts
+* Fix: The documentation link on the settings page was not working
+* Dev: The eeb/frontend/shortcode/eeb_protect_content filter now contains a new variable called $original_content (https://ironikus.com/docs/knowledge-base/filter-eeb-content-shortcode/)
 
 = 2.0.7 =
 * Feature: Underline emails that are converted to an image (Cutsomizable)
