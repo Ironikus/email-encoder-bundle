@@ -2,6 +2,11 @@
     <div class="inside">
     <ul>
         <li>
+            <a href="https://ironikus.com/email-checker/" target="_blank">
+                <i class="dashicons-before dashicons-search"></i>
+                Email checker        </a>
+        </li>
+        <li>
             <a href="https://ironikus.com/docs/article-categories/email-encoder/" target="_blank">
                 <i class="dashicons-before dashicons-media-text"></i>
                 Documentation        </a>
