@@ -626,6 +626,7 @@ class Email_Encoder_Validate{
 
         $convert_plain_to_image = (bool) EEB()->settings->get_setting( 'convert_plain_to_image', true, 'filter_body' );
         $protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
+        $raw_display = $display;
 
         // get display out of array (result of preg callback)
         if ( is_array( $display ) ) {
@@ -633,14 +634,14 @@ class Email_Encoder_Validate{
         }
 
         if( $convert_plain_to_image ){
-            return '<img src="' . $this->generate_email_image_url( $display ) . '" />';
+            $display = '<img src="' . $this->generate_email_image_url( $display ) . '" />';
+        } elseif( $protection_method !== 'without_javascript' ){
+            $display = $this->dynamic_js_email_encoding( $display, $protection_text );
+        } else {
+            $display = $this->encode_email_css( $display );
         }
 
-        if( $protection_method !== 'without_javascript' ){
-            return $this->dynamic_js_email_encoding( $display, $protection_text );
-        }
-
-        return $this->encode_email_css( $display );
+        return apply_filters( 'eeb/validate/get_protected_display', $display, $raw_display, $protection_method, $protection_text );
         
     }
 
