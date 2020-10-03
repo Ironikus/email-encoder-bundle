@@ -313,11 +313,18 @@ class Email_Encoder_Validate{
 
         foreach( $soft_attributes as $ident => $regex ){
 
-            $array = array();
-            preg_match_all( $regex, $content, $array ) ;
+            $attributes = array();
+            preg_match_all( $regex, $content, $attributes );
+            
+            if( is_array( $attributes ) && isset( $attributes[0] ) ){
+                foreach( $attributes[0] as $single ){
 
-            foreach( $array as $single ){
-                $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
+                    if( empty( $single ) ){
+                        continue;
+                    }
+
+                    $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
+                }
             }
 
         }
@@ -354,10 +361,18 @@ class Email_Encoder_Validate{
                             if( strpos( $attr->nodeValue, '@' ) !== FALSE ){
                                 $single_tags = array();
                                 preg_match_all( '/' . $attr->nodeName . '=["\']([^"]*)["\']/i', $content, $single_tags );
-    
-                                foreach( $single_tags as $single ){
-                                    $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
+                                
+                                if( is_array( $single_tags ) && isset( $single_tags[0] ) ){
+                                    foreach( $single_tags[0] as $single ){
+
+                                        if( empty( $single ) ){
+                                            continue;
+                                        }
+
+                                        $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
+                                    }
                                 }
+                                
                             }
                         }
                     }
