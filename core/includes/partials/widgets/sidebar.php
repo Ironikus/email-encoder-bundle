@@ -42,6 +42,7 @@
                     <div style="font-size: 16px;background: #fff;color: #000;border-radius: 50px;padding: 4px 10px;margin-top: 10px;">hidden@foggy.email</div>
                     <div style="font-size: 18px;margin: 10px;">forwards to</div>
                     <div style="font-size: 16px;background: #fff;color: #000;border-radius: 50px;padding: 4px 10px;">my@email.com</div>
+                    <div style="margin-top: 20px;outline: none;background-color: rgb(60,210,124);font-size: 18px;color: #fff;text-decoration: none;font-weight: 700;padding: 7px 15px;border-radius: 5px;width: auto;">Learn more</div>
                 </div>
             </a>
         </li>
