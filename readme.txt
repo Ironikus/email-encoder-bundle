@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, mailto, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.4.2
-Stable tag: 2.0.8
+Tested up to: 5.5.1
+Stable tag: 2.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,13 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.0.9 =
+* Fix: Issue with not properly validated soft-encoded attribute tags on the dom attributes
+* Fix: Issue with not properly validated soft-encoded attributes on special softencoded tags for the content filter
+* Tweak: Optimized performance for soft attribute filtering
+* Tweak: Optimized layout for the foggy.email banner
+* Dev: Added new filter to allow customization of the mailto text: https://ironikus.com/docs/knowledge-base/filter-email-encoder-mailto-text/
 
 = 2.0.8 =
 * Feature: The shortcode [eeb_protect_content] now supports a new attribute called do_shortcode="yes" which allows you to execute all shortcodes within the given content area
