@@ -87,8 +87,7 @@ All email addresses are protected automatically by default, so it is not necessa
 
 In case you wish to customize it, we also offer some neatsettings,  shortcodes and template functions. Please check the settings page within your WordPress website or [our documentation](https://ironikus.com/docs/article-categories/email-encoder/)
 
-The visitors will see everything as normal, but the source behind it will now be encoded (for spambots), and looks, for example, like the code down below (Depending on your settings):
-`<script type="text/javascript">/*<![CDATA[*/ML="mo@k<insc:r.y=-Ehe a\">f/lMt";MI="4CB8HC77=D0C5HJ1>H563DB@:AF=D0C5HJ190<6C0A2JA7J;6HDBBJ5JHA=DI<B?0C5HDEI<B?0C5H4GCE";OT="";for(j=0;j<MI.length;j++){OT+=ML.charAt(MI.charCodeAt(j)-48);}document.write(OT);/*]]>*/</script><noscript>*protected email*</noscript>`
+The visitors will see everything as normal, but the source behind it will now be encoded.
 
 For more information, please check out the [following page](https://ironikus.com/docs/knowledge-base/what-will-be-protected-2/)
 
