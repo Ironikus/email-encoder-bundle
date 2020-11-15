@@ -108,6 +108,11 @@ if( ! class_exists( 'Email_Encoder_Integration_FoggyEmail' ) ){
             //Make sure after deactivating the logic, the emails get removed as well
             if( empty( $foggy_email_api_key ) && ! empty( $emails ) ){
 
+                //Allow a hard reset of the added emails
+                if( isset( $_GET['eeb_fggy_email_clear_entries'] ) && current_user_can( 'manage_options' ) ){
+                    $emails = null;
+                }
+
                 if( is_array( $emails ) ){
                     foreach( $emails as $key => $mail ){
                         if( isset( $mail['alias'] ) && isset( $mail['api_key'] ) ){
@@ -192,6 +197,8 @@ if( ! class_exists( 'Email_Encoder_Integration_FoggyEmail' ) ){
                 ) ),
                 'cookies'     => array()
             );
+            $http_args = apply_filters( 'eeb/integrations/foggy_email/http_args', $http_args, $email );
+
             $response = wp_remote_post( $endpoint, $http_args );
 
             if ( ! is_wp_error( $response ) && isset( $response['body'] ) ) {
