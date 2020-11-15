@@ -12,6 +12,10 @@ jQuery(function ($) {
         });
     }
 
+    /**
+     * EMAIL RELATED LOGIC
+     */
+
     // fetch email from data attribute
     function fetchEmail(el) {
         var email = el.getAttribute('data-enc-email');
