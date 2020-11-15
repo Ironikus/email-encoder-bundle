@@ -123,6 +123,7 @@ class Email_Encoder_Validate{
             case 'without_javascript':
                 $filtered = $this->filter_input_fields( $filtered, $protect_using );
                 $filtered = $this->filter_mailto_links( $filtered, 'without_javascript' );
+                $filtered = $this->filter_custom_links( $filtered, 'without_javascript' );
 
                 if( $convert_plain_to_image ){
                     $replace_by = 'convert_image';
@@ -146,6 +147,7 @@ class Email_Encoder_Validate{
             case 'with_javascript':
                 $filtered = $this->filter_input_fields( $filtered, $protect_using );
                 $filtered = $this->filter_mailto_links( $filtered );
+                $filtered = $this->filter_custom_links( $filtered );
 
                 if( $convert_plain_to_image ){
                     $replace_by = 'convert_image';
@@ -282,6 +284,33 @@ class Email_Encoder_Validate{
         $regexpMailtoLink = '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\' ])>(.*?)<\/a[\s+]*>/is';
 
         return preg_replace_callback( $regexpMailtoLink, $callbackEncodeMailtoLinks, $content );
+    }
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    public function filter_custom_links( $content, $protection_method = null ){
+        $self = $this;
+        $custom_href_attr = (string) EEB()->settings->get_setting( 'custom_href_attr', true );
+
+        if( ! empty( $custom_href_attr ) ){
+            $custom_attr_list = explode( ',', $custom_href_attr );
+            foreach( $custom_attr_list as $s_attr ){
+                $attr_name = trim( $s_attr );
+
+                $callbackEncodeCustomLinks = function ( $match ) use ( $self, $protection_method ) {
+                    $attrs = shortcode_parse_atts( $match[1] );
+                    return $self->create_protected_href_att( $match[4], $attrs, $protection_method );
+                };
+        
+                $regexpMailtoLink = '/<a[\s+]*(([^>]*)href=["\']' . addslashes( $attr_name ) . '\:([^>]*)["\' ])>(.*?)<\/a[\s+]*>/is';
+        
+                $content = preg_replace_callback( $regexpMailtoLink, $callbackEncodeCustomLinks, $content );
+            }
+        }
+
+        return $content;
     }
 
     /**
@@ -622,6 +651,64 @@ class Email_Encoder_Validate{
         // mark link as successfullly encoded (for admin users)
         if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
             $link .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+        }
+
+
+        return $link;
+    }
+
+    /**
+     * Create a protected custom attribute
+     * 
+     * @param string $display
+     * @param array $attrs Optional
+     * @return string
+     */
+    public function create_protected_href_att( $display, $attrs = array(), $protection_method = null ){
+        $email     = '';
+        $class_ori = ( empty( $attrs['class'] ) ) ? '' : $attrs['class'];
+        $custom_class = (string) EEB()->settings->get_setting( 'class_name', true );
+        $show_encoded_check = (string) EEB()->settings->get_setting( 'show_encoded_check', true );
+
+        // set user-defined class
+        if ( $custom_class && strpos( $class_ori, $custom_class ) === FALSE ) {
+            $attrs['class'] = ( empty( $attrs['class'] ) ) ? $custom_class : $attrs['class'] . ' ' . $custom_class;
+        }
+
+        // check title for email address
+        if ( ! empty( $attrs['title'] ) ) {
+            $attrs['title'] = antispambot( $attrs['title'] );
+        }
+
+        // set ignore to data-attribute to prevent being processed by WPEL plugin
+        $attrs['data-wpel-link'] = 'ignore';
+
+        // create element code
+        $link = '<a ';
+
+        foreach ( $attrs AS $key => $value ) {
+            if ( strtolower( $key ) == 'href' ) {
+                $link .= $key . '="' . antispambot( $value ) . '" ';
+            } else {
+                $link .= $key . '="' . $value . '" ';
+            }
+        }
+
+        // remove last space
+        $link = substr( $link, 0, -1 );
+
+        $link .= '>';
+
+        $link .= $this->get_protected_display( $display, $protection_method );
+
+        $link .= '</a>';
+
+        // filter
+        $link = apply_filters( 'eeb_custom_href', $link, $display, $email, $attrs );
+
+        // mark link as successfullly encoded (for admin users)
+        if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
+            $link .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Custom attribute encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
         }
 
 

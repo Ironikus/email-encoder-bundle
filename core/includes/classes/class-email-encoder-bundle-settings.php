@@ -283,6 +283,18 @@ class Email_Encoder_Settings{
 				'description' => __('Leave blank for none', 'email-encoder-bundle')
 			),
 
+			'custom_href_attr' => array(
+				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
+				'id'          => 'custom_href_attr',
+				'type'        => 'text',
+				'advanced' 	  => true,
+				'title'       => __('Protect custom href attributes', 'email-encoder-bundle'),
+				'label'       => __('Protect href atrributes such as tel:, ftp:, file:, etc.', 'email-encoder-bundle'),
+				'placeholder' => '',
+				'required'    => false,
+				'description' => __('Add the href attributes you want to protect as a comme-separated list. E.g. tel,file,ftp', 'email-encoder-bundle')
+			),
+
 			'footer_scripts' => array(
 				'fieldset'    => array( 'slug' => 'main', 'label' => 'Label' ),
 				'id'          => 'footer_scripts',
