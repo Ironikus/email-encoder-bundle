@@ -1,24 +1,25 @@
 === Email Encoder - Protect Email Addresses ===
 Contributors: ironikus
-Tags: anti spam, protect, encode, encrypt, hide, antispam, mailto, spambot, secure, e-mail, email, mail
+Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.5.1
-Stable tag: 2.0.9
+Tested up to: 5.5.3
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Protect email addresses on your site and hide them from spambots. Easy to use & flexible.
+Protect email addresses and phone numbers on your site and hide them from spambots. Easy to use & flexible.
 
 == Description ==
 
 Full site protection for your email addresses from spam-bots, email harvesters and other robots. No configuration needed.
-Also supports [foggy.email](https://foggy.email/) and protects phone numbers or any other text using our integrated `[eeb_protect_content]` shortcode.
+Also supports [foggy.email](https://foggy.email/) and protects phone numbers or any other text using our integrated `[eeb_protect_content]` shortcode or href attribute encoding.
 
 = Features =
 * Full page protection for all of your emails
 * Instant results (No confiruation needed)
 * Protects mailto links, plain emails, email input fields, RSS feeds and much more
+* Protect phone number links, ftp, skype, file and other custom link attributes
 * Autmoatic protection technique detection (Our plugin chooses automatically the best protection technique for each email)
 * Exclude posts and pages from protection
 * Automatically convert plain emails to mailto-links
@@ -124,6 +125,13 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.1.0 =
+* Feature: New advanced setting to automatically protect custom link attributes such as tel:, file:, ftp:, skype:, etc. (Protect custom href attributes)
+* Tweak: Adjust JS documentation
+* Tweak: Adjust readme file
+* Tweak: Allow a hard-reset on foggy.email aliases 
+* Dev: New filter eeb/integrations/foggy_email/http_args for manipulating the http arguments send over to foggy.email
 
 = 2.0.9 =
 * Fix: Issue with not properly validated soft-encoded attribute tags on the dom attributes
