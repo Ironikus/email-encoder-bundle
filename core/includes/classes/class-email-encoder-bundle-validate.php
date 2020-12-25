@@ -199,7 +199,10 @@ class Email_Encoder_Validate{
         return preg_replace_callback( EEB()->settings->get_email_regex(), function ( $matches ) use ( $replace_by, $protection_method, $show_encoded_check, $self ) {
             // workaround to skip responsive image names containing @
             $extention = strtolower( $matches[4] );
-            $excludedList = array('.jpg', '.jpeg', '.png', '.gif');
+            $excludedList = array('.jpg', '.jpeg', '.png', '.gif', '.svg');
+
+            //Added in 2.1.1
+            $excludedList = apply_filters( 'eeb/validate/excluded_image_urls', $excludedList );
 
             if ( in_array( $extention, $excludedList ) ) {
                 return $matches[0];
