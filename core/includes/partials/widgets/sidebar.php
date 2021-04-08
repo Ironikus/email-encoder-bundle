@@ -53,6 +53,12 @@
             </p>
         </li>
         <li>
+            <h4><img src="<?php echo plugins_url('core/includes/assets/img/icon-pluginplate.png', EEB_PLUGIN_FILE) ?>"> Pluginplate</h4>
+            <p>Create professional and beautifully written WordPress plugin templates with your finger tip. Its free and available at pluginplate.com
+                <br /><a href="https://pluginplate.com/" target="_blank">Go to Pluginplate.com</a>
+            </p>
+        </li>
+        <li>
             <h4><img src="<?php echo plugins_url('core/includes/assets/img/icon-wp-snow.png', EEB_PLUGIN_FILE) ?>"> WP Snow</h4>
             <p>Make your website something special with this awesome flakes animation plugin. Make snowflakes, falling snowmans, custom text or any other of the 1300+ icons glide over your website.
                 <br /><a href="<?php echo admin_url( $mulsitie_slug . 'plugin-install.php?s=WP+Snow+–+Best+Snow+Effect+Plugin+&tab=search&type=term'); ?>" target="_blank">Install now for free</a> | <a href="https://wordpress.org/plugins/wp-snow/" title="Go to WordPress.org" target="_blank">More info</a>

@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.6
-Stable tag: 2.1.0
+Tested up to: 5.7
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,10 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.1.1: April 07, 2021 =
+* Tweak: Added svg images to the image exclude list
+* Dev: New filter eeb/validate/excluded_image_urls to filter the excluded image list
 
 = 2.1.0 =
 * Feature: New advanced setting to automatically protect custom link attributes such as tel:, file:, ftp:, skype:, etc. (Protect custom href attributes)
