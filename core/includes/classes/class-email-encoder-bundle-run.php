@@ -429,7 +429,7 @@ class Email_Encoder_Run{
 
 		 // mark link as successfullly encoded (for admin users)
 		 if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $content .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+            $content .= EEB()->validate->get_encoded_email_icon();
         }
 
 		return apply_filters( 'eeb/frontend/shortcode/eeb_protect_content', $content, $atts, $original_content );
@@ -499,7 +499,7 @@ class Email_Encoder_Run{
 
 		// mark link as successfullly encoded (for admin users)
 		if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $mailto .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+            $mailto .= EEB()->validate->get_encoded_email_icon();
         }
 
 		return apply_filters( 'eeb/frontend/shortcode/eeb_mailto', $mailto );

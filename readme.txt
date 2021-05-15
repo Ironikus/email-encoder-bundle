@@ -126,6 +126,11 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
+= 2.1.2: April 07, 2021 =
+* Fix: Fatal error if the content was not given
+* Tweak: Centrlalized encoding icon for a better usability
+* Dev: New filter eeb/validate/get_encoded_email_icon to cusotmize the encoding icon
+
 = 2.1.1: April 07, 2021 =
 * Tweak: Added svg images to the image exclude list
 * Dev: New filter eeb/validate/excluded_image_urls to filter the excluded image list

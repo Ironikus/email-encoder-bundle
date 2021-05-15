@@ -237,7 +237,7 @@ class Email_Encoder_Validate{
 
             // mark link as successfully encoded (for admin users)
             if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-                $protected_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+                $protected_return .= $this->get_encoded_email_icon();
             }
 
             return $protected_return;
@@ -544,7 +544,7 @@ class Email_Encoder_Validate{
             $sub_return = str_replace( $email, antispambot( $email ), $input );
 
             if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-                $sub_return .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+                $sub_return .= $this->get_encoded_email_icon();
             }
 
             return $sub_return;
@@ -557,7 +557,7 @@ class Email_Encoder_Validate{
 
         // mark link as successfullly encoded (for admin users)
         if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $inputWithDataAttr .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+            $inputWithDataAttr .= $this->get_encoded_email_icon();
         }
 
         // remove email from value attribute
@@ -585,6 +585,19 @@ class Email_Encoder_Validate{
         $encEmail = str_replace( '@', '[at]', $encEmail );
 
         return $encEmail;
+    }
+
+    /**
+     * Get the ebcoded email icon
+     * 
+     * @param string $email
+     * @return string
+     */
+    public function get_encoded_email_icon( $text = 'Email encoded successfully!' ){
+        
+        $html = '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( $text, 'email-encoder-bundle' ) . '"></i>';
+
+        return apply_filters( 'eeb/validate/get_encoded_email_icon', $html, $text );
     }
 
     /**
@@ -653,7 +666,7 @@ class Email_Encoder_Validate{
 
         // mark link as successfullly encoded (for admin users)
         if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $link .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Email encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+            $link .= $this->get_encoded_email_icon();
         }
 
 
@@ -711,7 +724,7 @@ class Email_Encoder_Validate{
 
         // mark link as successfullly encoded (for admin users)
         if ( current_user_can( EEB()->settings->get_admin_cap( 'frontend-display-security-check' ) ) && $show_encoded_check ) {
-            $link .= '<i class="eeb-encoded dashicons-before dashicons-lock" title="' . __( 'Custom attribute encoded successfully!', 'email-encoder-bundle' ) . '"></i>';
+            $link .= $this->get_encoded_email_icon( 'Custom attribute encoded successfully!' );
         }
 
 
