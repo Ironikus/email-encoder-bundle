@@ -1035,7 +1035,9 @@ FORM;
 
             if( empty( $post_id ) ){
                 global $post;
-                $post_id = $post->ID;
+                if( ! empty( $post ) ){
+                    $post_id = $post->ID;
+                }
             } else {
                 $post_id = intval( $post_id );
             }
