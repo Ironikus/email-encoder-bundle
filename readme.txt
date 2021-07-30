@@ -126,6 +126,9 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
+= 2.1.3: July 30, 2021 =
+* Fix: Revalidate Display Text for the frontend encoder form (via [eeb_form] or eeb_form();) to prevent userbased cross site scripting
+
 = 2.1.2: April 07, 2021 =
 * Fix: Fatal error if the content was not given
 * Tweak: Centrlalized encoding icon for a better usability

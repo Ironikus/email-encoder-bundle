@@ -88,15 +88,17 @@ class Email_Encoder_Ajax{
 
         $email = html_entity_decode( sanitize_email( $_POST['eebEmail'] ) );
         $method = sanitize_text_field( $_POST['eebMethod'] );
-        $display = wp_kses_post( $_POST['eebDisplay'] );
+        $display = html_entity_decode( $_POST['eebDisplay'] );
 		$custom_class = (string) EEB()->settings->get_setting( 'class_name', true );
 		$protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
 
 		if( empty( $display ) ) {
 			$display = $email;
         } else {
-            $display = html_entity_decode($display);
+            $display = wp_kses_post( $display );
 		}
+
+		$display = sanitize_text_field( $display );
 		
 		$class_name = ' class="' . esc_attr( $custom_class ) . '"';
 		$mailto = '<a href="mailto:' . $email . '"'. $class_name . '>' . $display . '</a>';
