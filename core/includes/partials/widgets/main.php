@@ -16,6 +16,11 @@ $advanced_settings = (bool) EEB()->settings->get_setting( 'advanced_settings', t
                         $hide_main_layer = 'style="display:none !important;"';
                     }
 
+                    //Hide foggy email integration
+                    if( $setting['title'] === 'Foggy Email API Key' && ! isset( $_GET['displayfoggy'] ) ){
+                        continue;
+                    }
+
                     //Validate settings value
                     $main_settings_value = '';
                     if( isset( $setting['value'] ) ){
