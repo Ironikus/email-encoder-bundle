@@ -376,7 +376,7 @@ class Email_Encoder_Validate{
         $no_script_tags = (bool) EEB()->settings->get_setting( 'no_script_tags', true, 'filter_body' );
         $no_attribute_validation = (bool) EEB()->settings->get_setting( 'no_attribute_validation', true, 'filter_body' );
 
-        if( class_exists( 'DOMDocument' ) && ! empty( $content ) ){
+        if( class_exists( 'DOMDocument' ) && ! empty( $content ) && is_string( $content ) ){
             $dom = new DOMDocument();
             @$dom->loadHTML($content);
 
