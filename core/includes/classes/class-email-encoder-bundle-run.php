@@ -171,7 +171,7 @@ class Email_Encoder_Run{
 		$original_callback = $wp_registered_widgets[ $widget_id ]['_wo_original_callback'];
 		$wp_registered_widgets[ $widget_id ]['callback'] = $original_callback;
 
-		$widget_id_base = $wp_registered_widgets[ $widget_id ]['callback'][0]->id_base;
+		$widget_id_base = ( isset( $wp_registered_widgets[ $widget_id ]['callback'][0]->id_base ) ) ? $wp_registered_widgets[ $widget_id ]['callback'][0]->id_base : 0;
 
         if ( is_callable( $original_callback ) ) {
             ob_start();
@@ -457,8 +457,13 @@ class Email_Encoder_Run{
 			$extra_attrs = $atts['extra_attrs'];
 		}
 
-		if( empty( $atts['method'] ) ){
-			$method = 'rot13';
+		if( ! isset( $atts['method'] ) || empty( $atts['method'] ) ){
+			$protect_using = (string) EEB()->settings->get_setting( 'protect_using', true );
+			if( ! empty( $protect_using ) ){
+				$method = $protect_using;
+			} else {
+				$method = 'rot13'; //keep as fallback
+			}
 		} else {
 			$method = sanitize_title( $atts['method'] );
 		}
@@ -489,6 +494,18 @@ class Email_Encoder_Run{
 			case 'enc_escape':
 			case 'escape':
 				$mailto = EEB()->validate->encode_escape( $mailto, $noscript );
+				break;
+			case 'with_javascript':
+				$mailto = EEB()->validate->dynamic_js_email_encoding( $mailto, $noscript );
+				break;
+			case 'without_javascript':
+				$mailto = EEB()->validate->encode_email_css( $mailto );
+				break;
+			case 'char_encode':
+				$mailto = EEB()->validate->filter_plain_emails( $mailto, null, 'char_encode' );
+				break;
+			case 'strong_method':
+				$mailto = EEB()->validate->filter_plain_emails( $mailto );
 				break;
 			case 'enc_html':
 			case 'encode':

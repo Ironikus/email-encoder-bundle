@@ -37,6 +37,13 @@ if (!function_exists('eeb_mailto')):
         $class_name = ' ' . trim($extra_attrs);
 		$class_name .= ' class="' . esc_attr( $custom_class ) . '"';
 		$mailto = '<a href="mailto:' . $email . '"'. $class_name . '>' . $display . '</a>';
+
+		if( empty( $method ) ){
+			$protect_using = (string) EEB()->settings->get_setting( 'protect_using', true );
+			if( ! empty( $protect_using ) ){
+				$method = $protect_using;
+			}
+		}
 		
 		switch( $method ){
 			case 'enc_ascii':
@@ -46,6 +53,18 @@ if (!function_exists('eeb_mailto')):
 			case 'enc_escape':
 			case 'escape':
 				$mailto = EEB()->validate->encode_escape( $mailto, $display );
+				break;
+			case 'with_javascript':
+				$mailto = EEB()->validate->dynamic_js_email_encoding( $mailto, $display );
+				break;
+			case 'without_javascript':
+				$mailto = EEB()->validate->encode_email_css( $mailto );
+				break;
+			case 'char_encode':
+				$mailto = EEB()->validate->filter_plain_emails( $mailto, null, 'char_encode' );
+				break;
+			case 'strong_method':
+				$mailto = EEB()->validate->filter_plain_emails( $mailto );
 				break;
 			case 'enc_html':
 			case 'encode':

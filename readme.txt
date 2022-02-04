@@ -1,19 +1,23 @@
-=== Email Encoder - Protect Email Addresses ===
+=== Email Encoder - Protect Email Addresses and Phone Numbers ===
 Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.8
-Stable tag: 2.1.2
+Tested up to: 5.9
+Stable tag: 2.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Author URI: https://wpemailencoder.com/
+Plugin URI: https://wordpress.org/plugins/email-encoder-bundle/
+Contributors: ironikus
+Donate link: https://paypal.me/ironikus
 
 Protect email addresses and phone numbers on your site and hide them from spambots. Easy to use & flexible.
 
 == Description ==
 
 Full site protection for your email addresses from spam-bots, email harvesters and other robots. No configuration needed.
-Also supports [foggy.email](https://foggy.email/) and protects phone numbers or any other text using our integrated `[eeb_protect_content]` shortcode or href attribute encoding.
+It also protects phone numbers or any other text using our integrated `[eeb_protect_content]` shortcode or href attribute encoding.
 
 = Features =
 * Full page protection for all of your emails
@@ -32,11 +36,6 @@ Also supports [foggy.email](https://foggy.email/) and protects phone numbers or 
 * Also supports special chars, like é, â, ö, Chinese characters etcetera
 * Use the Encoder Form to manually create encoded scripts
 
-= Foggy Email Integration =
-This plugin is fully integrated with [foggy.email](https://foggy.email/) to protect your emails on the next level. 
-Foggy Email allows you to create protected emails to hide your real email address. In combination with Email Encoder, it will create for each email on your website a protected email address to hide your real one. 
-Example: me@myemail.com will be converted to hgulo@foggy.email - Your website visitor will see hgulo@foggy.email on your website instead your real email. Once they send an email to this address, it gets automatically forwarded to your inbox. 
-
 = Compatibilities =
 * The plugin works with mostly any theme and plugin. Some special ones need special treatment. Down below you can learn more about that.
 * Compatible with the Maintenance plugin from WP Maintenance
@@ -44,7 +43,7 @@ Example: me@myemail.com will be converted to hgulo@foggy.email - Your website vi
 * Jetpack Image carousel is compatible as well
 
 = Free Website Check  =
-We offer you a free tool to test if your website contains unprotected emails. You can use our website checker by [clicking here](https://ironikus.com/email-checker/)
+We offer you a free tool to test if your website contains unprotected emails. You can use our website checker by [clicking here](https://wpemailencoder.com/email-protection-checker/)
 
 = Easy to use  =
 After activating the plugin all email addresses on your website will be protected out-of-the-box.
@@ -52,7 +51,7 @@ We also offer custom shortcodes and template functions to protect phone numbers 
 
 = Support =
 * Documentation - After plugin activation, check the help tab on the plugin options page
-* [Documentation on ironikus.com](https://ironikus.com/docs/article-categories/email-encoder/)
+* [Documentation on wpemailencoder.com](https://wpemailencoder.com/)
 * [FAQ](http://wordpress.org/extend/plugins/email-encoder-bundle/faq/)
 
 = Like this plugin? =
@@ -72,7 +71,7 @@ We also offer custom shortcodes and template functions to protect phone numbers 
 
 You can test this in three different ways. 
 
-The easiest (and most efficient) way is to use our website checker, which looks over your website and detects unprotected emails. It is completely free and you can [find it here](https://ironikus.com/email-checker/) on our website.
+The easiest (and most efficient) way is to use our website checker, which looks over your website and detects unprotected emails. It is completely free and you can [find it here](https://wpemailencoder.com/email-protection-checker/) on our website.
 
 The second possibility is to enable the plugin option (in the admin panel) called *"Security Check"*.
 When you are logged in and look on the page there will be a icon on the right side of each email address confirming it was successfully encoded. (This counts only for emails that are displayed within the body tag as HTML. Emails within data attributes or the header won't show this icon since otherwise the site breaks.)
@@ -86,11 +85,11 @@ Now your (real) source code will be shown. Your email address should not be show
 
 All email addresses are protected automatically by default, so it is not necessary to configure anything else. 
 
-In case you wish to customize it, we also offer some neatsettings,  shortcodes and template functions. Please check the settings page within your WordPress website or [our documentation](https://ironikus.com/docs/article-categories/email-encoder/)
+In case you wish to customize it, we also offer some neatsettings,  shortcodes and template functions. Please check the settings page within your WordPress website or [our documentation](https://wpemailencoder.com/)
 
 The visitors will see everything as normal, but the source behind it will now be encoded.
 
-For more information, please check out the [following page](https://ironikus.com/docs/knowledge-base/what-will-be-protected-2/)
+For more information, please check out the [following page](https://wpemailencoder.com/what-will-be-protected/)
 
 = How do I encode phone numbers or other text? =
 
@@ -126,6 +125,12 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
+= 2.1.3: February 04, 2021 =
+* Tweak: Email Encoder runs now on its own website: https://wpemailencoder.com/
+* Tweak: The eeb_mailto function now supports the default encoding methods if no specific method is given
+* Tweak optimized text and descriptions
+* Fix: Prevent error with undefined $id_base property
+
 = 2.1.2: July 30, 2021 =
 * Fix: Prevent notice on undefined post within the global object
 * Fix: Revalidate Display Text for the frontend encoder form (via [eeb_form] or eeb_form();) to prevent userbased cross site scripting
@@ -141,23 +146,19 @@ Yes, since version 1.3.0 also special characters are supported.
 * Feature: New advanced setting to automatically protect custom link attributes such as tel:, file:, ftp:, skype:, etc. (Protect custom href attributes)
 * Tweak: Adjust JS documentation
 * Tweak: Adjust readme file
-* Tweak: Allow a hard-reset on foggy.email aliases 
-* Dev: New filter eeb/integrations/foggy_email/http_args for manipulating the http arguments send over to foggy.email
 
 = 2.0.9 =
 * Fix: Issue with not properly validated soft-encoded attribute tags on the dom attributes
 * Fix: Issue with not properly validated soft-encoded attributes on special softencoded tags for the content filter
 * Tweak: Optimized performance for soft attribute filtering
-* Tweak: Optimized layout for the foggy.email banner
-* Dev: Added new filter to allow customization of the mailto text: https://ironikus.com/docs/knowledge-base/filter-email-encoder-mailto-text/
+* Dev: Added new filter to allow customization of the mailto text: https://wpemailencoder.com/filter-email-encoder-mailto-text/
 
 = 2.0.8 =
 * Feature: The shortcode [eeb_protect_content] now supports a new attribute called do_shortcode="yes" which allows you to execute all shortcodes within the given content area
 * Tweak: Add new link for the Email Checker (Allows you to check if all of your emails are being encoded)
-* Tweak: Add new Foggy Email note
 * Tweak: Optimize layout and texts
 * Fix: The documentation link on the settings page was not working
-* Dev: The eeb/frontend/shortcode/eeb_protect_content filter now contains a new variable called $original_content (https://ironikus.com/docs/knowledge-base/filter-eeb-content-shortcode/)
+* Dev: The eeb/frontend/shortcode/eeb_protect_content filter now contains a new variable called $original_content (https://wpemailencoder.com/filter-eeb_protect_content-shortcode/)
 
 = 2.0.7 =
 * Feature: Underline emails that are converted to an image (Cutsomizable)
@@ -166,15 +167,14 @@ Yes, since version 1.3.0 also special characters are supported.
 * Tweak: Softening the regex to recognize spaces before the closing tags
 
 = 2.0.6 =
-* Feature: Fully integrated with Foggy Email to protect your real email address: https://foggy.email/
 * Feature: We fully removed all external marketing advertisements! Enjoy our plugin without distrations! :)
 * Feature: Full support for Oxygen builder
 * Tweak: Optimize PHPDocs and comments
 * Tweak: Optimize is_post_excluded functionality
-* Dev: New filter: eeb/validate/filter_page_content - https://ironikus.com/docs/knowledge-base/filter-to-manipulate-raw-page-content/
-* Dev: New filter: eeb/validate/filter_content_content - https://ironikus.com/docs/knowledge-base/filter-to-manipulate-raw-hook-content/
-* Dev: New filter: eeb/validate/is_post_excluded - https://ironikus.com/docs/knowledge-base/filter-excluded-posts-list/
-* Dev: New filter: eeb/settings/pre_filter_fields - https://ironikus.com/docs/knowledge-base/pre-filter-email-encoder-settings/
+* Dev: New filter: eeb/validate/filter_page_content - https://wpemailencoder.com/filter-to-manipulate-raw-page-content/
+* Dev: New filter: eeb/validate/filter_content_content - https://wpemailencoder.com/filter-to-manipulate-raw-hook-content/
+* Dev: New filter: eeb/validate/is_post_excluded - https://wpemailencoder.com/filter-excluded-posts-list/
+* Dev: New filter: eeb/settings/pre_filter_fields - https://wpemailencoder.com/pre-filter-email-encoder-settings/
 
 = 2.0.5 =
 * Feature: Soft-Encode all HTML tags + new settings item (This will prevent complex plugins from breaking)
@@ -220,18 +220,18 @@ Yes, since version 1.3.0 also special characters are supported.
 * Feature: Also protect every single shortcode content
 * Feature: Create images out of email addresses
 * Feature: Protect header section automatically
-* Feature: Added and refactored shortcodes. For a full list of shortcodes, please check this article: https://ironikus.com/docs/knowledge-base/available-shortcodes/
+* Feature: Added and refactored shortcodes. For a full list of shortcodes, please check this article: https://wpemailencoder.com/available-shortcodes/
 * Feature: Setting to deactivate the Encoder Form completely
 * Feature: Choose converting plain emails to mailto links as an additional feature
 * Feature: Change filter apply from "wp" to "init" (This allows you to also grab some ajax values to parse them directy encoded)
-* Feature: Website checker to search your site for unprotected emails. Follow this URL for more information: https://ironikus.com/email-checker/
+* Feature: Website checker to search your site for unprotected emails. Follow this URL for more information: https://wpemailencoder.com/email-protection-checker/
 * Tweak: Backward compatibility to the new plugin settings
 * Tweak: Completely performance optimized (We removed everything that is not necessary, included a better object caching and much more)
 * Tweak: Optimized filter combinations
 * Fix: The old logic broke some email encodings, especially with custom tags. We fixed all of them
 * Fix: We fixed tons of bugs from the previous version
 * Dev: Code rewritten on the newest WordPress standards
-* Dev: Tons of new WordPress filters and actions. For a full list, please check https://ironikus.com/docs/article-categories/email-encoder/
+* Dev: Tons of new WordPress filters and actions. For a full list, please check https://wpemailencoder.com/
 * Deprecated: We removed the deprecated functions. Please make sure to update your custom logic to the newest standards.
 
 = 1.53 =
@@ -258,7 +258,7 @@ Yes, since version 1.3.0 also special characters are supported.
 = 1.5.2 =
 * Tweak: Add popup window for admin success message of hidden email
 * Fix: Fix bug for non-available antispambot() function
-* Ironikus takes over development (https://ironikus.com)
+* WP Webhooks takes over development (https://wp-webhooks.com)
 
 = 1.51 =
 * 2019-03-25
