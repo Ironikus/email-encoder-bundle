@@ -61,7 +61,7 @@ class Email_Encoder_Validate{
 
         $content = $this->filter_soft_dom_attributes( $content, 'char_encode' );
 
-        $htmlSplit = preg_split( '/(<body(([^>]*)>))/is', $content, null, PREG_SPLIT_DELIM_CAPTURE );
+        $htmlSplit = preg_split( '/(<body(([^>]*)>))/is', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
         
         if ( count( $htmlSplit ) < 4 ) {
             return $content;
