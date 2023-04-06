@@ -127,6 +127,7 @@ Yes, since version 1.3.0 also special characters are supported.
 
 = 2.1.4: April 06, 2023 =
 * Excluded additional file types from auto-encoding of images containing the @ sign: webp, bmp, tiff, avif
+* Deprecated the widget filter as it was of no use anymore
 
 = 2.1.3: February 04, 2021 =
 * Tweak: Email Encoder runs now on its own website: https://wpemailencoder.com/

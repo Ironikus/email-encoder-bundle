@@ -55,7 +55,6 @@ class Email_Encoder_Run{
 		add_action( 'init', array( $this, 'add_custom_template_tags' ), EEB()->settings->get_hook_priorities( 'add_custom_template_tags' ) );
 		add_action( $hook_name, array( $this, 'setup_single_filter_hooks' ), EEB()->settings->get_hook_priorities( 'setup_single_filter_hooks' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_frontend_header_styling' ), EEB()->settings->get_hook_priorities( 'load_frontend_header_styling' ) );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'eeb_dynamic_sidebar_params' ), EEB()->settings->get_hook_priorities( 'eeb_dynamic_sidebar_params' ) );
 
 		//Add shortcodes
 		add_shortcode( 'eeb_protect_emails', array( $this, 'protect_content_shortcode' ) );
@@ -132,6 +131,7 @@ class Email_Encoder_Run{
 	/**
      * Filter for "dynamic_sidebar_params" hook
 	 * 
+	 * @deprecated 2.1.4
      * @global array $wp_registered_widgets
      * @param  array $params
      * @return array
@@ -158,6 +158,8 @@ class Email_Encoder_Run{
 	
 	/**
      * The Widget Callback
+	 * 
+	 * @deprecated 2.1.4
      * @global array $wp_registered_widgets
      */
     public function call_widget_callback(){

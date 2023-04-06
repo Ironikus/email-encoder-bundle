@@ -52,7 +52,7 @@ class Email_Encoder_Settings{
 			'setup_single_filter_hooks' => 100,
 			'add_custom_template_tags' => 10,
 			'load_frontend_header_styling' => 10,
-			'eeb_dynamic_sidebar_params' => 100,
+			'eeb_dynamic_sidebar_params' => 100, //deprecated but kept for compatibility
 			'filter_rss' => 100,
 			'filter_page' => 100,
 			'filter_content' => 100,
