@@ -3,7 +3,7 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 5.9
+Tested up to: 6.1
 Stable tag: 2.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -124,6 +124,9 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.1.4: April 06, 2023 =
+* Excluded additional file types from auto-encoding of images containing the @ sign: webp, bmp, tiff, avif
 
 = 2.1.3: February 04, 2021 =
 * Tweak: Email Encoder runs now on its own website: https://wpemailencoder.com/
