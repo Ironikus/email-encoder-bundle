@@ -193,4 +193,52 @@ class Email_Encoder_Helpers {
 		return ( rand(0,1) == 1 ) ? true : false;
 	}
 	
+	/**
+	 * Better attribute parsing for HTML strings
+	 *
+	 * @since 2.1.4
+	 * @return mixed Array on success, empty string otherwise
+	 */
+	public function parse_html_attributes( $text ){
+
+		$attributes = shortcode_parse_atts( $text );
+
+		if( is_array( $attributes ) ){
+			foreach( $attributes as $ak => $av ){
+
+				//Check if a given string contains an @ as this breaks attributes by default
+				$ident = '@';
+				if( substr( $av, 0, strlen( $ident ) ) === $ident ){
+					$validated_attribute = substr( $av, strlen( $ident ) );
+					$new_attr = shortcode_parse_atts( $validated_attribute );
+
+					if( is_array( $new_attr ) ){
+						foreach( $new_attr as $nak => $nav ){
+
+							$index = array_search( $ak , array_keys( $attributes ) );
+
+							// Create a new array with the updated key and value.
+							$new_array = array();
+							$i = 0;
+							foreach( $attributes as $key => $value ) {
+								if ($i == $index) {
+									$new_key = $ident . $nak;
+									$new_array[ $new_key ] = $nav;
+								} else {
+									$new_array[$key] = $value;
+								}
+								$i++;
+							}
+
+							$attributes = $new_array;
+						}
+					}
+				}
+
+			}
+		}
+
+		return apply_filters('eeb/helpers/parse_html_attributes', $attributes, $text );
+	}
+	
 }

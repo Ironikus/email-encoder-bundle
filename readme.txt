@@ -126,6 +126,7 @@ Yes, since version 1.3.0 also special characters are supported.
 == Changelog ==
 
 = 2.1.4: April 06, 2023 =
+* Provided compatibility for HTML attributes that start with an @ character ()
 * Excluded additional file types from auto-encoding of images containing the @ sign: webp, bmp, tiff, avif
 * Deprecated the widget filter as it was of no use anymore
 

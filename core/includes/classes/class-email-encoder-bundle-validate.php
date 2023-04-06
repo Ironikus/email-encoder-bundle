@@ -290,7 +290,7 @@ class Email_Encoder_Validate{
         $self = $this;
 
         $callbackEncodeMailtoLinks = function ( $match ) use ( $self, $protection_method ) {
-            $attrs = shortcode_parse_atts( $match[1] );
+            $attrs = EEB()->helpers->parse_html_attributes( $match[1] );
             return $self->create_protected_mailto( $match[4], $attrs, $protection_method );
         };
 
