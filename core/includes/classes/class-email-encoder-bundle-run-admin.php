@@ -77,7 +77,7 @@ class Email_Encoder_Run{
 
 		array_unshift( $links, $settings_link );
 
-		$links['visit_us'] = sprintf( '<a href="%s" target="_blank" style="font-weight:700;color:#f1592a;">%s</a>', 'https://ironikus.com/?utm_source=email-encoder-bundle&utm_medium=plugin-overview-website-button&utm_campaign=WP%20Mailto%20Links', __('Visit us', 'email-encoder-bundle') );
+		$links['visit_us'] = sprintf( '<a href="%s" target="_blank" style="font-weight:700;color:#f1592a;">%s</a>', 'https://wpemailencoder.com/?utm_source=email-encoder-bundle&utm_medium=plugin-overview-website-button&utm_campaign=WP%20Mailto%20Links', __('Visit us', 'email-encoder-bundle') );
 
 		return $links;
 	}
@@ -186,7 +186,6 @@ class Email_Encoder_Run{
 	 */
 	public function add_help_tabs(){
 		$screen = get_current_screen();
-		$display_encoder_form = (bool) EEB()->settings->get_setting( 'display_encoder_form', true, 'encoder_form' );
 
         $defaults = array(
             'content'   => '',
@@ -208,8 +207,7 @@ class Email_Encoder_Run{
             'title'     => __('Template Tags', 'email-encoder-bundle'),
 		), $defaults));
 		
-		//Add widgets
-		if( $display_encoder_form ){
+		if( EEB()->helpers->is_page( $this->page_name ) ){
 			add_meta_box( 'encode_form', __( $this->page_title, 'email-encoder-bundle' ), array( $this, 'show_meta_box_content' ), null, 'normal', 'core', array( 'encode_form' ) );
 		}
 		
@@ -241,8 +239,18 @@ class Email_Encoder_Run{
 
 			<hr style="border:1px solid #FFF; border-top:1px solid #EEE;"/>
 
-			<p class="description"><?php _e('You can also put the encoder form on your site by using the shortcode <code>[eeb_form]</code> or the template function <code>eeb_form()</code>.', 'email-encoder-bundle') ?></p>
 			<?php
+
+			$form_frontend = (bool) EEB()->settings->get_setting( 'encoder_form_frontend', true, 'encoder_form' );
+			if( $form_frontend ){
+				?>
+					<p class="description"><?php _e('You can also put the encoder form on your site by using the shortcode <code>[eeb_form]</code> or the template function <code>eeb_form()</code>.', 'email-encoder-bundle') ?></p>
+				<?php
+			} else {
+				?>
+					<p class="description"><?php _e('In case you want to display the Email Encoder form within the frontend, you can activate it inside of the Advanced settings.', 'email-encoder-bundle') ?></p>
+				<?php
+			}
 		}
 
 	}

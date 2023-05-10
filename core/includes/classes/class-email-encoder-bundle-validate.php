@@ -386,53 +386,107 @@ class Email_Encoder_Validate{
         $no_script_tags = (bool) EEB()->settings->get_setting( 'no_script_tags', true, 'filter_body' );
         $no_attribute_validation = (bool) EEB()->settings->get_setting( 'no_attribute_validation', true, 'filter_body' );
 
-        if( class_exists( 'DOMDocument' ) && ! empty( $content ) && is_string( $content ) ){
-            $dom = new DOMDocument();
-            @$dom->loadHTML($content);
+        if( ! empty( $content ) && is_string( $content ) ){
 
-            //Filter html attributes
-            if( ! $no_attribute_validation ){
-                $allNodes = $dom->getElementsByTagName('*');
-                foreach( $allNodes as $snote ){
-                    if( $snote->hasAttributes() ) {
-                        foreach( $snote->attributes as $attr ) {
-                            if( $attr->nodeName == 'href' || $attr->nodeName == 'src' ){
-                                continue;
-                            }
+            if( class_exists( 'DOMDocument' ) ){
+                $dom = new DOMDocument();
+                @$dom->loadHTML($content);
     
-                            if( strpos( $attr->nodeValue, '@' ) !== FALSE ){
-                                $single_tags = array();
-                                preg_match_all( '/' . $attr->nodeName . '=["\']([^"]*)["\']/i', $content, $single_tags );
-                                
-                                if( is_array( $single_tags ) && isset( $single_tags[0] ) ){
-                                    foreach( $single_tags[0] as $single ){
-
-                                        if( empty( $single ) ){
-                                            continue;
-                                        }
-
-                                        $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
-                                    }
+                //Filter html attributes
+                if( ! $no_attribute_validation ){
+                    $allNodes = $dom->getElementsByTagName('*');
+                    foreach( $allNodes as $snote ){
+                        if( $snote->hasAttributes() ) {
+                            foreach( $snote->attributes as $attr ) {
+                                if( $attr->nodeName == 'href' || $attr->nodeName == 'src' ){
+                                    continue;
                                 }
-                                
+        
+                                if( strpos( $attr->nodeValue, '@' ) !== FALSE ){
+                                    $single_tags = array();
+                                    preg_match_all( '/' . $attr->nodeName . '=["\']([^"]*)["\']/i', $content, $single_tags );
+                                    
+                                    if( is_array( $single_tags ) && isset( $single_tags[0] ) ){
+                                        foreach( $single_tags[0] as $single ){
+    
+                                            if( empty( $single ) ){
+                                                continue;
+                                            }
+    
+                                            $content = str_replace( $single, $this->filter_plain_emails( $single, null, $protection_method, false ), $content );
+                                        }
+                                    }
+                                    
+                                }
                             }
                         }
                     }
                 }
+        
+                //Keep for now
+                //Soft-encode scripts
+                // $script = $dom->getElementsByTagName('script');
+                // if( ! empty( $script ) ){
+                //     $scripts_encoded = true;
+
+                //     if( ! $no_script_tags ){
+                //         foreach( $script as $item ){
+                //             $content = str_replace( $item->nodeValue, $this->filter_plain_emails( $item->nodeValue, null, $protection_method, false ), $content );
+                //         }
+                //     } else {
+                //         foreach( $script as $item ){
+                //             $content = str_replace( $item->nodeValue, $this->temp_encode_at_symbol( $item->nodeValue ), $content );
+                //         }
+                //     }
+                // }
+                
             }
-    
-            //Soft-encode scripts
-            $script = $dom->getElementsByTagName('script');
-            if( ! $no_script_tags ){
-                foreach($script as $item){
-                    $content = str_replace( $item->nodeValue, $this->filter_plain_emails( $item->nodeValue, null, $protection_method, false ), $content );
-                }
-            } else {
-                foreach($script as $item){
-                    $content = str_replace( $item->nodeValue, $this->temp_encode_at_symbol( $item->nodeValue ), $content );
+
+            //Validate script tags for better encoding
+            $pattern = '/<script\b[^>]*>(.*?)<\/script>/is';
+
+            preg_match_all($pattern, $content, $matches);
+            if( 
+                isset( $matches[1] )
+                && ! empty( $matches[1] )
+                ){
+                if( ! $no_script_tags ){
+                    foreach( $matches[1] as $key => $item ){
+
+                        //Don't do anything if something doesn't add up
+                        if( ! isset( $matches[0][ $key ] ) ){
+                            continue;
+                        }
+
+                        $org_script = $matches[0][ $key ];
+
+                        //Only encode emails when a CDATA is given to not cause any break within the scripts
+                        if( strpos( $item, '<![CDATA' ) !== false ){
+                            $validated_script = str_replace( $item, $this->filter_plain_emails( $item, null, $protection_method, false ), $org_script );
+                        } else {
+                            $validated_script = str_replace( $item, $this->temp_encode_at_symbol( $item ), $org_script );
+                        }
+
+                        $content = str_replace( $org_script, $validated_script, $content );
+                    }
+                } else {
+                    foreach( $matches[1] as $key => $item ){
+                        
+                        //Don't do anything if something doesn't add up
+                        if( ! isset( $matches[0][ $key ] ) ){
+                            continue;
+                        }
+
+                        $org_script = $matches[0][ $key ];
+                        $validated_script = str_replace( $item, $this->temp_encode_at_symbol( $item  ), $org_script );
+
+                        $content = str_replace( $org_script, $validated_script, $content );
+                    }
                 }
             }
+
         }
+        
         
         return $content;
     }
@@ -948,10 +1002,12 @@ class Email_Encoder_Validate{
      */
     public function get_encoder_form() {
         $powered_by_setting = (bool) EEB()->settings->get_setting( 'powered_by', true, 'encoder_form' );
-        $display_encoder_form = (bool) EEB()->settings->get_setting( 'display_encoder_form', true, 'encoder_form' );
 
         //shorten circle
-        if( ! $display_encoder_form ){
+        if( 
+            ! EEB()->helpers->is_page( $this->page_name )
+            && ! (bool) EEB()->settings->get_setting( 'encoder_form_frontend', true, 'encoder_form' )
+         ){
             return apply_filters('eeb_form_content_inactive', '' );
         }
 

@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 6.1
-Stable tag: 2.1.4
+Tested up to: 6.2
+Stable tag: 2.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Author URI: https://wpemailencoder.com/
@@ -106,6 +106,7 @@ Simply create a support request within the [support forum](http://wordpress.org/
 = How can I encode content of BBPress, WP e-commerce or other plugins? =
 
 Every content will be automatically protected. In case you find something, that doesn't work from your end, we are very happy to help! 
+Our plugin is fully compatible with [WP Webhooks](https://wp-webhooks.com/) and plugins created via [Pluginplate](https://pluginplate.com/)
 
 = Can I use special characters (like Chinese)? =
 
@@ -124,6 +125,16 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.1.5: May 10, 2023 =
+* Feature: New advanced settings to protect admin and ajax requests
+* Feature: New advanced setting to enable the Email Encoder form within the frontend
+* Tweak: Better validation for script tags
+* Tweak: Changed old links from ironikus.com to wpemailencoder.com
+* Tweak: Optimzied the Encoder Form logic to save performance
+* Tweak: Various performance optimizations
+* Tweak: Deprecated the "Activate the encoder form" setting
+* Fix: In some occasions, backenbd sites did not work correctly with buffered content
 
 = 2.1.4: April 06, 2023 =
 * Provided compatibility for HTML attributes that start with an @ character ()

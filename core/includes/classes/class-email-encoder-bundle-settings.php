@@ -157,6 +157,16 @@ class Email_Encoder_Settings{
 						'label' => __( 'RSS feed', 'email-encoder-bundle' ),
 						'description' => __( 'Activating this option results in protecting the rss feed based on the given protection method.', 'email-encoder-bundle' )
 					),
+					'ajax_requests' => array(
+						'advanced' 	  => true,
+						'label' => __( 'Ajax requests', 'email-encoder-bundle' ),
+						'description' => __( 'By default, ajax requests can send clear emails in some situations. Activating this settings will apply encoding to ajax-relate requests.', 'email-encoder-bundle' )
+					),
+					'admin_requests' => array(
+						'advanced' 	  => true,
+						'label' => __( 'Admin requests', 'email-encoder-bundle' ),
+						'description' => __( 'By default, we only protect frontend requests (Everything people see on your website). Activating this setting will also protect the backend of your website (The admin area).', 'email-encoder-bundle' )
+					),
 					'remove_shortcodes_rss' => array(
 						'advanced' 	  => true,
 						'label' => __( 'Remove all shortcodes from the RSS feeds', 'email-encoder-bundle' ),
@@ -337,10 +347,10 @@ class Email_Encoder_Settings{
 				'input-type'  => 'checkbox',
 				'advanced' 	  => true,
 				'title'       => __( 'Encoder form settings', 'email-encoder-bundle' ),
-				'inputs' 	  => array( 
-					'display_encoder_form' => array(
-						'label' => __( 'Activate the encoder form.', 'email-encoder-bundle' ),
-						'description' => __( 'This allows you to use the email encoder form, as well as the shortcode and template tag.', 'email-encoder-bundle' )
+				'inputs' 	  => array(
+					'encoder_form_frontend' => array(
+						'label' => __( 'Encoder form frontend', 'email-encoder-bundle' ),
+						'description' => __( 'Activate this to use the [eeb_form] shortcode or the PHP template function eeb_form() within the frontend.', 'email-encoder-bundle' )
 					),
 					'powered_by' => array(
 						'label' => __( 'Show a "powered by" link on bottom of the encoder form', 'email-encoder-bundle' ),
@@ -367,7 +377,6 @@ class Email_Encoder_Settings{
 		$default_values = array(
 			'protect' 				=> 1,
 			'filter_rss' 			=> 1,
-			'display_encoder_form' 	=> 1,
 			'powered_by' 			=> 1,
 			'protect_using' 		=> 'with_javascript',
 			'class_name' 			=> 'mail-link',
@@ -389,7 +398,7 @@ class Email_Encoder_Settings{
 		//Bakwards compatibility
 		if( ! isset( $values['protect_using'] ) ){
 			$values['protect_using'] = 'with_javascript';
-			$values['display_encoder_form'] = 1;
+			$values['encoder_form_frontend'] = 1;
 		}
 
 		//In case the mailto functiinality was deactivated, we will set it do "Do nothing" as well.

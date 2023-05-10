@@ -41,11 +41,22 @@ class Email_Encoder_Ajax{
 	 * Define all of our necessary hooks
 	 */
 	private function add_hooks(){
-        add_action( 'wp_enqueue_scripts', array( $this, 'load_ajax_scripts_styles' ), EEB()->settings->get_hook_priorities( 'load_ajax_scripts_styles' ) );
-        add_action( 'admin_enqueue_scripts',    array( $this, 'load_ajax_scripts_styles' ), EEB()->settings->get_hook_priorities( 'load_ajax_scripts_styles_admin' ) );
+		
+		if( 
+			EEB()->helpers->is_page( $this->page_name )
+			|| ( wp_doing_ajax() && isset( $_POST['action'] ) && $_POST['action'] === 'eeb_get_email_form_output' )
+		){
+			add_action( 'admin_enqueue_scripts',    array( $this, 'load_ajax_scripts_styles' ), EEB()->settings->get_hook_priorities( 'load_ajax_scripts_styles_admin' ) );
+			add_action( 'wp_ajax_eeb_get_email_form_output', array( $this, 'eeb_ajax_email_encoder_response' ) );
+		}
 
-		add_action( 'wp_ajax_eeb_get_email_form_output', array( $this, 'eeb_ajax_email_encoder_response' ) );
-		add_action( 'wp_ajax_nopriv_eeb_get_email_form_output', array( $this, 'eeb_ajax_email_encoder_response' ) );
+		$form_frontend = (bool) EEB()->settings->get_setting( 'encoder_form_frontend', true, 'encoder_form' );
+
+		if( $form_frontend ){
+			add_action( 'wp_enqueue_scripts', array( $this, 'load_ajax_scripts_styles' ), EEB()->settings->get_hook_priorities( 'load_ajax_scripts_styles' ) );
+			add_action( 'wp_ajax_nopriv_eeb_get_email_form_output', array( $this, 'eeb_ajax_email_encoder_response' ) );
+		}
+		
 	}
 
 	/**
@@ -62,16 +73,13 @@ class Email_Encoder_Ajax{
 	 * @since    2.0.0
 	 */
 	public function load_ajax_scripts_styles() {
-        $display_encoder_form = (bool) EEB()->settings->get_setting( 'display_encoder_form', true, 'encoder_form' );
-
-        if( $display_encoder_form ){
-            $js_version_form  = date( "ymd-Gis", filemtime( EEB_PLUGIN_DIR . 'core/includes/assets/js/encoder-form.js' ));
-            wp_enqueue_script( 'eeb-js-ajax-ef', EEB_PLUGIN_URL . 'core/includes/assets/js/encoder-form.js', array('jquery'), $js_version_form, true );
-            wp_localize_script( 'eeb-js-ajax-ef', 'eeb_ef', array(
-                'ajaxurl' => admin_url( 'admin-ajax.php' ),
-                'security' => wp_create_nonce( $this->page_name )
-            ));
-        }
+        
+		$js_version_form  = date( "ymd-Gis", filemtime( EEB_PLUGIN_DIR . 'core/includes/assets/js/encoder-form.js' ));
+		wp_enqueue_script( 'eeb-js-ajax-ef', EEB_PLUGIN_URL . 'core/includes/assets/js/encoder-form.js', array('jquery'), $js_version_form, true );
+		wp_localize_script( 'eeb-js-ajax-ef', 'eeb_ef', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'security' => wp_create_nonce( $this->page_name )
+		));
 		
 	}
 
