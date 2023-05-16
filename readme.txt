@@ -126,6 +126,10 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
+= 2.1.6: May 10, 2023 =
+* Tweak: Provide compatibility with Bricks Builder
+* Tweak: Optimized performance for integrations
+
 = 2.1.5: May 10, 2023 =
 * Feature: New advanced settings to protect admin and ajax requests
 * Feature: New advanced setting to enable the Email Encoder form within the frontend

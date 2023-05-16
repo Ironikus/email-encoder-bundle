@@ -47,7 +47,6 @@ if( ! class_exists( 'Email_Encoder_Integration_Oxygen' ) ){
          */
         private function add_hooks(){
             add_filter( 'eeb/settings/fields', array( $this, 'deactivate_logic' ), 10 );
-            add_action( 'init', array( $this, 'reload_settings_before_oxygen_builder' ), 5 );
         }
 
         /**
@@ -61,18 +60,6 @@ if( ! class_exists( 'Email_Encoder_Integration_Oxygen' ) ){
         public function is_oxygen_active(){
             return defined( 'CT_VERSION' );
         }
-
-        /**
-         * ######################
-         * ###
-         * #### SCRIPTS & STYLES
-         * ###
-         * ######################
-         */
-
-         public function reload_settings_before_oxygen_builder(){
-            EEB()->settings->reload_settings();
-         }
         
         public function deactivate_logic( $fields ){
 

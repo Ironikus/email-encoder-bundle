@@ -3,25 +3,25 @@
 // Exit if accessed directly.
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if( ! class_exists( 'Email_Encoder_Integration_Divi' ) ){
+if( ! class_exists( 'Email_Encoder_Integration_Bricks' ) ){
 
     /**
-     * Class Email_Encoder_Integration_Divi
+     * Class Email_Encoder_Integration_Bricks
      *
-     * This class integrates support for the divi themes https://www.elegantthemes.com/gallery/divi/
+     * This class integrates support for the Bricks page builder https://bricksbuilder.io/
      *
-     * @since 2.0.0
+     * @since 2.1.6
      * @package EEB
      * @author Ironikus <info@ironikus.com>
      */
 
-    class Email_Encoder_Integration_Divi{
+    class Email_Encoder_Integration_Bricks{
 
         /**
          * The main page name for our admin page
          *
          * @var string
-         * @since 2.0.0
+         * @since 2.0.6
          */
         private $page_name;
 
@@ -29,7 +29,7 @@ if( ! class_exists( 'Email_Encoder_Integration_Divi' ) ){
          * The main page title for our admin page
          *
          * @var string
-         * @since 2.0.0
+         * @since 2.0.6
          */
         private $page_title;
 
@@ -57,22 +57,21 @@ if( ! class_exists( 'Email_Encoder_Integration_Divi' ) ){
          * ######################
          */
 
-        public function is_divi_active(){
-            return defined( 'ET_BUILDER_VERSION' );
+         /**
+          * Verify if Bricks builder is active 
+          * in the first place
+          *
+          * @return array
+          */
+        public function is_bricks_active(){
+            return function_exists( 'bricks_is_builder' );
         }
-
-        /**
-         * ######################
-         * ###
-         * #### SCRIPTS & STYLES
-         * ###
-         * ######################
-         */
         
         public function deactivate_logic( $fields ){
 
-            if( $this->is_divi_active() ){
-                if( isset( $_GET['et_fb'] ) && $_GET['et_fb'] == '1' ){
+            if( $this->is_bricks_active() ){
+
+                if( function_exists( 'bricks_is_builder' ) && bricks_is_builder() ){
                     if( is_array( $fields ) ){
                         if( isset( $fields[ 'protect' ] ) ){
                             if( isset( $fields[ 'protect' ]['value'] ) ){
@@ -81,6 +80,7 @@ if( ! class_exists( 'Email_Encoder_Integration_Divi' ) ){
                         }
                     }
                 }
+
             }
 
             return $fields;
@@ -90,5 +90,5 @@ if( ! class_exists( 'Email_Encoder_Integration_Divi' ) ){
 
     }
 
-    new Email_Encoder_Integration_Divi();
+    new Email_Encoder_Integration_Bricks();
 }

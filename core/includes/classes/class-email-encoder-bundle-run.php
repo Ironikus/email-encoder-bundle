@@ -68,6 +68,7 @@ class Email_Encoder_Run{
 
 		do_action('eeb_ready', array($this, 'eeb_ready_callback_filter'), $this);
 
+		add_action( 'init', array( $this, 'reload_settings_for_integrations' ), 5 );
 	}
 
 	/**
@@ -93,6 +94,17 @@ class Email_Encoder_Run{
         
         return EEB()->validate->filter_content( $content, $protect_using );
     }
+
+	/**
+	 * Reload the settings to reflect
+	 * Third party and integration changes
+	 *
+	 * @since 2.1.6
+	 * @return void
+	 */
+	public function reload_settings_for_integrations(){
+		EEB()->settings->reload_settings();
+	 }
 
 	/**
 	 * ######################
