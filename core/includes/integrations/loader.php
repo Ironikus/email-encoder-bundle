@@ -26,7 +26,7 @@ class EEB_Integrations_Loader{
         );
 
         $services = array(
-            'foggy_email' => 'foggy_email.php'
+            //'foggy_email' => 'foggy_email.php' //Got discontinued
         );
 
         $integrations = array_merge( $plugins, $services );

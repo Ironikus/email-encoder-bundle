@@ -54,9 +54,7 @@ if( ! class_exists( 'Email_Encoder_Integration_FoggyEmail' ) ){
          */
 
          public function is_active(){
-            $foggy_email_api_key = (string) EEB()->settings->get_setting( 'foggy_email_api_key', true );
-
-            return ( ! empty( $foggy_email_api_key ) );
+            return false; //Got discontinued
          }
 
         /**
