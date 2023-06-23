@@ -126,6 +126,9 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
+= 2.1.7: June 23, 2023 =
+* Tweak: Provide compatibility with the Avada Builder
+
 = 2.1.6: May 10, 2023 =
 * Tweak: Provide compatibility with Bricks Builder
 * Tweak: Optimized performance for integrations

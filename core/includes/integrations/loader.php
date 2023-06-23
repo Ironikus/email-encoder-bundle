@@ -17,6 +17,7 @@ class EEB_Integrations_Loader{
     public function load_integrations(){
 
         $plugins = array(
+            'avada_builder' => 'avada_builder.php',
             'bricks_builder' => 'bricks_builder.php',
             'maintenance' => 'maintenance.php',
             'divi_theme' => 'divi_theme.php',
