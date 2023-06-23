@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 6.2
-Stable tag: 2.1.6
+Tested up to: 6.2.2
+Stable tag: 2.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Author URI: https://wpemailencoder.com/
