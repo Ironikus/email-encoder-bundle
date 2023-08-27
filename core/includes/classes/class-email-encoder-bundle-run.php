@@ -490,7 +490,7 @@ class Email_Encoder_Run{
 		if( empty( $atts['email'] ) ){
 			return '';
 		} else {
-			$email = $atts['email'];
+			$email = sanitize_email( $atts['email'] );
 		}
 
 		if( empty( $atts['extra_attrs'] ) ){
