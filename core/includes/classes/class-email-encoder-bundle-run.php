@@ -524,7 +524,7 @@ class Email_Encoder_Run{
 			$noscript = html_entity_decode( $atts['noscript'] );
 		}
 		
-		$class_name = ' ' . trim( $extra_attrs );
+		$class_name = ' ' . EEB()->helpers->sanitize_html_attributes( $extra_attrs );
 		$class_name .= ' class="' . esc_attr( $custom_class ) . '"';
 		$mailto = '<a href="mailto:' . $email . '"'. $class_name . '>' . $display . '</a>';
 		

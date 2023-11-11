@@ -240,5 +240,42 @@ class Email_Encoder_Helpers {
 
 		return apply_filters('eeb/helpers/parse_html_attributes', $attributes, $text );
 	}
+
+	/**
+	 * Sanitize a string of HTML attributes
+	 *
+	 * @since 2.1.9
+	 * @param string $extra_attrs
+	 * @return string
+	 */
+	public function sanitize_html_attributes( $extra_attrs ){
+
+		$allowed_attrs = [ 'href', 'title', 'rel', 'class', 'id', 'style', 'target' ];
+
+		// Use a regular expression to match attributes and their values
+		preg_match_all('/(\w+)=("[^"]*"|\'[^\']*\')/', $extra_attrs, $matches, PREG_SET_ORDER);
+
+		$sanitized_attrs = array();
+
+		foreach ( $matches as $match ) {
+
+			//Skip undefined arguments
+			if( ! in_array( $match[1], $allowed_attrs ) ){
+				continue;
+			}
+
+			// $match[1] is the attribute name, $match[2] is the attribute value including quotes
+			$sanitized_name = sanitize_key( $match[1] ); // Sanitize the attribute name
+			$sanitized_value = esc_attr( trim( $match[2], '"\'' ) ); // Remove quotes and escape the value
+
+			// Reconstruct the attribute
+			$sanitized_attrs[] = $sanitized_name . '="' . $sanitized_value . '"';
+		}
+
+		// Join the sanitized attributes back into a string
+		$sanitized_extra_attrs = implode(' ', $sanitized_attrs);
+
+		return apply_filters('eeb/helpers/sanitize_html_attributes', $sanitized_extra_attrs, $sanitized_attrs, $extra_attrs );
+	}
 	
 }

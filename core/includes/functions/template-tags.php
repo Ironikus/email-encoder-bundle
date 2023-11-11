@@ -34,7 +34,7 @@ if (!function_exists('eeb_mailto')):
             $display = html_entity_decode($display);
 		}
         
-        $class_name = ' ' . trim($extra_attrs);
+        $class_name = ' ' . EEB()->helpers->sanitize_html_attributes( $extra_attrs );
 		$class_name .= ' class="' . esc_attr( $custom_class ) . '"';
 		$mailto = '<a href="mailto:' . $email . '"'. $class_name . '>' . $display . '</a>';
 
