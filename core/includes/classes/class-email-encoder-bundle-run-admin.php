@@ -37,6 +37,22 @@ class Email_Encoder_Run{
 	private $pagehook;
 
 	/**
+	 * The settings key
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $settings_key;
+
+	/**
+	 * The display notices
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $display_notices;
+
+	/**
 	 * Our Email_Encoder_Run constructor.
 	 */
 	function __construct(){

@@ -30,6 +30,22 @@ class Email_Encoder_Validate{
 	private $page_title;
 
 	/**
+	 * The hook used for the final output buffer
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $final_outout_buffer_hook;
+
+	/**
+	 * The identifier used for @ characters
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $at_identifier;
+
+	/**
 	 * Our Email_Encoder_Run constructor.
 	 */
 	function __construct(){

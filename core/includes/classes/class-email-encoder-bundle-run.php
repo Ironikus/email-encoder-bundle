@@ -29,6 +29,22 @@ class Email_Encoder_Run{
 	private $page_title;
 
 	/**
+	 * The hook used for the final output buffer
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $final_outout_buffer_hook;
+
+	/**
+	 * The hook used for the widget callbacks
+	 *
+	 * @var string
+	 * @since 2.0.0
+	 */
+	private $widget_callback_hook;
+
+	/**
 	 * Our Email_Encoder_Run constructor.
 	 */
 	function __construct(){
@@ -402,7 +418,7 @@ class Email_Encoder_Run{
 		}
 		
 		if( isset( $atts['protect_using'] ) ){
-			$protect_using = $atts['protect_using'];
+			$protect_using = sanitize_title( $atts['protect_using'] );
 		}
 
         $content = EEB()->validate->filter_content( $content, $protect_using );
@@ -484,6 +500,7 @@ class Email_Encoder_Run{
      */
     public function shortcode_eeb_email( $atts = array(), $content = null ){
 
+		$allowed_attr_html = EEB()->settings->get_safe_html_attr();
 		$show_encoded_check = (bool) EEB()->settings->get_setting( 'show_encoded_check', true );
 		$protection_text = __( EEB()->settings->get_setting( 'protection_text', true ), 'email-encoder-bundle' );
 
@@ -515,13 +532,13 @@ class Email_Encoder_Run{
 		if( empty( $atts['display'] ) ) {
 			$display = $email;
 		} else {
-			$display = html_entity_decode( $atts['display'] );
+			$display = wp_kses( html_entity_decode( $atts['display'] ), $allowed_attr_html );
 		}
 		
 		if( empty( $atts['noscript'] ) ) {
 			$noscript = $protection_text;
 		} else {
-			$noscript = html_entity_decode( $atts['noscript'] );
+			$noscript = wp_kses( html_entity_decode( $atts['noscript'] ), $allowed_attr_html );
 		}
 		
 		$class_name = ' ' . EEB()->helpers->sanitize_html_attributes( $extra_attrs );
