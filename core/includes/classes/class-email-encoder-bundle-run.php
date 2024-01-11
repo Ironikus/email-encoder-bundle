@@ -102,7 +102,19 @@ class Email_Encoder_Run{
      */
     public function eeb_ready_callback_filter( $content ) {
 
+		$apply_protection = true;
+
+		if( EEB()->validate->is_query_parameter_excluded() ){
+			$apply_protection = false;
+		}
+
 		if( EEB()->validate->is_post_excluded() ){
+			$apply_protection = false;
+		}
+
+		$apply_protection = apply_filters( 'eeb/frontend/apply_protection', $apply_protection );
+
+		if( ! $apply_protection ){
 			return $content;
 		}
 
@@ -253,16 +265,20 @@ class Email_Encoder_Run{
 
 		$js_version  = date( "ymd-Gis", filemtime( EEB_PLUGIN_DIR . 'core/includes/assets/js/custom.js' ));
 		$css_version = date( "ymd-Gis", filemtime( EEB_PLUGIN_DIR . 'core/includes/assets/css/style.css' ));
-		$protection_activated = (int) EEB()->settings->get_setting( 'protect', true );
-		$without_javascript = (string) EEB()->settings->get_setting( 'protect_using', true );
+		$protect_using = (string) EEB()->settings->get_setting( 'protect_using', true );
 		$footer_scripts = (bool) EEB()->settings->get_setting( 'footer_scripts', true );
 		 
-		if( $without_javascript !== 'without_javascript' ){
+		if( $protect_using === 'with_javascript' ){
 			wp_enqueue_script( 'eeb-js-frontend', EEB_PLUGIN_URL . 'core/includes/assets/js/custom.js', array( 'jquery' ), $js_version, $footer_scripts );
 		}
 		
-		wp_register_style( 'eeb-css-frontend',    EEB_PLUGIN_URL . 'core/includes/assets/css/style.css', false,   $css_version );
-		wp_enqueue_style ( 'eeb-css-frontend' );
+		if( 
+			$protect_using === 'with_javascript'
+			|| $protect_using === 'without_javascript'
+		 ){
+			wp_register_style( 'eeb-css-frontend',    EEB_PLUGIN_URL . 'core/includes/assets/css/style.css', false,   $css_version );
+			wp_enqueue_style ( 'eeb-css-frontend' );
+		}
 
 		if( (string) EEB()->settings->get_setting( 'show_encoded_check', true ) === '1' ){
 			wp_enqueue_style('dashicons');
@@ -284,6 +300,10 @@ class Email_Encoder_Run{
 	  * @return void
 	  */
     public function setup_single_filter_hooks(){
+
+		if( EEB()->validate->is_query_parameter_excluded() ){
+			return;
+		}
 
 		if( EEB()->validate->is_post_excluded() ){
 			return;

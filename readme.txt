@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 6.3
-Stable tag: 2.1.10
+Tested up to: 6.4.2
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Author URI: https://wpemailencoder.com/
@@ -125,6 +125,12 @@ Yes, since version 1.3.0 also special characters are supported.
 * Title icon on Admin Options Page was made by [Jack Cai](http://www.doublejdesign.co.uk/)
 
 == Changelog ==
+
+= 2.2.0: January 11, 2024 =
+* Feature: Exclude pages with query parameters from being protected (Advanced setting: Exclude URL parameters from protection)
+* Tweak: Optimized performance for Javascript and Style enqueues
+* Dev: Added new filter hook "eeb/frontend/apply_protection" to manually prevent protection of certain pages
+* Dev: Added new filter hook "eeb/validate/is_query_parameter_excluded" to filter the query parameter exclusions
 
 = 2.1.10: January 09, 2024 =
 * Optimized Helpfiles
