@@ -126,6 +126,12 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
+= 2.2.1: February 11, 2024 =
+* Tweak: Security Patch
+* Tweak: Provide compatibility if GD Library Not Enabled
+* Fix: Fixed some PHP 8.2+ notices
+* Fix: Fixed Automatic Translations for WPML: https://wpml.org/errata/email-encoder-protect-email-addresses-and-phone-numbers-there-is-a-problem-connecting-to-automatic-translation/
+
 = 2.2.0: January 11, 2024 =
 * Feature: Exclude pages with query parameters from being protected (Advanced setting: Exclude URL parameters from protection)
 * Tweak: Optimized performance for Javascript and Style enqueues

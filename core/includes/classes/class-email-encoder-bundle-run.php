@@ -430,6 +430,7 @@ class Email_Encoder_Run{
      */
     public function protect_content_shortcode( $atts, $content = null ){
 		$protect = (int) EEB()->settings->get_setting( 'protect', true );
+		$allowed_attr_html = EEB()->settings->get_safe_html_attr();
 		$protect_using = (string) EEB()->settings->get_setting( 'protect_using', true );
 		$protection_activated = ( $protect === 1 || $protect === 2 ) ? true : false;
 
@@ -440,6 +441,9 @@ class Email_Encoder_Run{
 		if( isset( $atts['protect_using'] ) ){
 			$protect_using = sanitize_title( $atts['protect_using'] );
 		}
+
+		//Filter content first
+		$content = wp_kses( html_entity_decode( $content ), $allowed_attr_html );
 
         $content = EEB()->validate->filter_content( $content, $protect_using );
 
@@ -471,6 +475,7 @@ class Email_Encoder_Run{
     public function shortcode_eeb_content( $atts = array(), $content = null ){
 
 		$original_content = $content;
+		$allowed_attr_html = EEB()->settings->get_safe_html_attr();
 		$show_encoded_check = (string) EEB()->settings->get_setting( 'show_encoded_check', true );
 
 		if( ! isset( $atts['protection_text'] ) ){
@@ -488,6 +493,8 @@ class Email_Encoder_Run{
 		if( isset( $atts['do_shortcode'] ) && $atts['do_shortcode'] === 'yes' ){
 			$content = do_shortcode( $content );
 		}
+
+		$content = wp_kses( html_entity_decode( $content ), $allowed_attr_html );
 
         switch( $method ){
 			case 'enc_ascii':
@@ -553,12 +560,14 @@ class Email_Encoder_Run{
 			$display = $email;
 		} else {
 			$display = wp_kses( html_entity_decode( $atts['display'] ), $allowed_attr_html );
+			$display = str_replace( '\\', '', $display ); //Additionally sanitize unicode
 		}
 		
 		if( empty( $atts['noscript'] ) ) {
 			$noscript = $protection_text;
 		} else {
 			$noscript = wp_kses( html_entity_decode( $atts['noscript'] ), $allowed_attr_html );
+			$noscript = str_replace( '\\', '', $noscript ); //Additionally sanitize unicode
 		}
 		
 		$class_name = ' ' . EEB()->helpers->sanitize_html_attributes( $extra_attrs );
@@ -623,6 +632,10 @@ class Email_Encoder_Run{
 
 		$hash = (string) $_GET['eeb_hash'];
 		$secret = EEB()->settings->get_email_image_secret();
+
+		if( ! function_exists( 'imagefontwidth' ) ){
+			wp_die( __('GD Library Not Enabled. Please enable it first.', 'email-encoder-bundle') );
+		}
 
 		if( EEB()->validate->generate_email_signature( $email, $secret ) !== $hash ){
 			wp_die( __('Your signture is invalid.', 'email-encoder-bundle') );

@@ -991,7 +991,7 @@ class Email_Encoder_Validate{
 
     public function generate_email_image_url( $email ) {
         
-        if( empty( $email ) || ! is_email( $email ) ){
+        if( ! function_exists( 'imagefontwidth' ) || empty( $email ) || ! is_email( $email ) ){
             return false;
         }
 

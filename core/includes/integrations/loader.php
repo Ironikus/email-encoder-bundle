@@ -24,6 +24,7 @@ class EEB_Integrations_Loader{
             'google_site_kit' => 'google_site_kit.php',
             'oxygen_builder' => 'oxygen_builder.php',
             'the_events_calendar' => 'the_events_calendar.php',
+            'wpml' => 'wpml.php',
         );
 
         $services = array(

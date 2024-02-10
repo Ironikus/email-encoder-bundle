@@ -149,6 +149,14 @@ class Email_Encoder_Settings{
 	private $email_image_secret;
 
 	/**
+	 * The template tags
+	 *
+	 * @var string
+	 * @since 2.2.1
+	 */
+	private $template_tags;
+
+	/**
 	 * Email_Encoder_Settings constructor.
 	 *
 	 * We define all of our necessary settings in here.
