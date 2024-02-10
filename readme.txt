@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 6.4.2
-Stable tag: 2.2.0
+Tested up to: 6.4.3
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Author URI: https://wpemailencoder.com/
@@ -129,6 +129,7 @@ Yes, since version 1.3.0 also special characters are supported.
 = 2.2.1: February 11, 2024 =
 * Tweak: Security Patch
 * Tweak: Provide compatibility if GD Library Not Enabled
+* Tweak: Compatibility with WP 6.4.3
 * Fix: Fixed some PHP 8.2+ notices
 * Fix: Fixed Automatic Translations for WPML: https://wpml.org/errata/email-encoder-protect-email-addresses-and-phone-numbers-there-is-a-problem-connecting-to-automatic-translation/
 
