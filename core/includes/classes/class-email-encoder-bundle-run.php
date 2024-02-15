@@ -490,11 +490,11 @@ class Email_Encoder_Run{
 			$method = 'rot13';
 		}
 
+		$content = wp_kses( html_entity_decode( $content ), $allowed_attr_html );
+
 		if( isset( $atts['do_shortcode'] ) && $atts['do_shortcode'] === 'yes' ){
 			$content = do_shortcode( $content );
 		}
-
-		$content = wp_kses( html_entity_decode( $content ), $allowed_attr_html );
 
         switch( $method ){
 			case 'enc_ascii':

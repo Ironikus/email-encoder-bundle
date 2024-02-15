@@ -126,6 +126,10 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
+= 2.2.2: February 11, 2024 =
+* Tweak: Add <br> tags to the allowed HTML for shortcodes
+* Tweak: Apply content filtering before executing shortcodes for [eeb_protect_content]
+
 = 2.2.1: February 11, 2024 =
 * Tweak: Security Patch
 * Tweak: Provide compatibility if GD Library Not Enabled

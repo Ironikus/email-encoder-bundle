@@ -215,6 +215,7 @@ class Email_Encoder_Settings{
 				'lang' => array(),
 				'dir' => array(),
 			),
+			'br' => array(),
 			'strong' => array(),
 			'center' => array(),
 			'ul' => array(
