@@ -28,7 +28,7 @@ $advanced_settings = (bool) EEB()->settings->get_setting( 'advanced_settings', t
                     }
 
                     $is_checked = ( $setting['type'] == 'checkbox' && ( $main_settings_value === 1 || $main_settings_value === '1' ) ) ? 'checked' : '';
-                    $value = ( $setting['type'] != 'checkbox' && $setting['type'] != 'multi-input' ) ? $main_settings_value : '1';
+                    $value = ( $setting['type'] != 'checkbox' && $setting['type'] != 'multi-input' ) ? htmlspecialchars( $main_settings_value ) : '1';
 
                     ?>
                         <tr valign="top" <?php echo $hide_main_layer; ?>>
@@ -51,7 +51,7 @@ $advanced_settings = (bool) EEB()->settings->get_setting( 'advanced_settings', t
                                             }
 
                                             $mi_is_checked = ( $setting['input-type'] == 'checkbox' && ( isset( $data['value'] ) && ( $data['value'] === 1 || $data['value'] === '1' ) ) ) ? 'checked' : '';
-                                            $mi_value = ( $setting['input-type'] != 'checkbox' ) ? $data['value'] : '1';
+                                            $mi_value = ( $setting['input-type'] != 'checkbox' ) ? htmlspecialchars( $data['value'] ) : '1';
                                             $si_name = $si_key;
 
                                             //Re-validate for radio inputs

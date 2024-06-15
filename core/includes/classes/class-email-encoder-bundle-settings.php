@@ -604,7 +604,7 @@ class Email_Encoder_Settings{
 			update_option( $this->settings_key, $default_values );
 			$values = $default_values;
 		}
-
+		
 		//Bakwards compatibility
 		if( ! isset( $values['protect_using'] ) ){
 			$values['protect_using'] = 'with_javascript';

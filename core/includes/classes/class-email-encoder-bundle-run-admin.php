@@ -178,6 +178,14 @@ class Email_Encoder_Run{
 			}
 
 			if( isset( $_POST[ $this->settings_key ] ) && is_array( $_POST[ $this->settings_key ] ) ){
+
+				//Strip duplicate slashes before saving
+				foreach( $_POST[ $this->settings_key ] as $k => $v ){
+					if( is_string( $v ) ){
+						$_POST[ $this->settings_key ][ $k ] = stripslashes( $v );
+					}
+				}
+
 				$check = update_option( $this->settings_key, $_POST[ $this->settings_key ] );
 				if( $check ){
 					EEB()->settings->reload_settings();
