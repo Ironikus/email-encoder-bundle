@@ -3,8 +3,8 @@ Contributors: ironikus
 Tags: anti spam, protect, encode, encrypt, hide, antispam, phone number, spambot, secure, e-mail, email, mail
 Requires at least: 4.7
 Requires PHP: 5.1
-Tested up to: 6.4.3
-Stable tag: 2.2.1
+Tested up to: 6.5.4
+Stable tag: 2.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Author URI: https://wpemailencoder.com/
@@ -126,7 +126,8 @@ Yes, since version 1.3.0 also special characters are supported.
 
 == Changelog ==
 
-= 2.2.2: February 11, 2024 =
+= 2.2.2: June 15, 2024 =
+* Tweak: Minor Security Patch (Multisite)
 * Tweak: Add <br> tags to the allowed HTML for shortcodes
 * Tweak: Apply content filtering before executing shortcodes for [eeb_protect_content]
 
